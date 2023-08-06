@@ -77,7 +77,7 @@ export default function Navbar(){
 <Topbar open={open}/>
 
             <ClickAwayListener onClickAway={handleDrawerClose} >
-        <CustDrawer PaperProps={{sx:{backgroundColor:'#f5f5f5'}}} variant="permanent"open={open} >
+        <CustDrawer PaperProps={{sx:{backgroundColor:' #e9e9e9 '}}} variant="permanent"open={open} >
         <DrawerHeader>
           <IconButton  onClick={()=>{
             if(open)
