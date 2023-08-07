@@ -26,6 +26,7 @@ const closedMixin = (theme)=>({
         easing:theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
+  
     overflowX:'hidden',
     width:`calc(${theme.spacing(7)})`,
     [theme.breakpoints.up('sm')]:{
@@ -41,6 +42,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
+    
   }));
   
   const CustDrawer = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -63,7 +65,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   );
 
 export default function Navbar(){
-    const theme = useTheme();
     const [open, setOpen] = React.useState(false)
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -89,7 +90,7 @@ export default function Navbar(){
           </IconButton>
         </DrawerHeader>
       
-        <List>
+      <List sx={{overflowY:'scroll' , overflowX:'hidden'}}>
           {['home','about' ,'academic record','analysis' ,'certificates','enter information','enter marks','gazette' , 'hall tickets', 'old syllabus', 'templates', 'transcript', 'elegibility', 'logout'
 ].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>

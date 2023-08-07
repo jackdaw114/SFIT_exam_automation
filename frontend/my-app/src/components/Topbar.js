@@ -28,7 +28,7 @@ const closedMixin = (theme)=>({
 const CustAppBar = styled(AppBar,{
     shouldForwardProp: (prop) => prop !== 'open',})(({theme,open})=>({
         backgroundColor:"#f5f6f7",
-   
+        position:"fixed",
         color:'black',
         ...(open && {
             ...openedMixin(theme),
@@ -57,6 +57,9 @@ export default function Topbar(props){
             </Box>
           </Toolbar>
         </CustAppBar>
+
+        <Toolbar />
+        <br />
       </Box>
     )
 }
