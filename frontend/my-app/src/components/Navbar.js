@@ -11,6 +11,7 @@ import { ClickAwayListener } from "@mui/material";
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import Topbar from "./Topbar";
 
+
 const drawerWidth =240;
 
 const openedMixin = (theme) => ({
@@ -64,29 +65,30 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     }),
   );
 
-export default function Navbar(){
-    const [open, setOpen] = React.useState(false)
+export default function Navbar(props){
+    // const [open, setOpen] = React.useState(false)
     const handleDrawerOpen = () => {
-        setOpen(true);
+        props.func(true);
       };
     
       const handleDrawerClose = () => {
-        setOpen(false);
-      };
+        props.func(false);
+  };
+  
+  console.log(props.func);
     return (
         <Box>
-<Topbar open={open}/>
 
             <ClickAwayListener onClickAway={handleDrawerClose} >
-        <CustDrawer PaperProps={{sx:{backgroundColor:' #e9e9e9 '}}} variant="permanent"open={open} >
+        <CustDrawer PaperProps={{sx:{backgroundColor:' #e9e9e9 '}}} variant="permanent"open={props.open} >
         <DrawerHeader>
           <IconButton  onClick={()=>{
-            if(open)
+            if(props.open)
             handleDrawerClose();
             else
             handleDrawerOpen();
             }}>
-            {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {!props.open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>
       
@@ -97,20 +99,20 @@ export default function Navbar(){
               <ListItemButton
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
+                  justifyContent: props.open ? 'initial' : 'center',
                   px: 2.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : 'auto',
+                    mr: props.open ? 3 : 'auto',
                     justifyContent: 'center',
                   }}
                 >
                  <CircleOutlinedIcon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={text} sx={{ opacity: props.open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
