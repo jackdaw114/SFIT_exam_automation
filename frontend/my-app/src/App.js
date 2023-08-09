@@ -3,12 +3,19 @@ import './App.css';
 import Navbar from './components/Navbar';
 import { Box, ThemeProvider } from '@mui/material';
 import Home from './components/Home';
+import VerifyEligibility from './components/VerifyEligibility';
+import {BrowserRouter, Route, Router, Routes} from 'react-router-dom'
 
 function App() {
   return (
     <Box >
-        <Navbar />
-        <Home />
+
+      <BrowserRouter>
+      <Routes>
+      <Route path='/verifyeligibility' element={<><Navbar/><VerifyEligibility /></>}></Route>
+          <Route path='/' element={<><Home /></>}></Route>
+      </Routes>
+      </BrowserRouter>
       </Box>
   );
 }

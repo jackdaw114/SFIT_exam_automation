@@ -75,7 +75,7 @@ export default function Navbar(){
       };
     return (
         <Box>
-<Topbar open={open}/>
+<Topbar open={open} home={false}/>
 
             <ClickAwayListener onClickAway={handleDrawerClose} >
         <CustDrawer PaperProps={{sx:{backgroundColor:' #e9e9e9 '}}} variant="permanent"open={open} >

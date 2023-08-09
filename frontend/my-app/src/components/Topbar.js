@@ -26,14 +26,14 @@ const closedMixin = (theme)=>({
 })
 
 const CustAppBar = styled(AppBar,{
-    shouldForwardProp: (prop) => prop !== 'open',})(({theme,open})=>({
+    shouldForwardProp: (prop) =>     !['home','open'].includes(prop)})(({theme,open,home})=>({
         backgroundColor:"#f5f6f7",
         position:"fixed",
         color:'black',
-        ...(open && {
+        ...((open && !home)&& {
             ...openedMixin(theme),
             }),
-            ...(!open && {
+            ...((!open && !home)&& {
                 ...closedMixin(theme),
                 })
 
@@ -44,7 +44,7 @@ export default function Topbar(props){
     console.log(props.open)
     return(
         <Box sx={{ flexGrow: 1 }}>
-        <CustAppBar elevation={0} sx={{borderBottom:1, borderColor:'grey.300', height:'auto'}} open={props.open} position="fixed"
+        <CustAppBar home={props.home} elevation={0} sx={{borderBottom:1, borderColor:'grey.300', height:'auto'}} open={props.open} position="fixed"
           >
           <Toolbar sx={{justifyContent:'center' }}>
               <Box className='topbox' sx={{justifyContent:"center",display:'flex',alignItems:"center"}}>
