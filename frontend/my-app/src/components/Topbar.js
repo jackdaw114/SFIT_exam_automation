@@ -52,7 +52,7 @@ export default function Topbar(props){
               <img src={img} alt="sfit" style={{height:'60px'}}></img>
             </Box>
             <Box sx={{ flexGrow: 1,fontSize:'60px',paddingBottom:0.5 }}>
-              Home
+              {props.heading}
             </Box>
             </Box>
           </Toolbar>
@@ -62,4 +62,10 @@ export default function Topbar(props){
         <br />
       </Box>
     )
+}
+
+Topbar.defaultProps ={
+  home:false,
+  heading:'not defined',
+  open: false,
 }
