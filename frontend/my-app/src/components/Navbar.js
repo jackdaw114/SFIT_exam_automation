@@ -107,7 +107,7 @@ export default function Navbar(props){
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
                   }}
-                >
+                  >
                  <CircleOutlinedIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
