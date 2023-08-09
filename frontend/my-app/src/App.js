@@ -1,24 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/Navbar';
+import { Box, ThemeProvider } from '@mui/material';
+import Home from './components/Home';
+import VerifyEligibility from './components/VerifyEligibility';
+import {BrowserRouter, Route, Router, Routes} from 'react-router-dom'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box >
+
+      <BrowserRouter>
+      <Routes>
+      <Route path='/verifyeligibility' element={<><Navbar heading="Verify Eligibility"/><VerifyEligibility /></>}></Route>
+          <Route path='/' element={<><Home /></>}></Route>
+      </Routes>
+      </BrowserRouter>
+      </Box>
   );
 }
 
