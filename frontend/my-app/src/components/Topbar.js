@@ -19,9 +19,9 @@ const openedMixin = (theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
   
-    width: `calc(100% -${loc=== '/' ? 0 : theme.spacing(7)})`,
+    width: `calc(100% -${theme.spacing(7)})`,
     [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${loc === '/' ? 0 : theme.spacing(8)} + 1px)`,
+      width: `calc(100% - ${theme.spacing(8)} + 1px)`,
     },
 })
 
