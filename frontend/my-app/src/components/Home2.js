@@ -1,7 +1,7 @@
 import { AppBar, Box, Grid, Hidden, Icon, Paper, Toolbar, Typography } from "@mui/material";
 import React from "react";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-
+import './Home2.css'
 import { styled } from '@mui/material/styles';
 import Topbar from "./Topbar";
 import img from '../imgtest/favicon.ico'
@@ -76,7 +76,7 @@ function HomeGrid() {
             <IC_Grid>
                 <I_Grid xs={6} md={4}>
 
-                    <Item sx={{ backgroundColor: '#f9fff5' }} elevation={0}>
+                    <Item className='paper' sx={{ backgroundColor: '#f9fff5' }} elevation={0}>
                         <Toolbar sx={{ justifyContent: 'center', backgroundColor: '#e2fbe4', }}  >
 
                             <Typography sx={{ paddingTop: 0.5, paddingLeft: 1, color: 'black' }} variant="h5">Student Details</Typography>
