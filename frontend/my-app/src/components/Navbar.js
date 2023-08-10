@@ -66,7 +66,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   );
 
 export default function Navbar(props){
-    // const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = React.useState(false)
     const handleDrawerOpen = () => {
         props.func(true);
       };
@@ -78,6 +78,7 @@ export default function Navbar(props){
   console.log(props.func);
     return (
         <Box>
+<Topbar open={open} home={false} heading={props.heading}/>
 
             <ClickAwayListener onClickAway={handleDrawerClose} >
         <CustDrawer PaperProps={{sx:{backgroundColor:' #e9e9e9 '}}} variant="permanent"open={props.open} >
@@ -109,7 +110,7 @@ export default function Navbar(props){
                     mr: props.open ? 3 : 'auto',
                     justifyContent: 'center',
                   }}
-                >
+                  >
                  <CircleOutlinedIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: props.open ? 1 : 0 }} />
@@ -122,4 +123,10 @@ export default function Navbar(props){
       </Box>
     )
     
+}
+
+Navbar.defaultProps={
+  heading: 'not defined',
+  home: false,
+  
 }

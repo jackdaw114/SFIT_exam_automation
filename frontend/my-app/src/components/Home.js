@@ -5,10 +5,7 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';    
 //import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import { useNavigate } from "react-router";
-import Navbar from './Navbar';
-import Topbar from './Topbar';
-import React from 'react';
+import Topbar from "./Topbar";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -44,6 +41,7 @@ export default function Home() {
   return (
     <>
         <Box sx={{paddingTop:2}} >
+          <Topbar home={true} heading='Home'/>
           <Grid container sx={{padding:"10px 200px" }}  columnSpacing={5} rowSpacing={5}>
             {buttons.map((text,index)=>(
               

@@ -1,29 +1,11 @@
 // import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/Navbar';
-import { Box } from '@mui/material';
-import Home from './components/Home';
-import React, { useEffect } from "react";
-import VerifyEligiblity from './components/VerifyEligiblity';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
-import Topbar from './components/Topbar';
+import { Box, ThemeProvider } from '@mui/material';
+import Home from './components/Home2';
+import VerifyEligibility from './components/VerifyEligibility';
+import {BrowserRouter, Route, Router, Routes} from 'react-router-dom'
 
-function WithoutNav() {
-  return (
-    <>
-      <Home/>
-    </>
-  )
-}
-
-function WithNav() {
-  return (
-    <>
-      <Navbar/>
-      
-    </>
-  )
-}
 function App() {
   const [open, setOpen] = React.useState(false);
   const [loc,setLoc] = React.useState(window.location.pathname);
@@ -34,17 +16,9 @@ function App() {
   },[])
   return (
     <Box >
-      <Topbar open={open} />
-      <BrowserRouter>
-
-        <Routes>
-
-          <Route path='/verifyeligibility' element={<><Navbar func={ setOpen } open = {open} /><VerifyEligiblity /></>}></Route>
-          <Route path='/' element={<><Home /></>}></Route>
-        </Routes>
-
-      </BrowserRouter>
-    </Box>
+        <Navbar />
+        <Home />
+      </Box>
   );
 }
 
