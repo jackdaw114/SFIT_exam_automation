@@ -1,0 +1,10 @@
+.paper {
+    filter: grayscale(100%);
+    transition: 0.3s;
+}
+
+.paper:hover {
+    filter: grayscale(0%);
+
+    transition: 0.5s;
+}
