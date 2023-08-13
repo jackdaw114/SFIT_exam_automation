@@ -95,7 +95,7 @@ MotionDiv.defaultProps = {
 function HomeGrid() {
 
     return (
-        <Grid container spacing={5} sx={{ paddingLeft: 20, paddingTop: 2, paddingRight: 20, paddingBottom: 3 }}>
+        <Grid container spacing={5} sx={{ paddingLeft: 20, paddingTop: 5, paddingRight: 20, paddingBottom: 3 }}>
 
             <IC_Grid>
                 <I_Grid xs={6} md={4}>
@@ -105,7 +105,7 @@ function HomeGrid() {
 
                         <span style={{ filter: 'drop-shadow(2px 0px 2px rgba(50,50,50,0.7   ))' }}>
                             <Toolbar className="clippath" sx={{ backgroundColor: '#C3EDC0', height: 100, }} >
-                                <Typography sx={{ fontFamily: 'ubuntu ', textDecoration: 'underline', margin: 0, paddingLeft: 1, paddingRight: 3, color: 'black', alignSelf: 'normal', paddingTop: '3%' }} variant="h5">ANALYSIS</Typography>
+                                <Typography sx={{ fontFamily: 'anton', margin: 0, paddingLeft: 0, paddingRight: 3, color: '#555555', alignSelf: 'normal', paddingTop: 2 }} variant="h5">ANALYSIS</Typography>
 
                             </Toolbar>
                         </span>
@@ -123,7 +123,7 @@ function HomeGrid() {
 
                         <span>
                             <Toolbar sx={{ justifyContent: 'center', backgroundColor: '#C3EDC0', height: 100, boxShadow: '2px 0px 4px rgba(50,50,50,0.7   )' }}  >
-                                <Typography sx={{ fontFamily: 'ubuntu ', textDecoration: 'underline', paddingLeft: 1, float: 'bottom', paddingTop: '3%', color: 'black' }} variant="h5">INFORMATION ENTRY</Typography>
+                                <Typography sx={{ fontFamily: 'anton ', paddingLeft: 1, float: 'bottom', paddingTop: 2, color: '#555555' }} variant="h5">INFORMATION ENTRY</Typography>
 
                             </Toolbar>
                         </span>
@@ -143,7 +143,7 @@ function HomeGrid() {
 
                         <span style={{ filter: 'drop-shadow(2px 0px 2px rgba(50,50,50,0.7   ))' }}>
                             <Toolbar className='clippathr' sx={{ justifyContent: 'right', backgroundColor: '#C3EDC0', height: 100, boxShadow: '2px 0px 4px rgba(50,50,50,0.7   )' }}  >
-                                <Typography sx={{ fontFamily: 'ubuntu ', textDecoration: 'underline', margin: 0, paddingLeft: 1, paddingRight: 3, color: 'black', alignSelf: 'normal', paddingTop: '3%' }} variant="h5">ANALYSIS</Typography>
+                                <Typography sx={{ fontFamily: 'anton', margin: 0, paddingLeft: 1, paddingRight: 3, color: '#555555', alignSelf: 'normal', paddingTop: 2 }} variant="h5">ANALYSIS</Typography>
 
                             </Toolbar>
 
@@ -170,12 +170,15 @@ export default function Home() {
     return (
         <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh' }}>
 
-            <Toolbar >
-                <AppBar sx={{ backgroundColor: 'white' }} elevation={3}>
-                    <Box sx={{ display: 'flex', padding: 1 }} >
-                        <img src={img} alt="sfit" style={{ height: '100px' }}></img>
-                    </Box>
-
+            <Toolbar  >
+                <AppBar sx={{ backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }} elevation={3}>
+                    <Typography sx={{
+                        fontSize: 75,
+                        textShadow: '1px 1px 2px rgba(255,255,255,0.2)', color: 'transparent', backgroundClip: 'text',
+                        backgroundColor: '#000000', fontFamily: 'Anton'
+                    }}>
+                        ?
+                    </Typography>
                 </AppBar>
             </Toolbar>
             <Toolbar />
