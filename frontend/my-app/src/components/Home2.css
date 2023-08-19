@@ -1,8 +1,4 @@
 .clippath {
-
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 60%);
-
-    background-image: url(../imgtest/Stat.ico);
     background-position: 105% 20px;
     background-size: 150px;
     background-repeat: no-repeat;
@@ -18,6 +14,5 @@
 }
 
 .h_background {
-    background-image: url(../imgtest/Bac.png);
     background-size: 50%;
 }
