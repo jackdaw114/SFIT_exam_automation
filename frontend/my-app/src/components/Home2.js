@@ -14,6 +14,7 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import WcIcon from '@mui/icons-material/Wc';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ChecklistIcon from '@mui/icons-material/Checklist';
+import Header from './Header';
 
 const boxMinHeight = 200;
 const boxMaxHeight = 400;
@@ -175,20 +176,7 @@ function HomeGrid() {
 export default function Home() {
     return (
         <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh' }}>
-
-
-            <AppBar sx={{ position: 'relative', backgroundColor: '#292F36', justifyContent: 'center', alignItems: 'center', borderBottom: '20px solid #136F63' }} elevation={0}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2 }}>
-                    <img src={img} style={{ height: 100 }} />
-                    <Typography variant="h3" sx={{
-                        textShadow: '1px 1px 1px rgba(255,255,255,0.9)', color: 'transparent', backgroundClip: 'text',
-                        backgroundColor: '#333333', fontFamily: 'Anton', padding: 1
-                    }}>
-                        St. Francis Institute of Technology
-                    </Typography>
-                </Box>
-            </AppBar>
-
+            <Header/>
             <HomeGrid />
         </Box >
     )

@@ -12,7 +12,7 @@ function App() {
 
       <BrowserRouter>
       <Routes>
-      <Route path='/verifyeligibility' element={<><Navbar heading="Verify Eligibility"/><VerifyEligibility /></>}></Route>
+      <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
           <Route path='/' element={<><Home /></>}></Route>
       </Routes>
       </BrowserRouter>

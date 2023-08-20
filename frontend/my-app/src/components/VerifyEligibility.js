@@ -1,12 +1,13 @@
 
-import { Typography } from '@mui/material';
+import { Typography,Box } from '@mui/material';
+import Header from './Header';
 
 export default function VerifyEligibility() {
     return (
         <>
-            <Typography>
-                Hello World
-        </Typography>
+            <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh' }}>
+                <Header/>
+            </Box>
         </>
     )
 }
