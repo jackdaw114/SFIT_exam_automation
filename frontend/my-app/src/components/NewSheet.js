@@ -9,7 +9,7 @@ export default function NewSheet(props) {
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
+      backgroundColor: "#292F36",
       color: theme.palette.common.white,
     },
   }));
@@ -18,8 +18,9 @@ export default function NewSheet(props) {
   let column = Object.keys(props.table[0])
   
   let HeadingData = () => {
-    return column.map((data) => {
-      return <StyledTableCell align="center">{data}</StyledTableCell>
+      return column.map((data) => {
+          const caps_data = data.charAt(0).toUpperCase() + data.slice(1);
+      return <StyledTableCell align="center">{caps_data}</StyledTableCell>
     })
   }
 
