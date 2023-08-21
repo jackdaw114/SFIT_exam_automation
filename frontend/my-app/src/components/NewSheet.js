@@ -17,7 +17,10 @@ const postFunc = (inputs) => {
   })
 }
 
+
 export default function NewSheet(props) {
+
+  const [data, setData] = useState([])
 
 
   const [tableData, setTableData] = useState([...props.table]);
@@ -32,9 +35,14 @@ export default function NewSheet(props) {
   };
 
   useEffect(() => {
-    let count = new Set(updatedRows)
-    console.log(count)
-  }, [tableData])
+    axios.get('/teacher/getmarks').then((res) => {
+      console.log(res)
+
+      setTableData(res.data)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }, []);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
