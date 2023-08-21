@@ -5,10 +5,10 @@ import NewSheet from './NewSheet';
 
 export default function VerifyEligibility() {
     const DummyData = [
-        { id: 1, name: 'Jason', age: 21, class: 'TEACMPN' ,hobby: 'coding' },
-        { id: 2, name: 'Aslin', age: 17, class: 'TEACMPN' ,hobby: 'basketball' },
-        { id: 3, name: 'Nigel', age: 20, class: 'TEACMPN' ,hobby: 'valorant' },
-        { id: 4, name: 'Callahan', age: 20, class: 'TEACMPN' ,hobby: 'Women' },
+        { id: 1, name: 'Jason', age: 21, class: 'TEACMPN' ,hobby: 'coding', pid: 212011  },
+        { id: 2, name: 'Aslin', age: 17, class: 'TEACMPN' ,hobby: 'basketball', pid: 212012 },
+        { id: 3, name: 'Nigel', age: 20, class: 'TEACMPN' ,hobby: 'valorant', pid: 212013 },
+        { id: 4, name: 'Callahan', age: 20, class: 'TEACMPN' ,hobby: 'football', pid: 212014 },
       ]
     return (
         <>
