@@ -1,14 +1,16 @@
 
-import { Paper, Table, TableCell, TableHead, TableRow, TableBody, TableContainer, tableCellClasses, Input, Button } from "@mui/material"
+import { Paper, Table, TableCell, TableHead, TableRow, TableBody, TableContainer, tableCellClasses, Input, Button, Box } from "@mui/material"
 import { styled } from '@mui/material/styles';
 import './NewSheet.css';
 import { useEffect, useRef, useState } from "react";
 import axios from 'axios';
+import CancelIcon from '@mui/icons-material/Cancel';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const postFunc = (inputs) => {
 
-  axios.post('/teacher/test', inputs, {
+  axios.post('/teacher/updatemarks', inputs, {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -20,12 +22,13 @@ const postFunc = (inputs) => {
 
 
 export default function NewSheet(props) {
-
+  const [isEdit, setIsEdit] = useState(true)
   const [updatedRows, setUpdatedRows] = useState([])
   const handleCellEdit = (rowIndex, columnIndex, newValue) => {
     // Update the table data when a cell is edited
+    console.log(newValue)
     const updatedTableData = [...props.tableData];
-    updatedTableData[rowIndex][columnIndex] = newValue;
+    updatedTableData[rowIndex][columnIndex] = !isNaN(parseInt(newValue)) ? parseInt(newValue) : '';
     setUpdatedRows(updatedRows => [...updatedRows, rowIndex])
     props.func(updatedTableData);
   };
@@ -56,11 +59,14 @@ export default function NewSheet(props) {
 
             column.map((col, colIndex) => {
               return <TableCell key={colIndex} align="center">
-                <Input value={row[col]}
+
+                {isEdit ? <Box><Input value={row[col]}
                   onChange={(e) =>
                     handleCellEdit(rowIndex, col, e.target.value)
                   }
-                /></TableCell>
+                /></Box> : <Box>{row[col]}</Box>
+                }
+              </TableCell>
             })
           }
         </TableRow>
@@ -79,6 +85,15 @@ export default function NewSheet(props) {
   return (
     <>
       <div className="container">
+        <Box>
+
+          <Button color="success" sx={{ margin: '30px 5px' }} variant="contained" onClick={() => handleSubmit()} >
+            Save changes
+          </Button>
+          <Button color="info" sx={{ margin: '30px 5px' }} variant="contained" endIcon={isEdit ? <CancelIcon /> : <EditIcon />} onClick={() => { setIsEdit(!isEdit) }}>
+            {isEdit ? "Cancel" : "Edit"}
+          </Button>
+        </Box>
         <TableContainer component={Paper}>
           <Table>
             <TableHead align="center">
@@ -91,9 +106,6 @@ export default function NewSheet(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <Button color="success" sx={{ margin: '30px 5px' }} variant="contained" onClick={() => handleSubmit()} >
-          Save changes
-        </Button>
       </div>
     </>
   )

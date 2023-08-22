@@ -9,10 +9,10 @@ const StudentIATSchema = require('./schemas/StudentIATSchema');
 router.post('/login', async (req, res) => {
     try {
         console.log(req.body)
-        let Teacher = await Teacher.findOne({ username: req.body.username });
-        console.log(Teacher);
-        if (Teacher) {
-            if (req.body.password === Teacher.password) {
+        let Teacher1 = await Teacher.findOne({ username: req.body.username });
+        console.log(req.body.password);
+        if (Teacher1) {
+            if (req.body.password === Teacher1.password) {
                 res.status(200).send("Login Successful!")
             }
             else {
@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
         }
     }
     catch (err) {
-        res.status(500).send("Error Occured!");
+        res.status(500).send(err);
         console.log("Error occured!");
     }
 })
@@ -62,10 +62,21 @@ router.get('/getmarks', async (req, res) => {
 })
 router.post('/updatemarks', async (req, res) => {
     try {
-        const Marks = await StudentIATSchema.find({ name: req.body.marks })
-        console.log(Marks)
 
-        res.send(Marks).status(200)
+
+        const { _id, ...filteredObject } = req.body;
+        console.log(filteredObject)
+        StudentIATSchema.findByIdAndUpdate(req.body._id, { ...filteredObject }, function (err, result) {
+
+            if (err) {
+                res.send(err)
+            }
+            else {
+                res.send(result)
+            }
+
+        })
+
 
     } catch (err) {
         res.status(500).send("internal server error")

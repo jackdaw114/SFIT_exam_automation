@@ -4,21 +4,24 @@ import Navbar from './components/Navbar';
 import { Box, ThemeProvider } from '@mui/material';
 import Home from './components/Home2';
 import VerifyEligibility from './components/VerifyEligibility';
-import {BrowserRouter, Route, Router, Routes} from 'react-router-dom'
+import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import EnterMarks from './components/EnterMarks';
+import Auth from './components/Auth';
 
 function App() {
   return (
     <Box >
 
       <BrowserRouter>
-      <Routes>
+        <Routes>
           <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
-          <Route path ='/entermarks' element={<><EnterMarks/></>}></Route>
+
+          <Route path='/login' element={<><Auth /></>}></Route>
+          <Route path='/entermarks' element={<><EnterMarks /></>}></Route>
           <Route path='/' element={<><Home /></>}></Route>
-      </Routes>
+        </Routes>
       </BrowserRouter>
-      </Box>
+    </Box>
   );
 }
 
