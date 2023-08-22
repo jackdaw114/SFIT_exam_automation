@@ -5,6 +5,7 @@ import { Box, ThemeProvider } from '@mui/material';
 import Home from './components/Home2';
 import VerifyEligibility from './components/VerifyEligibility';
 import {BrowserRouter, Route, Router, Routes} from 'react-router-dom'
+import EnterMarks from './components/EnterMarks';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
 
       <BrowserRouter>
       <Routes>
-      <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
+          <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
+          <Route path ='/entermarks' element={<><EnterMarks/></>}></Route>
           <Route path='/' element={<><Home /></>}></Route>
       </Routes>
       </BrowserRouter>

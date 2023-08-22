@@ -7,6 +7,7 @@ import axios from 'axios';
 
 
 const postFunc = (inputs) => {
+
   axios.post('/teacher/test', inputs, {
     headers: {
       "Content-Type": "application/json",
@@ -29,7 +30,6 @@ export default function NewSheet(props) {
     // Update the table data when a cell is edited
     const updatedTableData = [...tableData];
     updatedTableData[rowIndex][columnIndex] = newValue;
-
     setUpdatedRows(updatedRows => [...updatedRows, rowIndex])
     setTableData(updatedTableData);
   };
@@ -37,7 +37,6 @@ export default function NewSheet(props) {
   useEffect(() => {
     axios.get('/teacher/getmarks').then((res) => {
       console.log(res)
-
       setTableData(res.data)
     }).catch((err) => {
       console.log(err)
@@ -104,8 +103,8 @@ export default function NewSheet(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <Button color="success" sx={{ height: 100 }} variant="contained" onClick={() => handleSubmit()} >
-          BUTTON
+        <Button color="success" sx={{ margin: '30px 5px' }} variant="contained" onClick={() => handleSubmit()} >
+          Save changes
         </Button>
       </div>
     </>
