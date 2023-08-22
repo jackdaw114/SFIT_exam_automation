@@ -21,27 +21,15 @@ const postFunc = (inputs) => {
 
 export default function NewSheet(props) {
 
-  const [data, setData] = useState([])
-
-
-  const [tableData, setTableData] = useState([...props.table]);
   const [updatedRows, setUpdatedRows] = useState([])
   const handleCellEdit = (rowIndex, columnIndex, newValue) => {
     // Update the table data when a cell is edited
-    const updatedTableData = [...tableData];
+    const updatedTableData = [...props.tableData];
     updatedTableData[rowIndex][columnIndex] = newValue;
     setUpdatedRows(updatedRows => [...updatedRows, rowIndex])
-    setTableData(updatedTableData);
+    props.func(updatedTableData);
   };
 
-  useEffect(() => {
-    axios.get('/teacher/getmarks').then((res) => {
-      console.log(res)
-      setTableData(res.data)
-    }).catch((err) => {
-      console.log(err)
-    })
-  }, []);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -51,7 +39,7 @@ export default function NewSheet(props) {
   }));
 
 
-  let column = Object.keys(tableData[0])
+  let column = Object.keys(props.tableData[0])
 
   let HeadingData = () => {
     return column.map((data) => {
@@ -61,7 +49,7 @@ export default function NewSheet(props) {
   }
 
   let BodyData = () => {
-    return tableData.map((row, rowIndex) => {
+    return props.tableData.map((row, rowIndex) => {
       return (
         <TableRow key={rowIndex} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
           {
@@ -84,7 +72,7 @@ export default function NewSheet(props) {
     console.log(rowSet)
     for (const key of rowSet) {
       console.log(key)
-      postFunc(tableData[key])
+      postFunc(props.tableData[key])
       setUpdatedRows([])
     }
   }
