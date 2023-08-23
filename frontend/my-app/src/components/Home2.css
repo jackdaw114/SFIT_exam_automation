@@ -1,10 +1,18 @@
-.paper {
-    filter: grayscale(100%);
-    transition: 0.3s;
+.clippath {
+    background-position: 105% 20px;
+    background-size: 150px;
+    background-repeat: no-repeat;
 }
 
-.paper:hover {
-    filter: grayscale(0%);
+.clippathr {
 
-    transition: 0.5s;
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 0 100%);
+
+    background-position: 1% 20px;
+    background-size: 150px;
+    background-repeat: no-repeat;
+}
+
+.h_background {
+    background-size: 50%;
 }

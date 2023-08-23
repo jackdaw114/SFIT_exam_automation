@@ -6,10 +6,16 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 
-export default function VerifyEligibility() {
+export default function EnterMarks() {
 
+    const DummyData = [
+        { id: 1, name: 'Jason', age: 21, class: 'TEACMPN', hobby: 'coding', pid: 212011 },
+        { id: 2, name: 'Aslin', age: 17, class: 'TEACMPN', hobby: 'basketball', pid: 212012 },
+        { id: 3, name: 'Nigel', age: 20, class: 'TEACMPN', hobby: 'valorant', pid: 212013 },
+        { id: 4, name: 'Callahan', age: 20, class: 'TEACMPN', hobby: 'football', pid: 212014 },
+    ]
 
-    const [tableData, setTableData] = useState([{}]);
+    const [tableData, setTableData] = useState(DummyData);
     useEffect(() => {
         axios.get('/teacher/getmarks').then((res) => {
             console.log(res)

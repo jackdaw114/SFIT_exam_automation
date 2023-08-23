@@ -9,14 +9,18 @@ ConnectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors())
-const StudentSchema = require("./schemas/StudentSchema")
-const AdminSchema = require('./schemas/AdminSchema')
-const student = mongoose.model('Student');
+const StudentSchema = require("./schemas/StudentIATSchema")
+const AdminSchema = require('./schemas/AdminSchema');
+const TeacherSchema = require('./schemas/TeacherSchema');
 const admin = mongoose.model('Admin');
-app.use('/',require('./login'))
+
+
+
+app.use('/teacher', require('./teacher.js'))
+
 // const post = async () => {
 //     try {
-        
+
 //         await admin.create({
 //             username: 'Richa',
 //             password: 'richa123',
@@ -29,6 +33,6 @@ app.use('/',require('./login'))
 
 //post();
 
-app.listen(8000,()=>{
+app.listen(8000, () => {
     console.log('server is running on port 8000');
 })
