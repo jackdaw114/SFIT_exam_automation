@@ -107,11 +107,10 @@ function HomeGrid() {
                     <MotionDiv >
 
                         <span style={{}}>
-                            <Toolbar className="clippath" sx={{ backgroundColor: '#f4ffe8', borderTop: '10px solid #C3EDC0', }} >
+                            <Toolbar className="clippath" sx={{ backgroundColor: '#798799', borderTop: '10px solid #525e6c', }} >
                                 <Typography sx={{ fontFamily: 'anton', margin: 0, paddingLeft: 0, paddingRight: 3, color: '#555555', alignSelf: 'normal', paddingTop: 2 }} variant="h5">ANALYSIS</Typography>
 
                             </Toolbar>
-                            <Divider sx={{ borderBottomWidth: 3 }} color='#C3EDC0' />
                         </span>
                         <Grid container spacing={5} sx={{ padding: 3, overflow: 'scroll', backgroundColor: 'transparent', maxHeight: boxMaxHeight }}>
 
@@ -126,12 +125,11 @@ function HomeGrid() {
                     <MotionDiv hue={120} >
 
                         <span>
-                            <Toolbar className="clippath" sx={{ backgroundColor: '#f4ffe8', borderTop: '10px solid #C3EDC0', justifyContent: 'right' }} >
+                            <Toolbar className="clippath" sx={{ backgroundColor: '#798799', borderTop: '10px solid #525e6c', justifyContent: 'right' }} >
                                 <Typography sx={{ fontFamily: 'anton ', justifySelf: 'center', alignSelf: 'center', color: '#555555' }} variant="h5">INFORMATION ENTRY</Typography>
 
                             </Toolbar>
 
-                            <Divider sx={{ borderBottomWidth: 3 }} color='#C3EDC0' />
                         </span>
                         <Grid container spacing={5} sx={{ padding: 3, overflow: 'scroll', backgroundColor: 'transparent', maxHeight: boxMaxHeight }}>
 
@@ -148,12 +146,11 @@ function HomeGrid() {
 
 
                         <span style={{}}>
-                            <Toolbar className="clippath" sx={{ backgroundColor: '#f4ffe8', borderTop: '10px solid #C3EDC0' }} >
+                            <Toolbar className="clippath" sx={{ backgroundColor: '#798799', borderTop: '10px solid #525e6c', }} >
                                 <Typography sx={{ fontFamily: 'anton', margin: 0, paddingLeft: 1, paddingRight: 3, color: '#555555', alignSelf: 'normal', paddingTop: 2 }} variant="h5">ANALYSIS</Typography>
 
                             </Toolbar>
 
-                            <Divider sx={{ borderBottomWidth: 3 }} color='#C3EDC0' />
                         </span >
                         <Grid container spacing={5} sx={{ padding: 3, overflow: 'scroll', backgroundColor: 'transparent', maxHeight: boxMaxHeight }}>
 
@@ -176,7 +173,7 @@ function HomeGrid() {
 export default function Home() {
     return (
         <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh' }}>
-            <Header/>
+            <Header />
             <HomeGrid />
         </Box >
     )
