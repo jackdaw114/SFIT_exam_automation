@@ -1,5 +1,5 @@
 
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Button } from '@mui/material';
 import Header from './Header';
 import NewSheet from './NewSheet';
 import { useEffect, useState } from 'react';
@@ -32,6 +32,7 @@ export default function EnterMarks() {
         <>
             <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh' }}>
                 <Header />
+                <Button sx={{ margin: '15px 15px' }} variant="contained">Create Exam</Button>
                 <NewSheet tableData={tableData} func={childToParent} />
             </Box>
         </>
