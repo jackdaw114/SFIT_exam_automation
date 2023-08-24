@@ -7,6 +7,7 @@ import VerifyEligibility from './components/VerifyEligibility';
 import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import EnterMarks from './components/EnterMarks';
 import Auth from './components/Auth';
+import Test from './components/Excel'
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
 
           <Route path='/login' element={<><Auth /></>}></Route>
           <Route path='/entermarks' element={<><EnterMarks /></>}></Route>
+
+          <Route path='/test' element={<><Test /></>}></Route>
           <Route path='/' element={<><Home /></>}></Route>
         </Routes>
       </BrowserRouter>

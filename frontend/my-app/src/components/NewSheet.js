@@ -45,6 +45,7 @@ export default function NewSheet(props) {
   let column = Object.keys(props.tableData[0])
 
   let HeadingData = () => {
+
     return column.map((data) => {
       const caps_data = data.charAt(0).toUpperCase() + data.slice(1);
       return <StyledTableCell align="center">{caps_data}</StyledTableCell>
