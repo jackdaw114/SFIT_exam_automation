@@ -1,10 +1,9 @@
-
 import { Typography, Box, Button } from '@mui/material';
 import Header from './Header';
 import NewSheet from './NewSheet';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from "react-router";
 
 export default function EnterMarks() {
 
@@ -28,11 +27,16 @@ export default function EnterMarks() {
         setTableData(info)
     }
 
+    const navigate = useNavigate();
+    const create = () =>{
+        navigate('/createexam');
+    }
+
     return (
         <>
             <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh' }}>
                 <Header />
-                <Button sx={{ margin: '15px 15px' }} variant="contained">Create Exam</Button>
+                <Button sx={{ margin: '15px 15px' }} variant="contained" onClick={create}>Create Exam</Button>
                 <NewSheet tableData={tableData} func={childToParent} />
             </Box>
         </>
