@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const StudentIATSchema = require('./schemas/StudentIATSchema');
 const MarksSchema = require('./schemas/MarksSchema');
 const StudentsSchema = require('./schemas/StudentsSchema');
+const { Db } = require('mongodb');
 
 
 
@@ -37,7 +38,10 @@ router.post('/entermarks', async (req, res) => {
         const newMarks = new MarksSchema({
             marks_type: req.body.marks_type,
             sheet: req.body.sheet,
-            teacher_name: req.body.teacher_name
+            teacher_name: req.body.teacher_name,
+            subject: req.body.subject,
+            semester: req.body.semester,
+            department: req.body.department,
         })
         try {
             const saved = await newMarks.save()
@@ -101,6 +105,53 @@ router.post('/test', async (req, res) => {
 
     } catch (err) {
         res.status(500).send("internal server error")
+    }
+})
+
+router.post('/uploadexcel', async (req, res) => {
+    try {
+        console.log(req.body)
+        const newMarks = new MarksSchema({
+            marks_type: req.body.marks_type,
+            sheet: req.body.sheet,
+            teacher_name: req.body.teacher_name,
+            subject: req.body.subject,
+            semester: req.body.semester,
+            department: req.body.department,
+        })
+        try {
+            let doc = await newMarks.findOne({
+                marks_type: marks_type,
+                sheet: sheet,
+                teacher_name: teacher_name,
+                subject: subject,
+                semester: semester,
+                department: department
+            })
+            if (doc) {
+                res.status(400).send("Duplicate Record Found")
+            }
+            else {
+                const saved = await newMarks.save()
+                res.send(saved).status(200)     
+            }
+        } catch (error) {
+            res.status(400).send(error.keyValue)
+        }
+        
+    } catch (err) {
+        res.status(500).send("internal server error")
+    }
+})
+
+router.post('/fetchexcel', async(req, res) =>{
+    try {
+        let teacher = req.body.teacher_name
+        let data = MarksSchema.find({ teacher_name: teacher }, { sheet: 0 }) 
+
+        res.status(200).send(data)
+    } catch (err) {
+        res.status(400).send(err.keyValue)
     }
 })
 
