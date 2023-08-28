@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { read, utils, writeFile } from 'xlsx';
+import { read, utils, write, writeFile } from 'xlsx';
 import { saveAs } from 'file-saver'
 
 
@@ -34,7 +34,13 @@ export default function Excel() {
         let wb = utils.book_new()
 
         utils.book_append_sheet(wb, sheetcon, 'Sheet1');
-
+        const ab = write(wb, {
+            bookType: 'xlsx',
+            bookSST: false,
+            type: 'binary',
+        });
+        let wb2 = read(ab)
+        console.log(ab)
         //writeFile(wb, 'test.xlsx')
     }
 

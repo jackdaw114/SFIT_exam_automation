@@ -8,6 +8,9 @@ import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import EnterMarks from './components/EnterMarks';
 import Auth from './components/Auth';
 import Test from './components/Excel'
+import TeacherNav from './components/TeacherNav';
+
+const teacher = '/teacher'
 
 function App() {
   return (
@@ -18,10 +21,11 @@ function App() {
           <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
 
           <Route path='/login' element={<><Auth /></>}></Route>
-          <Route path='/entermarks' element={<><EnterMarks /></>}></Route>
+          <Route path='/exam/entermarks' element={<><EnterMarks /></>}></Route>
 
           <Route path='/test' element={<><Test /></>}></Route>
           <Route path='/' element={<><Home /></>}></Route>
+          <Route path='/exam' element={<><TeacherNav /></>} />
         </Routes>
       </BrowserRouter>
     </Box>
