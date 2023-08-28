@@ -86,3 +86,21 @@ export default function Excel() {
     </div>
     )
 }
+
+
+
+export function toExcel(jsonData) {
+    const sheet = utils.json_to_sheet(jsonData, { header: Object.keys(jsonData[0]) })
+    console.log(sheet)
+    const wb = utils.book_new()
+    utils.book_append_sheet(wb, sheet, 'sheet1')
+   // writeFile(wb,'test.xlsx')
+    const binaryString = write(wb, {
+        bookType: 'xlsx',
+        bookSST: false,
+        type: 'binary',
+    });
+    const test = read(binaryString)
+    console.log(test)
+    return binaryString
+}
