@@ -5,9 +5,10 @@ const MarksSchema = mongoose.Schema(
         marks_type: String,
         teacher_name: String,
         subject: String,
-        semester: String,
+        semester: Number,
         department: String,
-        sheet: String
+        sheet: String,
+        year: String
     }
 )
 
