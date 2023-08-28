@@ -4,6 +4,7 @@ const Teacher = require('../backend/schemas/TeacherSchema');
 const bcrypt = require('bcryptjs');
 const StudentIATSchema = require('./schemas/StudentIATSchema');
 const MarksSchema = require('./schemas/MarksSchema');
+const StudentsSchema = require('./schemas/StudentsSchema');
 
 
 
@@ -58,6 +59,15 @@ router.get('/getmarks', async (req, res) => {
 
     } catch (err) {
         res.status(500).send("internal server error")
+    }
+})
+router.get('/getstudents', async (req, res) => {
+    try {
+        const Students = await StudentsSchema.find({})
+
+        res.status(200).send(Students)
+    } catch (err) {
+        res.status(500).send(err)
     }
 })
 
