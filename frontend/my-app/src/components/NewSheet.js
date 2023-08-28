@@ -22,7 +22,7 @@ const postFunc = (inputs) => {
 
 
 export default function NewSheet(props) {
-  const [isEdit, setIsEdit] = useState(true)
+  const [isEdit, setIsEdit] = useState(false)
   const [updatedRows, setUpdatedRows] = useState([])
   const handleCellEdit = (rowIndex, columnIndex, newValue) => {
     // Update the table data when a cell is edited
