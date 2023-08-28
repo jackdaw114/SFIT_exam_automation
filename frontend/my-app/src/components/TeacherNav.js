@@ -8,6 +8,9 @@ import { saveAs } from "file-saver";
 import ExcelCard from "./ExcelCard";
 
 
+
+
+
 export default function TeacherNav() {
 
     const [type, setType] = useState('')
@@ -15,6 +18,7 @@ export default function TeacherNav() {
     const [semester, setSemester] = useState('')
     const [department, setDepartment] = useState('')
     const [studentDetails, setStudentDetails] = useState([])
+    const [year, setYear] = useState(0)
     const [cardData, setCardData] = useState([])
     const handleChangeType = (e) => {
         setType(e.target.value)
@@ -30,6 +34,10 @@ export default function TeacherNav() {
     }
     const handleChangeDepartment = (e) => {
         setDepartment(e.target.value)
+        // console.log(e.target.value)
+    }
+    const handleChangeYear = (e) => {
+        setYear(e.target.value)
         // console.log(e.target.value)
     }
 
@@ -78,7 +86,8 @@ export default function TeacherNav() {
             sheet: binaryData,
             subject: subject,
             semester: semester,
-            department: department
+            department: department,
+            year:year,
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -100,7 +109,7 @@ export default function TeacherNav() {
             <Header />
             <Box sx={{ padding: 2, }}>
                 <Box sx={{ borderRadius: 3, backgroundColor: "white", border: 0.75, display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-around', minWidth: '50vw' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-around', minWidth: '70%' }}>
                         <FormControl sx={{ minWidth: 200 }}>
                             <InputLabel>Select Examination</InputLabel>
                             <Select onChange={handleChangeType} value={type} label="Select Examination" autoWidth>
@@ -109,6 +118,17 @@ export default function TeacherNav() {
                                 <MenuItem value="theory">Theory</MenuItem>
                                 <MenuItem value="term-work">Term Work</MenuItem>
                                 <MenuItem value="iat">IAT</MenuItem>
+                            </Select>
+                        </FormControl>
+                        
+
+                        <FormControl sx={{ minWidth: 200 }}>
+                            <InputLabel>Year</InputLabel>
+                            <Select onChange={handleChangeYear} value={year} label="Year" autoWidth>
+                                <MenuItem value="2022">2022</MenuItem>
+                                <MenuItem value="2023">2023</MenuItem>
+                                <MenuItem value="2024">2024</MenuItem>
+                                
                             </Select>
                         </FormControl>
 
@@ -122,18 +142,18 @@ export default function TeacherNav() {
 
                             </Select>
                         </FormControl>
-
+                        
                         <FormControl sx={{ minWidth: 200 }}>
                             <InputLabel>Semester</InputLabel>
                             <Select onChange={handleChangeSemester} value={semester} label="Semester" autoWidth>
-                                <MenuItem value="sem1">Sem 1</MenuItem>
-                                <MenuItem value="sem2">Sem 2</MenuItem>
-                                <MenuItem value="sem3">Sem 3</MenuItem>
-                                <MenuItem value="sem4">Sem 4</MenuItem>
-                                <MenuItem value="sem5">Sem 5</MenuItem>
-                                <MenuItem value="sem6">Sem 6</MenuItem>
-                                <MenuItem value="sem7">Sem 7</MenuItem>
-                                <MenuItem value="sem8">Sem 8</MenuItem>
+                                <MenuItem value={1}>Sem 1</MenuItem>
+                                <MenuItem value={2}>Sem 2</MenuItem>
+                                <MenuItem value={3}>Sem 3</MenuItem>
+                                <MenuItem value={4}>Sem 4</MenuItem>
+                                <MenuItem value={5}>Sem 5</MenuItem>
+                                <MenuItem value={6}>Sem 6</MenuItem>
+                                <MenuItem value={7}>Sem 7</MenuItem>
+                                <MenuItem value={8}>Sem 8</MenuItem>
 
                             </Select>
                         </FormControl>

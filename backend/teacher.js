@@ -118,6 +118,7 @@ router.post('/uploadexcel', async (req, res) => {
             subject: req.body.subject,
             semester: req.body.semester,
             department: req.body.department,
+            year:req.body.year,
         })
         try {
             let doc = await MarksSchema.findOne({
@@ -126,7 +127,8 @@ router.post('/uploadexcel', async (req, res) => {
                 teacher_name: req.body.teacher_name,
                 subject: req.body.subject,
                 semester: req.body.semester,
-                department: req.body.department
+                department: req.body.department,
+                year:req.body.year
             })
             if (doc) {
                 res.status(400).send("Duplicate Record Found")
