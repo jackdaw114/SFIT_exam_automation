@@ -4,7 +4,34 @@ import { saveAs } from 'file-saver'
 
 
 import { useCallback } from 'react';
+import axios from "axios";
 /* get state data and export to XLSX */
+
+
+export function ExcelSend(jsonData, teacher_name, marks_type, url) {
+    const sheet = utils.json_to_sheet(jsonData, { header: Object.keys(jsonData[0]) }).slice(1)
+    console.log(sheet)
+    const wb = utils.book_new()
+    utils.book_append_sheet(wb, sheet, 'sheet1')
+    const binaryString = write(wb, {
+        bookType: 'xlsx',
+        bookSST: false,
+        type: 'binary',
+    });
+    axios.post(url, {
+        sheet: binaryString,
+        marks_type: marks_type,
+        teacher_name: teacher_name,
+    }, {
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        }
+    })
+}
+
+
+
 export default function Excel() {
 
 
