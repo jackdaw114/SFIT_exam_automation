@@ -3,6 +3,7 @@ const router = express.Router();
 const Teacher = require('../backend/schemas/TeacherSchema');
 const bcrypt = require('bcryptjs');
 const StudentIATSchema = require('./schemas/StudentIATSchema');
+const MarksSchema = require('./schemas/MarksSchema');
 
 
 
@@ -32,12 +33,10 @@ router.post('/login', async (req, res) => {
 router.post('/entermarks', async (req, res) => {
     try {
         console.log(req.body)
-        const newMarks = new StudentIATSchema({
-            Name: req.body.name,
-            Q1: req.body.q1,
-            Q2: req.body.q2,
-            Q3: req.body.q3,
-            Total: req.body.total,
+        const newMarks = new MarksSchema({
+            marks_type: req.body.marks_type,
+            sheet: req.body.sheet,
+            teacher_name: req.body.teacher_name
         })
         try {
             const saved = await newMarks.save()
@@ -50,6 +49,7 @@ router.post('/entermarks', async (req, res) => {
         res.status(500).send("internal server error")
     }
 })
+
 router.get('/getmarks', async (req, res) => {
     try {
         const Marks = await StudentIATSchema.find({})
@@ -60,6 +60,7 @@ router.get('/getmarks', async (req, res) => {
         res.status(500).send("internal server error")
     }
 })
+
 router.post('/updatemarks', async (req, res) => {
     try {
 

@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 
 const MarksSchema = mongoose.Schema(
     {
-        marks_type,
-        teacher_name,
-        sheet_name,
-        sheet
+        marks_type: String,
+        teacher_name: String,
+        sheet: String
     }
 )
 
