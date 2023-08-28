@@ -161,4 +161,16 @@ router.post('/fetchexcel', async (req, res) => {
     }
 })
 
+router.post('/excelbyid', async (req, res) => {
+    try {
+        console.log(req.body._id)
+        const sheet = await MarksSchema.findOne({ _id: Object(req.body._id) })
+        console.log(sheet)
+        res.status(200).send(sheet)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send(error.keyValue)
+    }
+})
+
 module.exports = router;    

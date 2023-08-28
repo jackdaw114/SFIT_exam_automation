@@ -23,10 +23,11 @@ function App() {
 
           <Route path='/login' element={<><Auth /></>}></Route>
           <Route path='/exam/entermarks' element={<><EnterMarks /></>}></Route>
-          <Route path='/viewexam' element={<><ViewExam/></>}></Route>
+          <Route path='/viewexam' element={<><ViewExam /></>}></Route>
           <Route path='/test' element={<><Test /></>}></Route>
           <Route path='/' element={<><Home /></>}></Route>
           <Route path='/exam' element={<><TeacherNav /></>} />
+          <Route path='/viewexam' element={<><ViewExam /></>} />
         </Routes>
       </BrowserRouter>
     </Box>
