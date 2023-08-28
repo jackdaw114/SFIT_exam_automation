@@ -19,6 +19,7 @@ export default function TeacherNav() {
     const [department, setDepartment] = useState('')
     const [studentDetails, setStudentDetails] = useState([])
     const [year, setYear] = useState(0)
+    const [jsonData, setJsonData] = useState([])
     const [cardData, setCardData] = useState([])
     const handleChangeType = (e) => {
         setType(e.target.value)
@@ -57,15 +58,23 @@ export default function TeacherNav() {
             setStudentDetails(res.data)
         })
 
-        const jsonData = []
+        // const jsonData = []
         let binaryData = ''
         await studentDetails.map((value, index) => {
-            jsonData.push({
-                pid: value.pid,
-                name: value.name,
-                // teacher_name: localStorage.getItem('username'),
-                marks: -8
-            })
+            // jsonData.push({
+            //     pid: value.pid,
+            //     name: value.name,
+            //     // teacher_name: localStorage.getItem('username'),
+            //     marks: -8
+            // })
+            setJsonData([
+                ...jsonData, {
+                    pid: value.pid,
+                    name: value.name,
+                    // teacher_name: localStorage.getItem('username'),
+                    marks: -8
+                }
+            ])
             //return({pid:value.pid,name:value.name,marks_type:type,teacher_name:localStorage.getItem('username')})
         })
 
@@ -87,7 +96,7 @@ export default function TeacherNav() {
             subject: subject,
             semester: semester,
             department: department,
-            year:year,
+            year: year,
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -120,7 +129,7 @@ export default function TeacherNav() {
                                 <MenuItem value="iat">IAT</MenuItem>
                             </Select>
                         </FormControl>
-                        
+
 
                         <FormControl sx={{ minWidth: 200 }}>
                             <InputLabel>Year</InputLabel>
@@ -128,7 +137,7 @@ export default function TeacherNav() {
                                 <MenuItem value="2022">2022</MenuItem>
                                 <MenuItem value="2023">2023</MenuItem>
                                 <MenuItem value="2024">2024</MenuItem>
-                                
+
                             </Select>
                         </FormControl>
 
@@ -142,7 +151,7 @@ export default function TeacherNav() {
 
                             </Select>
                         </FormControl>
-                        
+
                         <FormControl sx={{ minWidth: 200 }}>
                             <InputLabel>Semester</InputLabel>
                             <Select onChange={handleChangeSemester} value={semester} label="Semester" autoWidth>
