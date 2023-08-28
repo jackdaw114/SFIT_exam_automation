@@ -120,37 +120,40 @@ router.post('/uploadexcel', async (req, res) => {
             department: req.body.department,
         })
         try {
-            let doc = await newMarks.findOne({
-                marks_type: marks_type,
-                sheet: sheet,
-                teacher_name: teacher_name,
-                subject: subject,
-                semester: semester,
-                department: department
+            let doc = await MarksSchema.findOne({
+                marks_type: req.body.marks_type,
+                sheet: req.body.sheet,
+                teacher_name: req.body.teacher_name,
+                subject: req.body.subject,
+                semester: req.body.semester,
+                department: req.body.department
             })
             if (doc) {
                 res.status(400).send("Duplicate Record Found")
             }
             else {
                 const saved = await newMarks.save()
-                res.send(saved).status(200)     
+                res.send(saved).status(200)
             }
         } catch (error) {
+            console.log(error)
             res.status(400).send(error.keyValue)
         }
-        
+
     } catch (err) {
+        console.log(err)
         res.status(500).send("internal server error")
     }
 })
 
-router.post('/fetchexcel', async(req, res) =>{
+router.post('/fetchexcel', async (req, res) => {
     try {
         let teacher = req.body.teacher_name
-        let data = MarksSchema.find({ teacher_name: teacher }, { sheet: 0 }) 
-
+        let data = await MarksSchema.find({ teacher_name: teacher }, { sheet: 0 })
+        console.log(data)
         res.status(200).send(data)
     } catch (err) {
+        console.log(err)
         res.status(400).send(err.keyValue)
     }
 })

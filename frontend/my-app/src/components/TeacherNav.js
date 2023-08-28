@@ -1,10 +1,11 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import Header from "./Header";
 import { toExcel } from "./Excel";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { read, utils, write, writeFile } from "xlsx";
 import { saveAs } from "file-saver";
+import ExcelCard from "./ExcelCard";
 
 
 export default function TeacherNav() {
@@ -14,6 +15,7 @@ export default function TeacherNav() {
     const [semester, setSemester] = useState('')
     const [department, setDepartment] = useState('')
     const [studentDetails, setStudentDetails] = useState([])
+    const [cardData, setCardData] = useState([])
     const handleChangeType = (e) => {
         setType(e.target.value)
         // console.log(e.target.value)
@@ -31,12 +33,24 @@ export default function TeacherNav() {
         // console.log(e.target.value)
     }
 
+    useEffect(() => {
+        axios.post('/teacher/fetchexcel', { teacher_name: localStorage.getItem('username') }, {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            }
+        }).then((res) => {
+            setCardData(res.data)
+        })
+    }, [])
+
     const handleSubmit = async (e) => {
         await axios.get('/teacher/getstudents').then((res) => {
             setStudentDetails(res.data)
         })
 
         const jsonData = []
+        let binaryData = ''
         await studentDetails.map((value, index) => {
             jsonData.push({
                 pid: value.pid,
@@ -46,9 +60,33 @@ export default function TeacherNav() {
             })
             //return({pid:value.pid,name:value.name,marks_type:type,teacher_name:localStorage.getItem('username')})
         })
-        const binaryData = await toExcel(jsonData)
-        const reader = read(binaryData, { type: 'binary' })
-        writeFile(reader, 'text.xlsx')
+
+        binaryData = toExcel(jsonData)
+        console.log(binaryData)
+
+
+        //const reader = read(binaryData, { type: 'binary' })
+        //writeFile(reader, `${type}_${subject}_${semester}_${department}_${localStorage.getItem('username')}.xlsx`)
+
+
+
+
+
+        await axios.post('/teacher/uploadexcel', {
+            marks_type: type,
+            teacher_name: localStorage.getItem('username'),
+            sheet: binaryData,
+            subject: subject,
+            semester: semester,
+            department: department
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            }
+        }).then((res) => {
+            console.log(res)
+        })
         // var blob = new Blob(
         //     [binaryString],
         //     {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,"}
@@ -60,8 +98,8 @@ export default function TeacherNav() {
     return (
         <>
             <Header />
-            <Box sx={{ padding: 2, backgroundColor: '#78658C' }}>
-                <Box sx={{ borderRadius: 3, backgroundColor: "white", border: 0.75, display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5,alignItems:'center' }}>
+            <Box sx={{ padding: 2, }}>
+                <Box sx={{ borderRadius: 3, backgroundColor: "white", border: 0.75, display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-around', minWidth: '50vw' }}>
                         <FormControl sx={{ minWidth: 200 }}>
                             <InputLabel>Select Examination</InputLabel>
@@ -116,6 +154,14 @@ export default function TeacherNav() {
                     </div>
                 </Box>
             </Box>
+            <Grid container spacing={5} sx={{ padding: 2 }}>
+                {cardData.map((val, index) => (
+                    <Grid item xs={3}>
+                        <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject} semester={val.semester} department={val.department} teacher_name={val.teacher_name}  ></ExcelCard>
+                    </Grid>
+
+                ))}
+            </Grid>
         </>
     )
 }
