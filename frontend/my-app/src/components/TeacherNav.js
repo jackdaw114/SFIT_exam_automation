@@ -56,43 +56,20 @@ export default function TeacherNav() {
     const handleSubmit = async (e) => {
         await axios.get('/teacher/getstudents').then((res) => {
             setStudentDetails(res.data)
+            studentDetails.map((value, index) => {
+                setJsonData([
+                    ...jsonData, {
+                        pid: value.pid,
+                        name: value.name,
+                        marks: -8
+                    }
+                ])
+            })
         })
-
-        // const jsonData = []
-        let binaryData = ''
-        await studentDetails.map((value, index) => {
-            // jsonData.push({
-            //     pid: value.pid,
-            //     name: value.name,
-            //     // teacher_name: localStorage.getItem('username'),
-            //     marks: -8
-            // })
-            setJsonData([
-                ...jsonData, {
-                    pid: value.pid,
-                    name: value.name,
-                    // teacher_name: localStorage.getItem('username'),
-                    marks: -8
-                }
-            ])
-            //return({pid:value.pid,name:value.name,marks_type:type,teacher_name:localStorage.getItem('username')})
-        })
-
-        binaryData = toExcel(jsonData)
-        console.log(binaryData)
-
-
-        //const reader = read(binaryData, { type: 'binary' })
-        //writeFile(reader, `${type}_${subject}_${semester}_${department}_${localStorage.getItem('username')}.xlsx`)
-
-
-
-
-
         await axios.post('/teacher/uploadexcel', {
             marks_type: type,
             teacher_name: localStorage.getItem('username'),
-            sheet: binaryData,
+            sheet: toExcel([...jsonData]),
             subject: subject,
             semester: semester,
             department: department,
@@ -103,13 +80,10 @@ export default function TeacherNav() {
                 Accept: "application/json",
             }
         }).then((res) => {
-            console.log(res)
+            console.log(res.data)
+            const workbook = read(res.data, { type: 'binary' })
+            console.log(workbook)
         })
-        // var blob = new Blob(
-        //     [binaryString],
-        //     {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,"}
-        // );
-        //     saveAs()
     }
 
 
