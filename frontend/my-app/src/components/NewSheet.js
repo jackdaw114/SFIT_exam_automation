@@ -26,10 +26,11 @@ export default function NewSheet(props) {
   const [updatedRows, setUpdatedRows] = useState([])
   const handleCellEdit = (rowIndex, columnIndex, newValue) => {
     // Update the table data when a cell is edited
-    console.log(newValue)
+    console.log(typeof(parseInt(newValue)))
     const updatedTableData = [...props.tableData];
     updatedTableData[rowIndex][columnIndex] = !isNaN(parseInt(newValue)) ? parseInt(newValue) : '';
     setUpdatedRows(updatedRows => [...updatedRows, rowIndex])
+    console.log(updatedTableData)
     props.func(updatedTableData);
   };
 
@@ -86,15 +87,6 @@ export default function NewSheet(props) {
   return (
     <>
       <div className="container">
-        <Box>
-
-          <Button color="success" sx={{ margin: '30px 5px' }} variant="contained" onClick={() => handleSubmit()} >
-            Save changes
-          </Button>
-          <Button color="info" sx={{ margin: '30px 5px' }} variant="contained" endIcon={isEdit ? <CancelIcon /> : <EditIcon />} onClick={() => { setIsEdit(!isEdit) }}>
-            {isEdit ? "Cancel" : "Edit"}
-          </Button>
-        </Box>
         <TableContainer component={Paper}>
           <Table>
             <TableHead align="center">
@@ -107,6 +99,15 @@ export default function NewSheet(props) {
             </TableBody>
           </Table>
         </TableContainer>
+        <Box>
+
+          {/* <Button color="success" sx={{ margin: '30px 5px' }} variant="contained" onClick={() => handleSubmit()} >
+            Save changes
+          </Button> */}
+          <Button color="info" sx={{ margin: '30px 5px' }} variant="contained" endIcon={isEdit ? <CancelIcon /> : <EditIcon />} onClick={() => { setIsEdit(!isEdit) }}>
+            {isEdit ? "Cancel" : "Edit"}
+          </Button>
+        </Box>
       </div>
     </>
   )

@@ -68,7 +68,7 @@ router.get('/getmarks', async (req, res) => {
 router.get('/getstudents', async (req, res) => {
     try {
         const Students = await StudentsSchema.find({})
-
+        console.log(Students)
         res.status(200).send(Students)
     } catch (err) {
         res.status(500).send(err)
@@ -123,7 +123,7 @@ router.post('/uploadexcel', async (req, res) => {
         try {
             let doc = await MarksSchema.findOne({
                 marks_type: req.body.marks_type,
-                sheet: req.body.sheet,
+                // sheet: req.body.sheet,
                 teacher_name: req.body.teacher_name,
                 subject: req.body.subject,
                 semester: req.body.semester,
@@ -137,10 +137,12 @@ router.post('/uploadexcel', async (req, res) => {
             else {
                 const saved = await newMarks.save()
                 res.send(req.body.sheet).status(200)
+                res.status(400).send("Added to database!")
             }
         } catch (error) {
             console.log(error)
             res.status(400).send(error.keyValue)
+            console.log("Error occured")
         }
 
     } catch (err) {
@@ -169,6 +171,17 @@ router.post('/excelbyid', async (req, res) => {
         res.status(200).send(sheet)
     } catch (error) {
         console.log(error)
+        res.status(500).send(error.keyValue)
+    }
+})
+
+router.post('/updateexcel', async (req, res) => {
+    try {
+        console.log(req.body._id)
+        await MarksSchema.findByIdAndUpdate(req.body._id, { sheet: req.body.sheet })
+        res.status(200).send("Ok")
+    } catch (err) {
+        console.log(err)
         res.status(500).send(error.keyValue)
     }
 })

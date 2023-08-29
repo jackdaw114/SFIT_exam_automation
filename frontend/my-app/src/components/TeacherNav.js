@@ -19,7 +19,7 @@ export default function TeacherNav() {
     const [department, setDepartment] = useState('')
     const [studentDetails, setStudentDetails] = useState([])
     const [year, setYear] = useState(0)
-    const [jsonData, setJsonData] = useState([])
+    const [jsonData, setJsonData1] = useState([])
     const [cardData, setCardData] = useState([])
     const handleChangeType = (e) => {
         setType(e.target.value)
@@ -41,7 +41,7 @@ export default function TeacherNav() {
         setYear(e.target.value)
         // console.log(e.target.value)
     }
-
+    
     useEffect(() => {
         axios.post('/teacher/fetchexcel', { teacher_name: localStorage.getItem('username') }, {
             headers: {
@@ -52,41 +52,46 @@ export default function TeacherNav() {
             setCardData(res.data)
         })
     }, [])
-
+    
     const handleSubmit = async (e) => {
-        await axios.get('/teacher/getstudents').then((res) => {
-            setStudentDetails(res.data)
-            studentDetails.map((value, index) => {
-                setJsonData([
-                    ...jsonData, {
-                        pid: value.pid,
-                        name: value.name,
-                        marks: -8
-                    }
-                ])
+        //  let jsonData = []
+        const theJsonData = []
+        axios.get('/teacher/getstudents').then((res) => {
+            res.data.map((value, index) => {
+                const { _id, ...filtered } = value
+                theJsonData.push({ ...filtered , marks:-8 })
+            })
+            console.log(theJsonData)
+            // console.log("This is Json  \n",jsonData)
+            // console.log("This is student details: \n",studentDetails)
+        
+            axios.post('/teacher/uploadexcel', {
+                marks_type: type,
+                teacher_name: localStorage.getItem('username'),
+                sheet: toExcel(theJsonData),
+                subject: subject,
+                semester: semester,
+                department: department,
+                year: year,
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                }
+            }).then((res) => {
+                console.log(res.data)
+                const workbook = read(res.data, { type: 'binary' })
+                console.log(workbook)
             })
         })
-        await axios.post('/teacher/uploadexcel', {
-            marks_type: type,
-            teacher_name: localStorage.getItem('username'),
-            sheet: toExcel([...jsonData]),
-            subject: subject,
-            semester: semester,
-            department: department,
-            year: year,
-        }, {
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            }
-        }).then((res) => {
-            console.log(res.data)
-            const workbook = read(res.data, { type: 'binary' })
-            console.log(workbook)
-        })
+        //console.log( jsonData)
+        // console.log()
+       
     }
 
-
+    useEffect(()=>{
+        console.log(jsonData)
+    },[jsonData])
     return (
         <>
             <Header />
