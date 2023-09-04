@@ -10,8 +10,10 @@ import Auth from './components/Auth';
 import Test from './components/Excel'
 import TeacherNav from './components/TeacherNav';
 import ViewExam from './components/ViewExam';
+import AdminHome from './components/AdminHome';
 
 const teacher = '/teacher'
+const admin = '/admin'
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
           <Route path='/' element={<><Home /></>}></Route>
           <Route path='/exam' element={<><TeacherNav /></>} />
           <Route path='/viewexam' element={<><ViewExam /></>} />
+          <Route path='/adminhome' element={<><AdminHome /></>} />
         </Routes>
       </BrowserRouter>
     </Box>

@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import EngineeringIcon from '@mui/icons-material/Engineering';
-import ApartmentIcon from '@mui/icons-material/Apartment';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 import { Route, Router, Routes, useLocation, useNavigate } from 'react-router';
 import LoginForm from './LoginForm'
 import axios from 'axios';
 import './Auth.css';
 
-// import { JavascriptTwoTone } from '@mui/icons-material';
-// import { bgcolor } from '@mui/system';
+
 const Auth = () => {
-    // let companyName = ""
-    // let username = ""
-    // let phoneNo = ""
-    // let email = ""
-    // let password = ""
+ 
     const navigate = useNavigate()
     const [isAdmin, setIsAdmin] = useState(false)
     const [inputs, setInputs] = useState({
@@ -36,7 +29,13 @@ const Auth = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(inputs);
-        const url = '/teacher/login'
+        let url = ''
+        // const url = '/teacher/login'
+        if (isAdmin) {
+            url = '/admin/login'
+        } else {
+            url = '/teacher/login' 
+        }
         axios.post(url, inputs, {
             headers: {
                 "Content-Type": "application/json",
@@ -46,10 +45,14 @@ const Auth = () => {
             localStorage.setItem('username', res.data.username)
             localStorage.setItem('isLoggedIn', true)
             console.log(res.data)
-            navigate('/')
+            if (isAdmin) {
+                
+                navigate('/adminhome')
+            } else {
+                
+                navigate('/')
+            }
         })
-
-
     }
 
 
@@ -92,12 +95,27 @@ const Auth = () => {
 
                     <Box
                         display="flex"
-                        paddingLeft={1}
+                        // paddingLeft={3}
                     >
+                        <Button
+                            className='category-button'
+                            onClick={() => {
+                                setIsAdmin(false)
+                            }}
+                            endIcon={<GroupsIcon/>}
+                            sx={{ padding: "20px", width: "auto", color: 'white' }} >Teacher</Button>
+                        <Button
+                            className='category-button'
+                            onClick={() => {
+                                setIsAdmin(true)
+                            }}
+                            endIcon={<AccountBoxIcon/>}
+                            sx={{ padding: "20px", width: "auto", color: 'white' }}>Admin</Button>
 
+                    
                     </Box>
 
-                    <LoginForm func={handleChange} inputs={inputs} />
+                    <LoginForm func={handleChange} inputs={inputs} font="white"/>
 
                     <Button
                         endIcon={<LoginIcon />}
