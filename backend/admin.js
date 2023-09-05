@@ -36,7 +36,7 @@ router.post('/addteacher', async (req, res) => {
         }).then(() => {
             res.status(200).send('Ok')
         })
-    }catch (err) {
+    } catch (err) {
         res.status(500).send(err);
         console.log("Duplicate found!");
     }
@@ -45,10 +45,10 @@ router.post('/addteacher', async (req, res) => {
 router.post('/deleteteacher', async (req, res) => {
     try {
         const teacher = await Teacher.deleteOne({
-            username:req.body.username
+            username: req.body.username
         })
         console.log(teacher)
-        if (teacher.deleteCount>0)
+        if (teacher.deleteCount > 0)
             res.status(200).send('OK')
         else
             res.status(201).send('Record not found')
@@ -60,11 +60,11 @@ router.post('/deleteteacher', async (req, res) => {
 
 router.post('/updateteacher', async (req, res) => {
     let filter = { username: req.body.username }
-    let update = { subject: req.body.subject}
+    let update = { subject: req.body.subject }
     try {
         let teacher = await Teacher.findOneAndUpdate(filter, update)
         console.log(teacher)
-        if(teacher)
+        if (teacher)
             res.status(200).send('ok')
         else
             res.status(201).send('Record not found')

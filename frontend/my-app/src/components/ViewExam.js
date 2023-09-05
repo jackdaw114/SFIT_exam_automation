@@ -39,9 +39,11 @@ export default function ViewExam(props) {
     console.log(location.state._id)
     const childToParent = (info) => {
         setTableData(info)
-        
+        console.log(table2Data)
+        console.log('tabel2', tableData)
+
     }
-    
+
     useEffect(() => {
         axios.post('/teacher/excelbyid', { _id: location.state._id }, {
             headers: {
@@ -64,10 +66,10 @@ export default function ViewExam(props) {
 
     }, [])
     // let id = props.id
-    
+
     const handleUpdate = () => {
         console.log(tableData)
-        
+
         const sheet = utils.json_to_sheet(tableData, { header: Object.keys(tableData[0]) })
         console.log(sheet)
         const wb = utils.book_new()
@@ -87,7 +89,8 @@ export default function ViewExam(props) {
             }
         }).then(res => {
             console.log(res.data)
-            })
+            alert(res.data)
+        })
     }
     // dummy data
     const handleDownload = () => {
@@ -95,20 +98,20 @@ export default function ViewExam(props) {
         console.log(sheet)
         const wb = utils.book_new()
         utils.book_append_sheet(wb, sheet, 'sheet1')
-       writeFile(wb,'test.xlsx')
+        writeFile(wb, 'test.xlsx')
     }
     const handleInput = async (e) => {
 
         // THIS IS THE ENTIRE PROCESS FROM DECODING EXCEL TO RECOMPILING THE EXCEL FILE FOR REFERENCE DO NOT CHANGE
         e.preventDefault()
         const file = e.target.files[0]
-        
+
         const data = await file.arrayBuffer();
         const workbook = read(data)
         const binaryString = write(workbook, {
             bookSST: false,
             bookType: 'xlsx',
-            type:'binary'
+            type: 'binary'
         })
         // console.log(binary)
         axios.post('/teacher/updateexcel', {
@@ -121,7 +124,8 @@ export default function ViewExam(props) {
             }
         }).then(res => {
             console.log(res.data)
-            })
+            alert(res.data)
+        })
     }
 
     return (
@@ -130,16 +134,16 @@ export default function ViewExam(props) {
             {/* <Box sx={{display:"flex",alignItems:'center',flexDirection:'column',width:'100vw'}}> */}
 
             {tableData ? <NewSheet tableData={table2Data} func={childToParent} /> : <></>}
-            <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center'}}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
-            
+
 
                 <Button variant="contained" color="success" onClick={handleUpdate}>Update</Button>
-                       <input type="file" className="fileSelect"
+                <input type="file" className="fileSelect"
                     onChange={(e) => handleInput(e)} />
                 <Button variant="contained" onClick={handleDownload} >Download File</Button>
-                    </Box>
-            
+            </Box>
+
 
             {/* </Box> */}
         </>

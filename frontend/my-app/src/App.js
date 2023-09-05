@@ -10,27 +10,29 @@ import Auth from './components/Auth';
 import Test from './components/Excel'
 import TeacherNav from './components/TeacherNav';
 import ViewExam from './components/ViewExam';
+import TeacherHome from './components/TeacherHome';
 import AdminHome from './components/AdminHome';
+import TheOgHome2 from './components/TheOgHome2'
 
 const teacher = '/teacher'
 const admin = '/admin'
 
 function App() {
   return (
-    <Box >
+    <Box   >
+      <div className='gradient_background'></div>
 
       <BrowserRouter>
         <Routes>
           <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
-
           <Route path='/login' element={<><Auth /></>}></Route>
-          <Route path='/exam/entermarks' element={<><EnterMarks /></>}></Route>
+          <Route path='/entermarks' element={<><EnterMarks /></>}></Route>
           <Route path='/viewexam' element={<><ViewExam /></>}></Route>
           <Route path='/test' element={<><Test /></>}></Route>
           <Route path='/' element={<><Home /></>}></Route>
           <Route path='/exam' element={<><TeacherNav /></>} />
           <Route path='/viewexam' element={<><ViewExam /></>} />
-          <Route path='/adminhome' element={<><AdminHome /></>} />
+          <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
         </Routes>
       </BrowserRouter>
     </Box>

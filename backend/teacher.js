@@ -132,16 +132,15 @@ router.post('/uploadexcel', async (req, res) => {
             })
             console.log(doc)
             if (doc) {
-                res.status(400).send("Duplicate Record Found")
+                res.status(200).send(doc)
             }
             else {
                 const saved = await newMarks.save()
-                res.send(req.body.sheet).status(200)
-                res.status(400).send("Added to database!")
+                res.send(newMarks).status(200)
             }
         } catch (error) {
             console.log(error)
-            res.status(400).send(error.keyValue)
+            res.status(500).send(error.keyValue)
             console.log("Error occured")
         }
 

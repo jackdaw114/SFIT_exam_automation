@@ -43,6 +43,7 @@ const Auth = () => {
             }
         }).then(res => {
             localStorage.setItem('username', res.data.username)
+            localStorage.setItem('subjects', JSON.stringify(res.data.subjects))
             localStorage.setItem('isLoggedIn', true)
             console.log(res.data)
             if (isAdmin) {

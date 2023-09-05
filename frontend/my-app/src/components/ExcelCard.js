@@ -9,7 +9,7 @@ export default function ExcelCard(props) {
     }
     return (
         <>
-            <Card sx={{ borderRadius: 4, border: 1, borderColor: '#888888' }} elevation={0}>
+            <Card sx={{ borderRadius: 4, }} elevation={0}>
                 <CardContent>
                     <Typography variant="h6" color="text.secondary" gutterBottom>
                         Examination: {props.subject} of Semester {props.semester}

@@ -1,1 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Ubuntu:wght@400;500&display=swap');
+
+.gradient_background {
+    margin: 0;
+    padding: 0;
+    background: #f1f1f1;
+    height: 110vh;
+    width: 110vw;
+    z-index: -1;
+    position: fixed;
+}

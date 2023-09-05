@@ -1,69 +1,178 @@
+import { Box, Button, FormControl, Grid, InputLabel, Menu, MenuItem, Select } from "@mui/material";
+import Header from "./Header";
+import { toExcel } from "./Excel";
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+import { read, utils, write, writeFile } from "xlsx";
+import { saveAs } from "file-saver";
+import ExcelCard from "./ExcelCard";
+import './TeacherNav.css'
+import { useNavigate } from "react-router";
 
-import { Typography, Box, Button } from '@mui/material';
-import Header from './Header';
-import NewSheet from './NewSheet';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { read, utils, write } from 'xlsx';
 
-
-const postFunc = (inputs) => {
-
-    axios.post('/teacher/updatemarks', { xlsx: inputs }, {
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        }
-    }).then(res => {
-        alert('updated')
-    })
-}
 
 export default function EnterMarks() {
-    const [tableData, setTableData] = useState([{}]);
-    useEffect(() => {
-        axios.get('/teacher/getmarks').then((res) => {
-            console.log(res)
-            const workbook = read(res.data)
-            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
-            const jsonData = utils.sheet_to_json(worksheet, {
-                header: [...utils.sheet_to_json(worksheet, { header: 1 })[0]]
-            });
-            console.log(jsonData)
-            setTableData(jsonData)
-        }).catch((err) => {
-            console.log(err)
-        })
-    }, []);
-    const childToParent = (info) => {
-        setTableData(info)
+    const [type, setType] = useState('')
+    const [subject, setSubject] = useState('')
+    const [semester, setSemester] = useState('')
+    const [department, setDepartment] = useState('')
+    const [studentDetails, setStudentDetails] = useState([])
+    const [year, setYear] = useState(0)
+    const [jsonData, setJsonData1] = useState([])
+    const [cardData, setCardData] = useState([])
+    const navigate = useNavigate()
+    const handleChangeType = (e) => {
+        setType(e.target.value)
+        // console.log(e.target.value)
     }
-    const handleSubmit = (e) => {
-        const sheetcon = utils.json_to_sheet(tableData, {
-            header: [...utils.sheet_to_json(Object.keys(tableData[0]), { header: 1 })[0]]
-        })
-
-
-        let wb = utils.book_new()
-
-        utils.book_append_sheet(wb, sheetcon, 'Sheet1');
-        const ab = write(wb, {
-            bookType: 'xlsx',
-            bookSST: false,
-            type: 'binary'
-        });
-        console.log(ab)
-        postFunc(wb)
+    const handleChangeSubject = (e) => {
+        setSubject(e.target.value)
+        // console.log(e.target.value)
+    }
+    const handleChangeSemester = (e) => {
+        setSemester(e.target.value)
+        // console.log(e.target.value)
+    }
+    const handleChangeDepartment = (e) => {
+        setDepartment(e.target.value)
+        // console.log(e.target.value)
+    }
+    const handleChangeYear = (e) => {
+        setYear(e.target.value)
+        // console.log(e.target.value)
     }
 
+    // useEffect(() => {
+    //     axios.post('/teacher/fetchexcel', { teacher_name: localStorage.getItem('username') }, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             Accept: "application/json",
+    //         }
+    //     }).then((res) => {
+    //         setCardData(res.data)
+    //     })
+    // }, [])
+
+    const handleSubmit = async (e) => {
+        //  let jsonData = []
+        const theJsonData = []
+        axios.get('/teacher/getstudents').then((res) => {
+            res.data.map((value, index) => {
+                const { _id, ...filtered } = value
+                theJsonData.push({ ...filtered, marks: -8 })
+            })
+            console.log(theJsonData)
+            // console.log("This is Json  \n",jsonData)
+            // console.log("This is student details: \n",studentDetails)
+
+            axios.post('/teacher/uploadexcel', {
+                marks_type: type,
+                teacher_name: localStorage.getItem('username'),
+                sheet: toExcel(theJsonData),
+                subject: subject,
+                semester: semester,
+                department: department,
+                year: year,
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                }
+            }).then((res) => {
+                console.log(res.data)
+                navigate('/viewexam', { state: { _id: res.data._id } })
+            })
+        })
+        //console.log( jsonData)
+        // console.log()
+
+    }
+    const subjects = localStorage.getItem('subjects').replace(/["\[\]]+/g, '').split(',')
+
+    // useEffect(() => {
+    //     console.log(jsonData)
+    // }, [jsonData])
     return (
         <>
-            <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh' }}>
+            <div className='container-teacher-nav'>
                 <Header />
-                <NewSheet tableData={tableData} func={childToParent} />
-                <Button onClick={handleSubmit} >submit</Button>
-            </Box>
+                <Box className='selection-box'>
+                    <Box sx={{ borderRadius: 3, margin: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-around', minWidth: '70%' }}>
+                            <FormControl sx={{ minWidth: 200 }}>
+                                <InputLabel>Select Examination</InputLabel>
+                                <Select onChange={handleChangeType} value={type} label="Select Examination" autoWidth>
+                                    <MenuItem value="oral">Oral</MenuItem>
+                                    <MenuItem value="practical">Practical</MenuItem>
+                                    <MenuItem value="theory">Theory</MenuItem>
+                                    <MenuItem value="term-work">Term Work</MenuItem>
+                                    <MenuItem value="iat">IAT</MenuItem>
+                                </Select>
+                            </FormControl>
+
+
+                            <FormControl sx={{ minWidth: 200 }}>
+                                <InputLabel>Year</InputLabel>
+                                <Select onChange={handleChangeYear} value={year} label="Year" autoWidth>
+                                    <MenuItem value="2022">2022</MenuItem>
+                                    <MenuItem value="2023">2023</MenuItem>
+                                    <MenuItem value="2024">2024</MenuItem>
+
+                                </Select>
+                            </FormControl>
+
+                            <FormControl sx={{ minWidth: 200 }}>
+                                <InputLabel>Department</InputLabel>
+                                <Select onChange={handleChangeDepartment} value={department} label="Department" autoWidth>
+                                    <MenuItem value="CMPN">CMPN</MenuItem>
+                                    <MenuItem value="EXTC">EXTC</MenuItem>
+                                    <MenuItem value="MECH">MECH</MenuItem>
+                                    <MenuItem value="INFT">INFT</MenuItem>
+                                </Select>
+                            </FormControl>
+
+                            <FormControl sx={{ minWidth: 200 }}>
+                                <InputLabel>Semester</InputLabel>
+                                <Select onChange={handleChangeSemester} value={semester} label="Semester" autoWidth>
+                                    <MenuItem value={1}>Sem 1</MenuItem>
+                                    <MenuItem value={2}>Sem 2</MenuItem>
+                                    <MenuItem value={3}>Sem 3</MenuItem>
+                                    <MenuItem value={4}>Sem 4</MenuItem>
+                                    <MenuItem value={5}>Sem 5</MenuItem>
+                                    <MenuItem value={6}>Sem 6</MenuItem>
+                                    <MenuItem value={7}>Sem 7</MenuItem>
+                                    <MenuItem value={8}>Sem 8</MenuItem>
+                                </Select>
+                            </FormControl>
+
+                            <FormControl sx={{ minWidth: 200 }}>
+                                <InputLabel>Subject</InputLabel>
+                                <Select onChange={handleChangeSubject} value={subject} label="Subject" autoWidth>
+                                    {subjects.map((item, index) => (
+
+                                        <MenuItem value={item}>{item}</MenuItem>
+
+                                    ))}
+
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        <div>
+
+                            <Button variant="contained" color="warning" onClick={handleSubmit}>Open</Button>
+                        </div>
+                    </Box>
+                </Box>
+                <Grid container spacing={5} sx={{ padding: 2 }}>
+                    {cardData.map((val, index) => (
+                        <Grid item xs={3}>
+                            <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject} semester={val.semester} department={val.department} teacher_name={val.teacher_name}  ></ExcelCard>
+                        </Grid>
+
+                    ))}
+                </Grid>
+            </div>
         </>
     )
 }

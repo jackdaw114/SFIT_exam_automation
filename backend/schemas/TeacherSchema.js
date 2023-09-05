@@ -11,9 +11,8 @@ const TeacherSchema = mongoose.Schema(
             type: String,
             required: true
         },
-        subject: {
-            type: String,
-            required: true,
+        subjects: {
+            type: Array,
         }
 
     }

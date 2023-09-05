@@ -8,17 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 
 
-const postFunc = (inputs) => {
 
-  axios.post('/teacher/updatemarks', inputs, {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    }
-  }).then(res => {
-    alert('updated')
-  })
-}
 
 
 export default function NewSheet(props) {
@@ -26,11 +16,11 @@ export default function NewSheet(props) {
   const [updatedRows, setUpdatedRows] = useState([])
   const handleCellEdit = (rowIndex, columnIndex, newValue) => {
     // Update the table data when a cell is edited
-    console.log(typeof(parseInt(newValue)))
+    console.log(typeof (parseInt(newValue)))
     const updatedTableData = [...props.tableData];
     updatedTableData[rowIndex][columnIndex] = !isNaN(parseInt(newValue)) ? parseInt(newValue) : '';
-    setUpdatedRows(updatedRows => [...updatedRows, rowIndex])
-    console.log(updatedTableData)
+    //setUpdatedRows(updatedRows => [...updatedRows, rowIndex])
+    // console.log(updatedTableData)
     props.func(updatedTableData);
   };
 
@@ -74,15 +64,6 @@ export default function NewSheet(props) {
         </TableRow>
       )
     })
-  }
-  const handleSubmit = (e) => {
-    const rowSet = new Set(updatedRows)
-    console.log(rowSet)
-    for (const key of rowSet) {
-      console.log(key)
-      postFunc(props.tableData[key])
-      setUpdatedRows([])
-    }
   }
   return (
     <>
