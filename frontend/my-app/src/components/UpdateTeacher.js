@@ -24,10 +24,10 @@ export default function UpdateTeacher() {
                 Accept: "application/json",
             }
         }).then((res) => {
-            // if (res.status == 500)
-            //     alert('Duplicate Record found. Please enter a unique userid')
-            // else
-                console.log('teacher updated!')
+            if (res.status == 200)
+                alert('teacher updated!')
+            else if (res.status == 201)
+                alert('No teacher found')
         })
     }
     // console.log('this is create teacher')
@@ -36,7 +36,7 @@ export default function UpdateTeacher() {
             <Box padding={2} marginTop={15} display={'flex'} alignItems={'center'} flexDirection={'column'}>
                         <Typography variant='h4' fontFamily='Ubuntu'>Update Teacher Details</Typography>
                 <LoginForm inputs={inputs} func={handleChange} font="black" />
-                <Button variant='contained' onClick={handleSubmit}>ADD</Button>
+                <Button variant='contained' onClick={handleSubmit}>Update</Button>
                 </Box>
             </>
     )

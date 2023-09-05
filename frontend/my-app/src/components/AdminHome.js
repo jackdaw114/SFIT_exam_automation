@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import CreateTeacher from './CreateTeacher';
 import DeleteTeacher from './DeleteTeacher';
+import UpdateTeacher from './UpdateTeacher';
 
 export default function AdminHome() {
     let navigate = useNavigate()
@@ -19,6 +20,8 @@ export default function AdminHome() {
                 return (<CreateTeacher />);
             case 2:
                 return (<DeleteTeacher />);
+            case 3:
+                return (<UpdateTeacher />);
             default: return(<></>)
             }
         }
@@ -26,10 +29,10 @@ export default function AdminHome() {
         return (
             <>
             <Header />
-            <Box  paddingTop={5} display={'flex'} justifyContent={'space-around'}>
+            <Box  paddingTop={11} display={'flex'} justifyContent={'space-around'}>
                 <Button variant='outlined' onClick={() => setChoice(1)}>CREATE TEACHER</Button>
                 <Button variant='outlined' onClick={() => setChoice(2)}>DELETE TEACHER</Button>
-                <Button variant='outlined' onClick={() => setChoice(0)}>Update TEACHER</Button>
+                <Button variant='outlined' onClick={() => setChoice(3)}>Update TEACHER</Button>
                 <Button variant='contained' onClick={() => setChoice(0)}>Generate Reports</Button>
                     <Button variant='contained' color='warning' onClick={() => setChoice(0)}>Generate Gazette</Button>
             </Box>

@@ -59,11 +59,18 @@ router.post('/deleteteacher', async (req, res) => {
 })
 
 router.post('/updateteacher', async (req, res) => {
+    let filter = { username: req.body.username }
+    let update = { subject: req.body.subject}
     try {
-        await Teacher.find
-        
+        let teacher = await Teacher.findOneAndUpdate(filter, update)
+        console.log(teacher)
+        if(teacher)
+            res.status(200).send('ok')
+        else
+            res.status(201).send('Record not found')
     } catch (error) {
-        
+        res.status(500).send(err);
+        console.log(err);
     }
 })
 
