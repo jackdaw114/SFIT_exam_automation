@@ -34,7 +34,7 @@ export default function AdminHome() {
                 <Button variant='outlined' onClick={() => setChoice(2)}>DELETE TEACHER</Button>
                 <Button variant='outlined' onClick={() => setChoice(3)}>Update TEACHER</Button>
                 <Button variant='contained' onClick={() => setChoice(0)}>Generate Reports</Button>
-                    <Button variant='contained' color='warning' onClick={() => setChoice(0)}>Generate Gazette</Button>
+                <Button variant='contained' color='warning' onClick={() => setChoice(0)}>Generate Gazette</Button>
             </Box>
                 
                 {renderChoice()}
