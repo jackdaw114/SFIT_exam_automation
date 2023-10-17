@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Admin = require('./schemas/AdminSchema')
-const Teacher = require('./schemas/TeacherSchema')
-
+const Teacher = require('./schemas/TeacherSchema');
+const MarksSchema = require('./schemas/MarksSchema');
+const ExcelJS = require('exceljs');
+const xlsx = require('xlsx');
 
 router.post('/login', async (req, res) => {
     try {
@@ -73,5 +75,45 @@ router.post('/updateteacher', async (req, res) => {
         console.log(err);
     }
 })
+
+router.post('/creategazette', async (req, res) => {
+    try {
+        let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
+        let i = 2
+        const workbook = await xlsx.read(data[0].sheet, { type: 'binary' })
+        const template = xlsx.readFile('./ExcelTemplates/gazette_temp.xlsx')
+        const temp_sheet = template.Sheets[template.SheetNames[0]]
+        temp_sheet["C45"] = {
+            t: 's',
+            v: "HI"
+        };
+
+        temp_sheet['!cols'] = [
+            { wch: 7 },
+            { wch: 35 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 7 },
+            { wch: 7 },
+            { wch: 7 }
+        ];
+        console.log(temp_sheet)
+        xlsx.writeFile(template, 'temp.xlsx')
+        xlsx.writeFile(workbook, 'test.xlsx')
+        console.log(workbook.Sheets[workbook.SheetNames[0]][`C${i}`])
+        // console.log(workbook.Sheets[workbook.SheetNames[0]])
+        for (const iter in data) {
+            console.log(iter)
+        }
+        res.send('wee')
+    } catch (err) {
+        console.log(err)
+        res.status(500).send('error')
+    }
+})
+
 
 module.exports = router;   

@@ -12,7 +12,7 @@ export default function AdminHome() {
     //     navigate('/createteacher')
     // }
     const [choice, setChoice] = useState(0)
-    
+
     const renderChoice = () => {
         console.log(choice)
         switch (choice) {
@@ -22,23 +22,23 @@ export default function AdminHome() {
                 return (<DeleteTeacher />);
             case 3:
                 return (<UpdateTeacher />);
-            default: return(<></>)
-            }
+            default: return (<></>)
         }
-        
-        return (
-            <>
+    }
+
+    return (
+        <>
             <Header />
-            <Box  paddingTop={11} display={'flex'} justifyContent={'space-around'}>
+            <Box paddingTop={11} display={'flex'} justifyContent={'space-around'}>
                 <Button variant='outlined' onClick={() => setChoice(1)}>CREATE TEACHER</Button>
                 <Button variant='outlined' onClick={() => setChoice(2)}>DELETE TEACHER</Button>
                 <Button variant='outlined' onClick={() => setChoice(3)}>Update TEACHER</Button>
                 <Button variant='contained' onClick={() => setChoice(0)}>Generate Reports</Button>
-                    <Button variant='contained' color='warning' onClick={() => setChoice(0)}>Generate Gazette</Button>
+                <Button variant='contained' color='warning' onClick={() => setChoice(0)}>Generate Gazette</Button>
             </Box>
-                
-                {renderChoice()}
-           
+
+            {renderChoice()}
+
         </>
     )
 }

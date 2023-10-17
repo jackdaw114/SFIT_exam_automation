@@ -43,16 +43,16 @@ export default function TeacherNav() {
         // console.log(e.target.value)
     }
 
-    // useEffect(() => {
-    //     axios.post('/teacher/fetchexcel', { teacher_name: localStorage.getItem('username') }, {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             Accept: "application/json",
-    //         }
-    //     }).then((res) => {
-    //         setCardData(res.data)
-    //     })
-    // }, [])
+    useEffect(() => {
+        axios.post('/teacher/fetchexcel', { teacher_name: localStorage.getItem('username') }, {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            }
+        }).then((res) => {
+            setCardData(res.data)
+        })
+    }, [])
 
     const handleSubmit = async (e) => {
         //  let jsonData = []
