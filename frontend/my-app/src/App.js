@@ -33,6 +33,7 @@ function App() {
           <Route path='/exam' element={<><TeacherNav /></>} />
           <Route path='/viewexam' element={<><ViewExam /></>} />
           <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
+          <Route path='/adminhome' element={<><AdminHome /></>} />
         </Routes>
       </BrowserRouter>
     </Box>
