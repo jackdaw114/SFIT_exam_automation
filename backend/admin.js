@@ -79,30 +79,24 @@ router.post('/updateteacher', async (req, res) => {
 router.post('/creategazette', async (req, res) => {
     try {
         let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
+        console.log(data)
         let workbook_object = {}
-        const workbook = await xlsx.read(data[0].sheet, { type: 'binary' })
-        const wbdetails = data[0].subject;
+
         let c = 0;
         await data.forEach(async (x) => {
-            //workbook_object.c = ''
-            //console.log('iterating')
+
             temp_worksheet = await xlsx.read(x.sheet, { type: 'binary' })
             workbook_object[c] = {
                 sheet: temp_worksheet.Sheets[temp_worksheet.SheetNames[0]],
                 marks_type: x.marks_type,
                 subject: x.subject
             }
-            //console.log(workbook_object)
             c++;
         })
         console.log(workbook_object)
-        //const workbook2 = await xlsx.read(data[1].sheet, { type: 'binary' })
         const template = xlsx.readFile('./ExcelTemplates/gazette_temp.xlsx')
         const temp_sheet = template.Sheets[template.SheetNames[0]]
-        // temp_sheet["C45"] = {
-        //     t: 's',
-        //     v: "HI"
-        // };
+        console.log(template.Sheets[template.SheetNames[3]])
 
 
 
@@ -118,16 +112,12 @@ router.post('/creategazette', async (req, res) => {
             { wch: 7 },
             { wch: 7 }
         ];
-        //console.log(temp_sheet)
-
-        // console.log(workbook.Sheets[workbook.SheetNames[0]])
-        let Marksheet = workbook.Sheets[workbook.SheetNames[0]]
         let student_data = {};
         let subj_list = []; //use subject list to set subjects in json data !!! NOT IMPLEMENTED YET
 
-        //for ()
+
         let i = 2
-        //console.log(Marksheet1['A90'] == undefined)
+
 
         let iterator = Object.keys(workbook_object);
         console.log(iterator)
@@ -140,37 +130,39 @@ router.post('/creategazette', async (req, res) => {
                 }
                 else {
                     console.log(element)
-                    StudentDictionary(element.sheet[`A${i}`].v, Marksheet[`C${i}`].v, element.subject, element.marks_type, subj_list, student_data)
-                    i++
+                    StudentDictionary(element.sheet[`A${i}`].v, element.sheet[`C${i}`].v, element.subject, element.marks_type, subj_list, student_data)
+                    i = i + 1;
                 }
             }
         });
-        console.log(student_data)
+        temp_sheet['A70'] = { t: 's', v: 'elo' }
+
         //CREATION OF GAZETTE
         let pids = Object.keys(student_data)
-        pids.sort()
+
         const entry_dist = 5;
         let entry = 14;
         pids.forEach((pid) => {
-            //console.log('working')
+
             temp_sheet[`A${entry}`] = { t: 's', v: pid };
-            temp_sheet[`C${entry}`] = { t: 's', v: student_data[pid]['sub1']['theory'], r: `<t xml:space="preserve">${student_data[pid]['sub1']['theory']}</t>` }
-            temp_sheet[`C${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub1']['oral']}`, r: `<t xml:space="preserve">${student_data[pid]['sub1']['term']}/${student_data[pid]['sub1']['oral']}</t>` }
-            temp_sheet[`D${entry}`] = { t: 's', v: student_data[pid]['sub2']['theory'], r: `<t xml:space="preserve">${student_data[pid]['sub2']['theory']}</t>` }
-            temp_sheet[`D${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub2']['term']}/${student_data[pid]['sub2']['oral']}`, r: `<t xml:space="preserve">${student_data[pid]['sub2']['term']}/${student_data[pid]['sub2']['oral']}</t>` }
-            temp_sheet[`E${entry}`] = { t: 's', v: student_data[pid]['sub3']['theory'], r: `<t xml:space="preserve">${student_data[pid]['sub3']['theory']}</t>` }
-            temp_sheet[`E${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub3']['oral']}`, r: `<t xml:space="preserve">${student_data[pid]['sub3']['term']}/${student_data[pid]['sub3']['oral']}</t>` }
+            temp_sheet[`C${entry}`] = { t: 's', v: student_data[pid]['sub1']['theory'] }
+            temp_sheet[`D${entry}`] = { t: 's', v: student_data[pid]['sub2']['theory'] }
+            temp_sheet[`E${entry}`] = { t: 's', v: student_data[pid]['sub3']['theory'] }
+            temp_sheet[`C${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub1']['oral']}` }
+            temp_sheet[`D${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub2']['term']}/${student_data[pid]['sub2']['oral']}` }
+            temp_sheet[`E${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub3']['oral']}` }
             entry += entry_dist
         })
-
-        //StudentDictionary(212098, 23, 'sub1', subj_list, student_data)
         //console.log(temp_sheet)
+        const newbook = xlsx.utils.book_new();
+        temp_sheet['!ref'] = 'A1:J500'
 
-        xlsx.writeFile(template, 'temp.xlsx')
-        xlsx.writeFile(workbook, 'test.xlsx')
+        xlsx.utils.book_append_sheet(newbook, temp_sheet, 'test1')
+
+        xlsx.writeFile(newbook, 'temp2.xlsx')
 
         res.send('wee')
-        //console.log(workbook.Sheets[workbook.SheetNames[0]])
+
     } catch (err) {
         console.log(err)
         res.status(500).send('error')
