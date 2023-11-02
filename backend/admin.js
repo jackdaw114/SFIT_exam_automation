@@ -79,14 +79,17 @@ router.post('/updateteacher', async (req, res) => {
 router.post('/creategazette', async (req, res) => {
     try {
         let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
-        let i = 2
+
         const workbook = await xlsx.read(data[0].sheet, { type: 'binary' })
+        const wbdetails = data[0].subject;
+        console.log(data.length)
+        //const workbook2 = await xlsx.read(data[1].sheet, { type: 'binary' })
         const template = xlsx.readFile('./ExcelTemplates/gazette_temp.xlsx')
         const temp_sheet = template.Sheets[template.SheetNames[0]]
-        temp_sheet["C45"] = {
-            t: 's',
-            v: "HI"
-        };
+        // temp_sheet["C45"] = {
+        //     t: 's',
+        //     v: "HI"
+        // };
 
         temp_sheet['!cols'] = [
             { wch: 7 },
@@ -100,20 +103,72 @@ router.post('/creategazette', async (req, res) => {
             { wch: 7 },
             { wch: 7 }
         ];
-        console.log(temp_sheet)
+        //console.log(temp_sheet)
+
+        // console.log(workbook.Sheets[workbook.SheetNames[0]])
+        let Marksheet = workbook.Sheets[workbook.SheetNames[0]]
+        let student_data = {};
+        let subj_list = []; //use subject list to set subjects in json data !!! NOT IMPLEMENTED YET
+
+        //for ()
+        let i = 2
+        //console.log(Marksheet1['A90'] == undefined)
+        while (true) {
+            if (Marksheet[`A${i}`] == undefined) {
+                break;
+            }
+            else {
+                StudentDictionary(Marksheet[`A${i}`].v, Marksheet[`C${i}`].v, 'sub1', 'term', subj_list, student_data)
+                StudentDictionary(Marksheet[`A${i}`].v, Marksheet[`C${i}`].v, 'sub2', 'term', subj_list, student_data)
+                StudentDictionary(Marksheet[`A${i}`].v, Marksheet[`C${i}`].v, 'sub3', 'term', subj_list, student_data)
+                i++
+            }
+        }
+
+        //CREATION OF GAZETTE
+        let pids = Object.keys(student_data)
+        pids.sort()
+        const entry_dist = 5;
+        let entry = 14;
+        pids.forEach((pid) => {
+            //console.log('working')
+            temp_sheet[`A${entry}`] = { t: 's', v: pid };
+            temp_sheet[`C${entry}`] = { t: 's', v: student_data[pid]['sub1']['theory'], r: `<t xml:space="preserve">${student_data[pid]['sub1']['theory']}</t>` }
+            temp_sheet[`C${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub1']['oral']}`, r: `<t xml:space="preserve">${student_data[pid]['sub1']['term']}/${student_data[pid]['sub1']['oral']}</t>` }
+            temp_sheet[`D${entry}`] = { t: 's', v: student_data[pid]['sub2']['theory'], r: `<t xml:space="preserve">${student_data[pid]['sub2']['theory']}</t>` }
+            temp_sheet[`D${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub2']['term']}/${student_data[pid]['sub2']['oral']}`, r: `<t xml:space="preserve">${student_data[pid]['sub2']['term']}/${student_data[pid]['sub2']['oral']}</t>` }
+            temp_sheet[`E${entry}`] = { t: 's', v: student_data[pid]['sub3']['theory'], r: `<t xml:space="preserve">${student_data[pid]['sub3']['theory']}</t>` }
+            temp_sheet[`E${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub3']['oral']}`, r: `<t xml:space="preserve">${student_data[pid]['sub3']['term']}/${student_data[pid]['sub3']['oral']}</t>` }
+            entry += entry_dist
+        })
+
+        //StudentDictionary(212098, 23, 'sub1', subj_list, student_data)
+        //console.log(temp_sheet)
         xlsx.writeFile(template, 'temp.xlsx')
         xlsx.writeFile(workbook, 'test.xlsx')
-        console.log(workbook.Sheets[workbook.SheetNames[0]][`C${i}`])
-        // console.log(workbook.Sheets[workbook.SheetNames[0]])
-        for (const iter in data) {
-            console.log(iter)
-        }
+
         res.send('wee')
+        //console.log(workbook.Sheets[workbook.SheetNames[0]])
     } catch (err) {
         console.log(err)
         res.status(500).send('error')
     }
 })
 
+function StudentDictionary(pid, marks, subject, type, subj_list, json) {
+    let keys = Object.keys(json)
+    if (keys.includes(pid)) {
+        json[pid][subject][type] = marks;
+    }
+    else {
+        json[pid] = {
+            'sub1': { 'term': '', 'oral': '', 'theory': '' }, //IMPLEMENT SUBJECT LIST HERE
+            'sub2': { 'term': '', 'oral': '', 'theory': '' },
+            'sub3': { 'term': '', 'oral': '', 'theory': '' },
+        }
+
+        json[pid][subject][type] = marks;
+    }
+}
 
 module.exports = router;   
