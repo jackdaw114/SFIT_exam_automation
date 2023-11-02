@@ -1,3 +1,8 @@
+import { Box, Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material"
+import Header from "./Header"
+import { useState } from "react"
+import { useNavigate } from "react-router"
+
 export default function Gazette(props) {
     const [semester, setSemester] = useState('')
     const [department, setDepartment] = useState('')
