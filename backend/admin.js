@@ -79,10 +79,23 @@ router.post('/updateteacher', async (req, res) => {
 router.post('/creategazette', async (req, res) => {
     try {
         let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
-
+        let workbook_object = {}
         const workbook = await xlsx.read(data[0].sheet, { type: 'binary' })
         const wbdetails = data[0].subject;
-        console.log(data.length)
+        let c = 0;
+        await data.forEach(async (x) => {
+            //workbook_object.c = ''
+            //console.log('iterating')
+            temp_worksheet = await xlsx.read(x.sheet, { type: 'binary' })
+            workbook_object[c] = {
+                sheet: temp_worksheet.Sheets[temp_worksheet.SheetNames[0]],
+                marks_type: x.marks_type,
+                subject: x.subject
+            }
+            //console.log(workbook_object)
+            c++;
+        })
+        console.log(workbook_object)
         //const workbook2 = await xlsx.read(data[1].sheet, { type: 'binary' })
         const template = xlsx.readFile('./ExcelTemplates/gazette_temp.xlsx')
         const temp_sheet = template.Sheets[template.SheetNames[0]]
@@ -90,6 +103,8 @@ router.post('/creategazette', async (req, res) => {
         //     t: 's',
         //     v: "HI"
         // };
+
+
 
         temp_sheet['!cols'] = [
             { wch: 7 },
@@ -113,18 +128,24 @@ router.post('/creategazette', async (req, res) => {
         //for ()
         let i = 2
         //console.log(Marksheet1['A90'] == undefined)
-        while (true) {
-            if (Marksheet[`A${i}`] == undefined) {
-                break;
-            }
-            else {
-                StudentDictionary(Marksheet[`A${i}`].v, Marksheet[`C${i}`].v, 'sub1', 'term', subj_list, student_data)
-                StudentDictionary(Marksheet[`A${i}`].v, Marksheet[`C${i}`].v, 'sub2', 'term', subj_list, student_data)
-                StudentDictionary(Marksheet[`A${i}`].v, Marksheet[`C${i}`].v, 'sub3', 'term', subj_list, student_data)
-                i++
-            }
-        }
 
+        let iterator = Object.keys(workbook_object);
+        console.log(iterator)
+        iterator.forEach(e => {
+            let element = workbook_object[e]
+            console.log(element)
+            while (true) {
+                if (element.sheet[`A${i}`] == undefined) {
+                    break;
+                }
+                else {
+                    console.log(element)
+                    StudentDictionary(element.sheet[`A${i}`].v, Marksheet[`C${i}`].v, element.subject, element.marks_type, subj_list, student_data)
+                    i++
+                }
+            }
+        });
+        console.log(student_data)
         //CREATION OF GAZETTE
         let pids = Object.keys(student_data)
         pids.sort()
@@ -144,6 +165,7 @@ router.post('/creategazette', async (req, res) => {
 
         //StudentDictionary(212098, 23, 'sub1', subj_list, student_data)
         //console.log(temp_sheet)
+
         xlsx.writeFile(template, 'temp.xlsx')
         xlsx.writeFile(workbook, 'test.xlsx')
 
