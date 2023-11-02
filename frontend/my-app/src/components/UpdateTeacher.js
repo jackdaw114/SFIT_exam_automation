@@ -9,6 +9,10 @@ export default function UpdateTeacher() {
         username:"",
         subject:""
     })
+    const labels = {
+        username: "username",
+        subject:"subject"
+    }
     const handleChange = (e) => {
         setInputs((prevState) => ({
             ...prevState,
@@ -35,8 +39,8 @@ export default function UpdateTeacher() {
         <>
             <Box padding={2} marginTop={15} display={'flex'} alignItems={'center'} flexDirection={'column'}>
                         <Typography variant='h4' fontFamily='Ubuntu'>Update Teacher Details</Typography>
-                <LoginForm inputs={inputs} func={handleChange} font="black" />
-                <Button variant='contained' onClick={handleSubmit}>Update</Button>
+                <LoginForm inputs={inputs} func={handleChange} labels={labels} font="black" />
+                <Button variant='contained' onClick={handleSubmit } >Update</Button>
                 </Box>
             </>
     )

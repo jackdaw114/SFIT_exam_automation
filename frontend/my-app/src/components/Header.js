@@ -1,8 +1,11 @@
 import img from '../imgtest/favicon.ico';
-import { AppBar, Box, Typography } from "@mui/material";
+import { AppBar, Avatar, Box, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from '@mui/icons-material/Logout';
 import './Header.css'
+import { motion } from 'framer-motion';
+
+
 
 export default function Header() {
     const navigate = useNavigate()
@@ -12,9 +15,13 @@ export default function Header() {
         navigate('/login')
         localStorage.setItem('isLoggedIn', false)
     }
+
+    const navigatetoprofile = () => {
+        navigate('/profile')
+    }
     return (
         <AppBar className='header-bar' sx={{ position: 'relative', flexDirection: 'row', alignItems: 'center', backgroundColor: '#292F36' }} elevation={0}>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2 }}>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2 , zIndex: -1}}>
                 <img src={img} style={{ height: 60 }} />
 
                 <Typography variant="h4" sx={{
@@ -24,9 +31,26 @@ export default function Header() {
                     St. Francis Institute of Technology
                 </Typography>
             </Box>
-            <div style={{ position: 'absolute', right: 10 }}>
-                <LogoutIcon onClick={logout} />
-            </div>
+            {/* <div style={{ position: 'absolute', right: 10 }}> */}
+            <Stack direction="row" spacing={5} marginRight={1} zIndex={1}>
+                
+
+                    <motion.div initial={{ borderRadius: '100%' }}
+                        whileHover={{
+                            scale: 1.1,
+                            outline: 'solid 3px #a63446'
+                        }}>
+
+                        <Avatar onClick={navigatetoprofile} />
+
+                    </motion.div>
+                
+
+               
+                    <LogoutIcon onClick={logout} />
+                
+            </Stack>
+            {/* </div> */}
         </AppBar >
     )
 }

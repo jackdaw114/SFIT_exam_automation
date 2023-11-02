@@ -8,6 +8,10 @@ export default function DeleteTeacher() {
     const [inputs, setInputs] = useState({
         username: ""
     })
+
+    const labels = {
+        username: "username",
+    }
     const handleChange = (e) => {
         setInputs((prevState) => ({
             ...prevState,
@@ -37,8 +41,8 @@ export default function DeleteTeacher() {
         <>
             <Box padding={2} marginTop={15} display={'flex'} alignItems={'center'} flexDirection={'column'}>
                         <Typography variant='h4' fontFamily='Ubuntu'>Enter Teacher Details</Typography>
-                <LoginForm inputs={inputs} func={handleChange} font="black" />
-                <Button variant='contained' onClick={handleSubmit} color='warning'>Delete</Button>
+                <LoginForm inputs={inputs} func={handleChange} font="black" labels={labels}/>
+                <Button variant='contained' onClick={handleSubmit} color='warning' >Delete</Button>
                 </Box>
             </>
     )

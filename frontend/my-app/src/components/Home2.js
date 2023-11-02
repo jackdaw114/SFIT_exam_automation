@@ -54,7 +54,9 @@ function HomeGrid() {
         return (
             <Grid item sx={6} md={3}>
                 <Box sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <CustIcon onClick={() => navigate(props.nav)} style={{ height: 35, color: '#555555', padding: 8, borderRadius: 20, backgroundColor: coloors_gc[Math.floor(Math.random() * 6)] }}>
+                    <CustIcon
+                        onClick={() => navigate(props.nav)}
+                        style={{ height: 35, color: '#555555', padding: 8, borderRadius: 20, backgroundColor: coloors_gc[Math.floor(Math.random() * 6)] }}>
                         {props.icon}
                     </CustIcon>
                     <Typography variant="h8" display='inline' sx={{ textDecoration: 'underline', paddingLeft: 1, paddingRight: 1.5, width: 100, color: '#333333' }}>{props.text}</Typography>
