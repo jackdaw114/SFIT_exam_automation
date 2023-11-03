@@ -15,8 +15,6 @@ import AdminHome from './components/AdminHome';
 import TheOgHome2 from './components/TheOgHome2'
 import TeacherProfile from './components/TeacherProfile';
 import Gazette from './components/Gazette';
-
-
 const teacher = '/teacher'
 const admin = '/admin'
 
