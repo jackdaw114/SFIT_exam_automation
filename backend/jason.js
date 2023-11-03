@@ -11,7 +11,7 @@ router.post('/creategazette', async (req, res) => {
         let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
 
         let workbook_object = {}
-        console.log(data[1].subject)
+
         let c = 0;
         await data.forEach(async (x) => {
 
