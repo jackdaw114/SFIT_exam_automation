@@ -14,6 +14,7 @@ import TeacherHome from './components/TeacherHome';
 import AdminHome from './components/AdminHome';
 import TheOgHome2 from './components/TheOgHome2'
 import Gazette from './components/Gazette';
+import TeacherProfile from './components/TeacherProfile';
 
 const teacher = '/teacher'
 const admin = '/admin'
@@ -35,7 +36,7 @@ function App() {
           <Route path='/viewexam' element={<><ViewExam /></>} />
           <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
           <Route path='/adminhome' element={<><AdminHome /></>} />
-
+          <Route path='/profile' element={<><TeacherProfile/></>} />
           <Route path='/creategazette' element={<><Gazette /></>} />
         </Routes>
       </BrowserRouter>

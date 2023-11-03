@@ -1,0 +1,9 @@
+.prof-super-box{
+    display: flex;
+    justify-content: center;
+}
+
+.prof-paper{
+    margin: 0px;
+    padding: 0px;
+}
