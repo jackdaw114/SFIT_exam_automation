@@ -47,8 +47,6 @@ export default function Header() {
                     </motion.div>
                 }
                 
-
-               
                     <LogoutIcon onClick={logout} />
                 
             </Stack>
