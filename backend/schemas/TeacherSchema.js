@@ -11,6 +11,13 @@ const TeacherSchema = mongoose.Schema(
             type: String,
             required: true
         },
+        email: {
+            type: String,
+            required: true
+        },
+        phoneNo: {
+            type: Number,
+        },
         subjects: {
             type: Array,
         }

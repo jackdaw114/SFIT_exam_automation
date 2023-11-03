@@ -18,6 +18,11 @@ const Auth = () => {
         username: "",
         password: "",
     })
+
+    const labels = {
+        username : "username",
+        password : "password"
+    }
     const handleChange = (e) => {
         setInputs((prevState) => ({
             ...prevState,
@@ -43,14 +48,15 @@ const Auth = () => {
             }
         }).then(res => {
             localStorage.setItem('username', res.data.username)
-            localStorage.setItem('subjects', JSON.stringify(res.data.subjects))
+            // localStorage.setItem('subjects', JSON.stringify(res.data.subjects))
             localStorage.setItem('isLoggedIn', true)
             console.log(res.data)
             if (isAdmin) {
-                
                 navigate('/adminhome')
             } else {
-                
+                localStorage.setItem('phoneNo', res.data.phoneNo)
+                localStorage.setItem('email', res.data.email)
+                localStorage.setItem('password', res.data.password)
                 navigate('/')
             }
         })
@@ -116,7 +122,7 @@ const Auth = () => {
                     
                     </Box>
 
-                    <LoginForm func={handleChange} inputs={inputs} font="white"/>
+                    <LoginForm func={handleChange} inputs={inputs} font="white" labels={labels} />
 
                     <Button
                         endIcon={<LoginIcon />}

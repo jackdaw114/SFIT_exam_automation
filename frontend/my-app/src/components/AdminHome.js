@@ -7,7 +7,7 @@ import DeleteTeacher from './DeleteTeacher';
 import UpdateTeacher from './UpdateTeacher';
 
 export default function AdminHome() {
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
     // const navToCreate = () => {
     //     navigate('/createteacher')
     // }

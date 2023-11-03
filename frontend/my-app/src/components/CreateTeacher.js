@@ -8,8 +8,17 @@ export default function CreateTeacher() {
     const [inputs, setInputs] = useState({
         username: "",
         password: "",
+        email: "",
+        phoneNo: "",
         subject:""
     })
+    const labels = {
+        username: "username",
+        password: "password",
+        email: "email",
+        phoneNo: "phone number",
+        subject:"subject"
+    }
     const handleChange = (e) => {
         setInputs((prevState) => ({
             ...prevState,
@@ -28,7 +37,7 @@ export default function CreateTeacher() {
             if (res.status == 500)
                 alert('Duplicate Record found. Please enter a unique userid')
             else
-                alert('teacher added to database!')
+                alert('Teacher added to database!')
         })
     }
     // console.log('this is create teacher')
@@ -36,8 +45,8 @@ export default function CreateTeacher() {
         <>
             <Box padding={2} marginTop={15} display={'flex'} alignItems={'center'} flexDirection={'column'}>
                         <Typography variant='h4' fontFamily='Ubuntu'>Enter New Teacher Details</Typography>
-                <LoginForm inputs={inputs} func={handleChange} font="black" />
-                <Button variant='contained' onClick={handleSubmit}>ADD</Button>
+                <LoginForm inputs={inputs} func={handleChange} labels={labels} font="black" />
+                <Button variant='contained' onClick={handleSubmit} >ADD</Button>
                 </Box>
             </>
     )

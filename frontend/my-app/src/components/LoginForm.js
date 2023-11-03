@@ -15,8 +15,6 @@ export default function LoginForm(props) {
 
         <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }
         }>
-
-
             {list_keys.map((item) => {
                 return (
 
@@ -30,26 +28,11 @@ export default function LoginForm(props) {
                         value={props.inputs[item] || ''}
                         name={item}
                         variant="outlined"
-                        placeholder={item}
+                        placeholder={props.labels[item] || item}
                         type={item}
                         margin="normal" />
                 )
             })}
-
-
-            {/* <TextField
-                onChange={props.func}
-                sx={{
-                    width: "300px",
-                    input: { color: props.font }
-                }}
-                value={props.inputs.password}
-                name="password"
-                variant="outlined"
-                placeholder='password'
-                type='password'
-                margin="normal" /> */}
-
         </Box >
     )
 }

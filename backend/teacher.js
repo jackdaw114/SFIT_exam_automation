@@ -32,6 +32,124 @@ router.post('/login', async (req, res) => {
     }
 })
 
+router.post('/updateemail', async (req, res) => {
+    console.log(req.body)
+    let filter =  { email : req.body.email } 
+    let update = { email: req.body.new_email }
+    try {
+        // console.log(filter)
+        // console.log(update)
+        console.log(req.body)
+        if (filter.email === update.email) {
+            res.status(201).send("Same email")
+        }
+        else {
+            let Teacher1 = await Teacher.findOneAndUpdate(filter,update);
+            if (Teacher1) {
+                res.status(200).send('ok')
+                console.log(Teacher1)
+                // alert("Email updated")
+            }
+        }
+    }
+    catch (err) {
+        res.status(500).send("internal server error")
+        console.log(err)
+    }
+})
+
+router.post('/updatenumber', async (req, res) => {
+    console.log(req.body)
+    let filter =  { phoneNo : req.body.phoneNo } 
+    let update = { phoneNo: req.body.new_phoneNo }
+    try {
+        // console.log(filter)
+        // console.log(update)
+        console.log(req.body)
+        if (filter.phoneNo === update.phoneNo) {
+            res.status(201).send("Same number!")
+        }
+        else {
+            let Teacher1 = await Teacher.findOneAndUpdate(filter,update);
+            if (Teacher1) {
+                res.status(200).send('ok')
+                console.log(Teacher1)
+                // alert("Email updated")
+            }
+        }
+    }
+    catch (err) {
+        res.status(500).send("internal server error")
+        console.log(err)
+    }
+})
+
+router.post('/updatename', async (req, res) => {
+    console.log(req.body)
+    let filter =  { username : req.body.username } 
+    let update = { username: req.body.new_username }
+    try {
+        // console.log(filter)
+        // console.log(update)
+        console.log(req.body)
+        if (filter.username === update.username) {
+            res.status(201).send("Same password")
+        }
+        else {
+            let Teacher1 = await Teacher.findOneAndUpdate(filter,update);
+            if (Teacher1) {
+                res.status(200).send('ok')
+                console.log(Teacher1)
+                // alert("Email updated")
+            }
+        }
+    }
+    catch (err) {
+        res.status(500).send("internal server error")
+        console.log(err)
+    }
+})
+
+
+router.post('/changepassword', async (req, res) => {
+    console.log(req.body)
+    let filter =  { password : req.body.password } 
+    let update = { password: req.body.new_password }
+    try {
+        // console.log(filter)
+        // console.log(update)
+        console.log(req.body)
+        if (filter.password === update.password) {
+            res.status(201).send("Same Password")
+        }
+        else {
+            let Teacher1 = await Teacher.findOneAndUpdate(filter,update);
+            if (Teacher1) {
+                res.status(200).send('ok')
+                console.log(Teacher1)
+                // alert("Email updated")
+            }
+            else {
+                res.status(202).send('incorrect password')
+            }
+        }
+    }
+    catch (err) {
+        res.status(500).send("internal server error")
+        console.log(err)
+    }
+})
+
+// router.get('/getemail', async (req, res) => {
+//     try {
+//         let Teacher1 = await Teacher.findOne({ username: req.body.username })
+//         res.send(Teacher1.email).status(200)
+//     }
+//     catch (err) {
+//         res.status(500).send("internal server error")
+//     }
+// })
+
 router.post('/entermarks', async (req, res) => {
     try {
         console.log(req.body)
