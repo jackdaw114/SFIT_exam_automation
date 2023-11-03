@@ -12,11 +12,14 @@ export default function ExcelCard(props) {
             <Card sx={{ borderRadius: 4, }} elevation={0}>
                 <CardContent>
                     <Typography variant="h6" color="text.secondary" gutterBottom>
-                        Examination: {props.subject} of Semester {props.semester}
+                        {props.marks_type}: {props.subject} of Semester {props.semester}
                     </Typography>
                     <Typography color="text.secondary">
                         Department: {props.department}
                     </Typography>
+                    {/* <Typography color="text.secondary">
+                        Year: {props.year}
+                    </Typography> */}
                 </CardContent>
                 <CardActions>
                     <Button size="small" onClick={handleSubmit}>Expand</Button>

@@ -167,7 +167,7 @@ export default function EnterMarks() {
                 <Grid container spacing={5} sx={{ padding: 2 }}>
                     {cardData.map((val, index) => (
                         <Grid item xs={3}>
-                            <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject} semester={val.semester} department={val.department} teacher_name={val.teacher_name}  ></ExcelCard>
+                            <ExcelCard  marks_type={val.marks_type} _id={val._id} subject={val.subject} semester={val.semester} department={val.department} teacher_name={val.teacher_name}  ></ExcelCard>
                         </Grid>
 
                     ))}

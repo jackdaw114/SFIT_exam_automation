@@ -51,10 +51,6 @@ export default function NewSheet(props) {
           {
             column.map((col, colIndex) => {
               return <TableCell key={colIndex} align="center">
-                {/* <Box>{row[col]}</Box>
-                <Box>{row[col]}</Box> */}
-                {/* {ct += 1} */}
-                {/* {console.log(colIndex)} */}
                 {(isEdit&& colIndex==2) ? <Box><Input value={row[col]}
                   onChange={(e) =>
                     handleCellEdit(rowIndex, col, e.target.value)
