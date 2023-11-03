@@ -2,6 +2,8 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select } from "@mui/mat
 import Header from "./Header"
 import { useState } from "react"
 import { useNavigate } from "react-router"
+import axios from "axios"
+import { writeFile } from "xlsx"
 
 export default function Gazette(props) {
     const [semester, setSemester] = useState('')
@@ -20,6 +22,18 @@ export default function Gazette(props) {
     const handleChangeYear = (e) => {
         setYear(e.target.value)
         // console.log(e.target.value)
+    }
+    const handlesubmit = (e) => {
+        axios.post('/jason/creategazette',
+            { semester: semester, department: department, year: year },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                }
+            }).then(res => {
+                writeFile(res.data.book, `Gazette_semester_${semester}_department_${department}_year_${year}.xlsx`)
+            })
     }
     return (
         <>
@@ -69,7 +83,7 @@ export default function Gazette(props) {
                         </Box>
                         <div>
 
-                            <Button variant="contained" color="warning" >Create Gazette</Button>
+                            <Button variant="contained" color="warning" onClick={handlesubmit} >Create Gazette</Button>
                         </div>
                     </Box>
                 </Box>

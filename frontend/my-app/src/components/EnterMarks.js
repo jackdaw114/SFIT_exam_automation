@@ -89,7 +89,7 @@ export default function EnterMarks() {
 
     }
     const subjects = localStorage.getItem('subjects').replace(/["\[\]]+/g, '').split(',')
-
+    console.log("hello")
     // useEffect(() => {
     //     console.log(jsonData)
     // }, [jsonData])
@@ -121,7 +121,7 @@ export default function EnterMarks() {
 
                                 </Select>
                             </FormControl>
-
+                            subjects
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Department</InputLabel>
                                 <Select onChange={handleChangeDepartment} value={department} label="Department" autoWidth>

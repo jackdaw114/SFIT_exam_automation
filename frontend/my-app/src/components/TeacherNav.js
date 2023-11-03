@@ -102,7 +102,7 @@ export default function TeacherNav() {
                         <Box sx={{ display: 'flex', justifyContent: 'space-around', minWidth: '70%' }}>
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Select Examination</InputLabel>
-                                <Select onChange={handleChangeType} value={type} label="Select Examination" autoWidth>
+                                <Select onChange={handleChangeType} value={type} label="Select Examination" >
                                     <MenuItem value="oral">Oral</MenuItem>
                                     <MenuItem value="practical">Practical</MenuItem>
                                     <MenuItem value="theory">Theory</MenuItem>
@@ -114,7 +114,7 @@ export default function TeacherNav() {
 
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Year</InputLabel>
-                                <Select onChange={handleChangeYear} value={year} label="Year" autoWidth>
+                                <Select onChange={handleChangeYear} value={year} label="Year">
                                     <MenuItem value="2022">2022</MenuItem>
                                     <MenuItem value="2023">2023</MenuItem>
                                     <MenuItem value="2024">2024</MenuItem>
@@ -124,7 +124,7 @@ export default function TeacherNav() {
 
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Department</InputLabel>
-                                <Select onChange={handleChangeDepartment} value={department} label="Department" autoWidth>
+                                <Select onChange={handleChangeDepartment} value={department} label="Department" >
                                     <MenuItem value="CMPN">CMPN</MenuItem>
                                     <MenuItem value="EXTC">EXTC</MenuItem>
                                     <MenuItem value="MECH">MECH</MenuItem>
@@ -134,7 +134,7 @@ export default function TeacherNav() {
 
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Semester</InputLabel>
-                                <Select onChange={handleChangeSemester} value={semester} label="Semester" autoWidth>
+                                <Select onChange={handleChangeSemester} value={semester} label="Semester" >
                                     <MenuItem value={1}>Sem 1</MenuItem>
                                     <MenuItem value={2}>Sem 2</MenuItem>
                                     <MenuItem value={3}>Sem 3</MenuItem>
@@ -148,10 +148,16 @@ export default function TeacherNav() {
 
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Subject</InputLabel>
-                                <Select onChange={handleChangeSubject} value={subject} label="Subject" autoWidth>
-                                    <MenuItem value="sub1">Subject 1</MenuItem>
+                                <Select onChange={handleChangeSubject} value={subject} label="Subject" >
+                                    <MenuItem value="sub1" >Subject 1</MenuItem>
                                     <MenuItem value="sub2">Subject 2</MenuItem>
                                     <MenuItem value="sub3">Subject 3</MenuItem>
+                                    <MenuItem value="sub4">Subject 4</MenuItem>
+                                    <MenuItem value="sub5">Subject 5</MenuItem>
+                                    <MenuItem value="sub6">Subject 6</MenuItem>
+                                    <MenuItem value="sub7">Subject 7</MenuItem>
+                                    <MenuItem value="sub8">Subject 8</MenuItem>
+                                    <MenuItem value="sub9">Subject 9</MenuItem>
 
                                 </Select>
                             </FormControl>
