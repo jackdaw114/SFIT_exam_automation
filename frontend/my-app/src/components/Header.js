@@ -34,16 +34,18 @@ export default function Header() {
             {/* <div style={{ position: 'absolute', right: 10 }}> */}
             <Stack direction="row" spacing={5} marginRight={1} zIndex={1}>
                 
-
+                {
+                    !localStorage.getItem("isAdmin")&&
                     <motion.div initial={{ borderRadius: '100%' }}
-                        whileHover={{
-                            scale: 1.1,
-                            outline: 'solid 3px #a63446'
-                        }}>
+                    whileHover={{
+                        scale: 1.1,
+                        outline: 'solid 3px #a63446'
+                    }}>
 
                         <Avatar onClick={navigatetoprofile} />
 
                     </motion.div>
+                }
                 
 
                

@@ -52,8 +52,10 @@ const Auth = () => {
             localStorage.setItem('isLoggedIn', true)
             console.log(res.data)
             if (isAdmin) {
+                localStorage.setItem('isAdmin', true)
                 navigate('/adminhome')
             } else {
+                localStorage.setItem('isAdmin', false)
                 localStorage.setItem('phoneNo', res.data.phoneNo)
                 localStorage.setItem('email', res.data.email)
                 localStorage.setItem('password', res.data.password)
