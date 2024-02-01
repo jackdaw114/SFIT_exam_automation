@@ -34,8 +34,8 @@ router.post('/addteacher', async (req, res) => {
         await Teacher.create({
             username: req.body.username,
             password: req.body.password,
-            email:req.body.email,
-            phoneNo:req.body.phoneNo,
+            email: req.body.email,
+            phoneNo: req.body.phoneNo,
             subject: req.body.subject,
         }).then(() => {
             res.status(200).send('Ok')
@@ -81,7 +81,7 @@ router.post('/updateteacher', async (req, res) => {
 router.post('/creategazette', async (req, res) => {
     try {
         let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
-        console.log(data)
+        // console.log(data)
         let workbook_object = {}
 
         let c = 0;
@@ -95,7 +95,7 @@ router.post('/creategazette', async (req, res) => {
             }
             c++;
         })
-        console.log(workbook_object)
+        // console.log(workbook_object)
         const template = xlsx.readFile('./ExcelTemplates/gazette_temp.xlsx')
         const temp_sheet = template.Sheets[template.SheetNames[0]]
         console.log(template.Sheets[template.SheetNames[3]])
@@ -122,7 +122,7 @@ router.post('/creategazette', async (req, res) => {
 
 
         let iterator = Object.keys(workbook_object);
-        console.log(iterator)
+        // console.log(iterator)
         iterator.forEach(e => {
             let element = workbook_object[e]
             console.log(element)
@@ -158,7 +158,7 @@ router.post('/creategazette', async (req, res) => {
         //console.log(temp_sheet)
         const newbook = xlsx.utils.book_new();
         temp_sheet['!ref'] = 'A1:J500'
-
+        console.log('hello')
         xlsx.utils.book_append_sheet(newbook, temp_sheet, 'test1')
 
         xlsx.writeFile(newbook, 'temp2.xlsx')

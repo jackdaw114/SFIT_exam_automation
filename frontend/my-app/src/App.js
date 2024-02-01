@@ -35,7 +35,7 @@ function App() {
           <Route path='/viewexam' element={<><ViewExam /></>} />
           <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
           <Route path='/adminhome' element={<><AdminHome /></>} />
-          <Route path='/profile' element={<><TeacherProfile/></>} />
+          <Route path='/profile' element={<><TeacherProfile /></>} />
           <Route path='/creategazette' element={<><Gazette /></>} />
         </Routes>
       </BrowserRouter>

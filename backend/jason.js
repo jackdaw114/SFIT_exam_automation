@@ -48,16 +48,17 @@ router.post('/creategazette', async (req, res) => {
 
 
         let iterator = Object.keys(workbook_object);
-        console.log(iterator)
+        // console.log(iterator)
         await iterator.forEach(e => {
             let element = workbook_object[e]
-            console.log(element.marks_type)
+            // console.log(element.marks_type)
             let i = 2
             while (true) {
                 if (element.sheet[`A${i}`] == undefined) {
                     break;
                 }
                 else {
+                    console.log(element.sheet[`C${i}`].v)
                     StudentDictionary(element.sheet[`A${i}`].v, element.sheet[`C${i}`].v, element.subject, element.marks_type, subj_list, student_data)
                     i = i + 1;
                 }
@@ -65,7 +66,7 @@ router.post('/creategazette', async (req, res) => {
         });
 
         console.log(student_data)
-        temp_sheet['A70'] = { t: 's', v: 'elo' }
+        //temp_sheet['A70'] = { t: 's', v: 'elo' }
 
         //CREATION OF GAZETTE
         let pids = Object.keys(student_data)
@@ -74,9 +75,10 @@ router.post('/creategazette', async (req, res) => {
         let entry = 14;
         const column_lista = ['C', 'D', 'E', 'F']
         const column_listb = ['C', 'D', 'E', 'F', 'G']
+        //console.log(pids)
 
         pids.forEach((pid) => {
-
+            // console.log('hello')
             temp_sheet[`A${entry}`] = { t: 's', v: pid };
             column_lista.forEach((item, index) => {
                 //console.log('item', item, 'iter:', index)
@@ -87,17 +89,10 @@ router.post('/creategazette', async (req, res) => {
             column_listb.forEach((item, index) => {
                 //console.log('item', item, 'iter:', index)
                 temp_sheet[`${item}${entry + 2}`] = { t: 's', v: student_data[pid][`sub${index + 5}`]['theory'] }
-                temp_sheet[`${item}${entry + 3}`] = { t: 's', v: `${student_data[pid][`sub${index + 5}`]['term-work']}/${student_data[pid][`sub${index + 1}`]['oral']}` }
+                temp_sheet[`${item}${entry + 3}`] = { t: 's', v: `${student_data[pid][`sub${index + 5}`]['term-work']}/${student_data[pid][`sub${index + 5}`]['oral']}` }
 
             })
 
-            // temp_sheet[`C${entry}`] = { t: 's', v: student_data[pid]['sub1']['theory'] }
-            // temp_sheet[`D${entry}`] = { t: 's', v: student_data[pid]['sub2']['theory'] }
-            // temp_sheet[`E${entry}`] = { t: 's', v: student_data[pid]['sub3']['theory'] }
-            // temp_sheet[`C${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub1']['oral']}` }
-            // temp_sheet[`D${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub2']['term']}/${student_data[pid]['sub2']['oral']}` }
-            // temp_sheet[`E${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub3']['oral']}` }
-            // temp_sheet[`E${entry}`] = { t: 's', v: student_data[pid]['sub3']['theory'] }
             entry += entry_dist
         })
         //console.log(temp_sheet)
@@ -119,9 +114,12 @@ router.post('/creategazette', async (req, res) => {
 function StudentDictionary(pid, marks, subject, type, subj_list, json) {
     let keys = Object.keys(json)
     if (keys.includes(pid)) {
+
+
         json[pid][subject][type] = marks;
     }
     else {
+
         json[pid] = {
             'sub1': { 'term-work': '', 'oral': '', 'theory': '' }, //IMPLEMENT SUBJECT LIST HERE
             'sub2': { 'term-work': '', 'oral': '', 'theory': '' },
@@ -133,9 +131,13 @@ function StudentDictionary(pid, marks, subject, type, subj_list, json) {
             'sub8': { 'term-work': '', 'oral': '', 'theory': '' },
             'sub9': { 'term-work': '', 'oral': '', 'theory': '' },
         }
-
         json[pid][subject][type] = marks;
+
     }
-}
+
+}            // temp_sheet[`C${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub1']['oral']}` }
+// temp_sheet[`D${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub2']['term']}/${student_data[pid]['sub2']['oral']}` }
+// temp_sheet[`E${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub3']['oral']}` }
+// temp_sheet[`E${entry}`] = { t: 's', v: student_data[pid]['sub3']['theory'] }
 
 module.exports = router;   
