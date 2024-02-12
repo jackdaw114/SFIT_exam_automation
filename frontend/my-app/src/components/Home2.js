@@ -14,6 +14,7 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import WcIcon from '@mui/icons-material/Wc';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ChecklistIcon from '@mui/icons-material/Checklist';
+import BuildIcon from '@mui/icons-material/Build';
 import Header from './Header';
 import { useNavigate } from "react-router";
 
@@ -23,7 +24,7 @@ function HomeGrid() {
     const boxMaxHeight = 400;
 
 
-    const analysis = [{ name: 'Enter Marks', icon: <ArticleIcon fontSize="large" />, nav: '/exam' },
+    const menu = [{ name: 'Enter Marks', icon: <ArticleIcon fontSize="large" />, nav: '/exam' }, { name: 'Settings', icon: <BuildIcon fontSize="large" />, nav: '/settings' }
     ]
 
     const coloors_gc = ['#80e7b6', '#c3e8d6', '#84cded', '#9fffaa', '#80f5cd', '#96b5ff']
@@ -108,7 +109,7 @@ function HomeGrid() {
 
                         <Grid container spacing={5} sx={{ padding: 3, overflow: 'scroll', backgroundColor: 'transparent', maxHeight: boxMaxHeight }}>
 
-                            {analysis.map((item, index) => (
+                            {menu.map((item, index) => (
                                 <CustGrid icon={item.icon} text={item.name} nav={item.nav} />
                             ))
                             }
@@ -128,7 +129,7 @@ function HomeGrid() {
 export default function Home() {
     return (
         <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh' }}>
-            <Header />
+
             <HomeGrid />
         </Box >
     )

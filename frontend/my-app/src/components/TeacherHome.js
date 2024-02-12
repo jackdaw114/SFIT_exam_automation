@@ -8,7 +8,7 @@ export default function TeacherHome() {
 
     return (
         <>
-            <Header />
+
             <Box className='button-box'>
                 <Button variant="contained" sx={{ backgroundColor: '#292f36' }}>Enter Marks</Button>
             </Box >

@@ -1,0 +1,23 @@
+{
+    "editor.formatOnSave": true,
+    "editor.fontSize": 16,
+    "editor.tokenColorCustomizations": {
+        "[Soft Colors]": {
+            "comments": "#db33a3",
+            "textMateRules": [
+                {
+                    "scope": "entity.name.function.js",
+                    "settings": {
+                        "foreground": "#e85a5a"
+                    }
+                },
+                {
+                    "scope": "variable",
+                    "settings": {
+                        "foreground": "#a6e3a3"
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -96,7 +96,7 @@ export default function TeacherNav() {
     return (
         <>
             <div className='container-teacher-nav'>
-                <Header />
+
                 <Box className='selection-box'>
                     <Box sx={{ borderRadius: 3, margin: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-around', minWidth: '70%' }}>

@@ -19,6 +19,7 @@ const admin = mongoose.model('Admin');
 app.use('/teacher', require('./teacher.js'))
 app.use('/admin', require('./admin.js'))
 app.use('/jason', require('./jason.js'))
+app.use('/revamp', require('./dbmsrevamp'))
 
 // const post = async () => {
 //     try {

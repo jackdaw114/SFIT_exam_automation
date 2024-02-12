@@ -130,7 +130,6 @@ export default function ViewExam(props) {
 
     return (
         <>
-            <Header />
             {/* <Box sx={{display:"flex",alignItems:'center',flexDirection:'column',width:'100vw'}}> */}
 
             {tableData ? <NewSheet tableData={table2Data} func={childToParent} /> : <></>}

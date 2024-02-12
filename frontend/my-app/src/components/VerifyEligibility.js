@@ -25,7 +25,7 @@ export default function VerifyEligibility() {
     return (
         <>
             <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh' }}>
-                <Header />
+
                 <NewSheet tableData={tableData} func={childToParent} />
             </Box>
         </>

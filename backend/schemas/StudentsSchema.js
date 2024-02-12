@@ -7,7 +7,7 @@ const StudentSchema = mongoose.Schema(
             required: true
         },
         pid: {
-            type: String,
+            type: Number,
             required: true,
         }
 

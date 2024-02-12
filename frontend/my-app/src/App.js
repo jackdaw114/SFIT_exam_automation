@@ -15,15 +15,18 @@ import AdminHome from './components/AdminHome';
 import TheOgHome2 from './components/TheOgHome2'
 import TeacherProfile from './components/TeacherProfile';
 import Gazette from './components/Gazette';
+import Settings from './components/Settings';
+import Header from './components/Header';
 const teacher = '/teacher'
 const admin = '/admin'
 
 function App() {
   return (
     <Box   >
-      <div className='gradient_background'></div>
+
 
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
           <Route path='/login' element={<><Auth /></>}></Route>
@@ -32,6 +35,7 @@ function App() {
           <Route path='/test' element={<><Test /></>}></Route>
           <Route path='/' element={<><Home /></>}></Route>
           <Route path='/exam' element={<><TeacherNav /></>} />
+          <Route path='/settings' element={<><Settings /></>} />
           <Route path='/viewexam' element={<><ViewExam /></>} />
           <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
           <Route path='/adminhome' element={<><AdminHome /></>} />
