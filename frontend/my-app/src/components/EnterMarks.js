@@ -88,7 +88,23 @@ export default function EnterMarks() {
         // console.log()
 
     }
-    const subjects = localStorage.getItem('subjects').replace(/["\[\]]+/g, '').split(',')
+    // const subjects = localStorage.getItem('subjects').replace(/["\[\]]+/g, '').split(',')
+    const [subjects, setSubjects] = useState([])
+
+    useEffect(() => {
+        axios.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+        }).then(res => {
+            setSubjects(res.data.subject_list)
+            console.log(res.data.subject_list)
+        })
+
+
+    })
+
     console.log("hello")
     // useEffect(() => {
     //     console.log(jsonData)
@@ -167,7 +183,7 @@ export default function EnterMarks() {
                 <Grid container spacing={5} sx={{ padding: 2 }}>
                     {cardData.map((val, index) => (
                         <Grid item xs={3}>
-                            <ExcelCard  marks_type={val.marks_type} _id={val._id} subject={val.subject} semester={val.semester} department={val.department} teacher_name={val.teacher_name}  ></ExcelCard>
+                            <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject} semester={val.semester} department={val.department} teacher_name={val.teacher_name}  ></ExcelCard>
                         </Grid>
 
                     ))}

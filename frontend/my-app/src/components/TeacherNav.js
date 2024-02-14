@@ -22,6 +22,7 @@ export default function TeacherNav() {
     const [jsonData, setJsonData1] = useState([])
     const [cardData, setCardData] = useState([])
     const navigate = useNavigate()
+    const [subjectList, setSubjectList] = useState([])
     const handleChangeType = (e) => {
         setType(e.target.value)
         // console.log(e.target.value)
@@ -52,7 +53,19 @@ export default function TeacherNav() {
         }).then((res) => {
             setCardData(res.data)
         })
-    }, [])
+        axios.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+        }).then(res => {
+            console.log(res.data.subject_list)
+            setSubjectList(res.data.subject_list)
+        })
+
+    }
+        , [])
+
 
     const handleSubmit = async (e) => {
         //  let jsonData = []
@@ -149,15 +162,11 @@ export default function TeacherNav() {
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Subject</InputLabel>
                                 <Select onChange={handleChangeSubject} value={subject} label="Subject" >
-                                    <MenuItem value="sub1" >Subject 1</MenuItem>
-                                    <MenuItem value="sub2">Subject 2</MenuItem>
-                                    <MenuItem value="sub3">Subject 3</MenuItem>
-                                    <MenuItem value="sub4">Subject 4</MenuItem>
-                                    <MenuItem value="sub5">Subject 5</MenuItem>
-                                    <MenuItem value="sub6">Subject 6</MenuItem>
-                                    <MenuItem value="sub7">Subject 7</MenuItem>
-                                    <MenuItem value="sub8">Subject 8</MenuItem>
-                                    <MenuItem value="sub9">Subject 9</MenuItem>
+                                    {subjectList.map((item, index) => (
+
+                                        <MenuItem value={item.subject_id}>{item.subject_id} - {item.subject_name}</MenuItem>
+
+                                    ))}
 
                                 </Select>
                             </FormControl>

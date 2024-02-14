@@ -290,7 +290,7 @@ export default function Settings(props) {
         }).then(res => {
             setSubjectList(res.data.subject_list)
             console.log(res.data.subject_list)
-        }) //TODO: implement backend for this url
+        })
 
     }, [update]);
     return (
