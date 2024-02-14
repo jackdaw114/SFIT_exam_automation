@@ -10,11 +10,22 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Topbar from './Topbar';
-import { Paper, Switch, TextField, styled } from '@mui/material';
+import { Button, MenuItem, Paper, Switch, TextField, styled } from '@mui/material';
 import axios from 'axios'
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import CircleIcon from '@mui/icons-material/Circle';
+
+// TODO: use a variable to control font size(font size is 22) 
+// TODO: figure out padding values( make them uniform   )
+
+
+
+
 const borderColor = '#E0E0E0';
 const drawerWidth = 240;
-
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
@@ -73,11 +84,11 @@ const capitalizeFirstLetter = ([first, ...rest]) => {
 function SettingDrawer(props) {
 
     return (<div style={{ paddingLeft: '10vw' }}>
-        <Box sx={{ minHeight: '100%', position: 'fixed', height: '100%', overflowX: 'scroll', maxWidth: '20vw', width: '15vw' }}>
+        <Box sx={{ minHeight: '100%', position: 'absolute', height: '100%', overflowX: 'scroll', maxWidth: '20vw', width: '15vw' }}>
 
             <List sx={{ borderRight: 1, marginTop: 5, borderColor: borderColor }}>
                 <ListItem sx={{ fontSize: 40, padding: 2, fontFamily: 'serif', fontWeight: 'bold', }}>Settings</ListItem>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                {['Details', 'Subjects', 'Update'].map((text, index) => (
                     <ListItem key={text} >
                         <ListItemButton sx={{
                             border: 1, borderRadius: 100,
@@ -88,7 +99,7 @@ function SettingDrawer(props) {
                             },
                         }}>
                             <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                <CircleIcon />
                             </ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItemButton>
@@ -98,10 +109,125 @@ function SettingDrawer(props) {
         </Box></div >)
 }
 
+const AddSubjectButton = ({ onClick }) => {
+    return (
+        <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<AddIcon />}
+            onClick={onClick}
+            sx={{
+                borderRadius: 10,
+                '&:hover': {
+                    backgroundColor: '#91c496',
+                },
+            }}
+        >
+            Add Subject
+        </Button>
+    );
+};
+const ApprovalButton = ({ onClick }) => {
+    return (
+        <Button
+            variant="contained"
+            color="secondary"
+
+            onClick={onClick}
+            startIcon={<AssignmentIndIcon />}
+            sx={{
+
+                borderRadius: 10,
+                '&:hover': {
+                    backgroundColor: '#91c496',
+                },
+            }}
+        >
+            Update Profile
+        </Button>
+    );
+};
+
+
+const DynamicTextFields = () => {
+    const [fields, setFields] = React.useState([]);
+    const [update, setUpdate] = React.useState();
+    const addTextField = () => {
+        const newFields = [...fields, { id: fields.length + 1, value: '' }];
+        setFields(newFields);
+    };
+
+    const removeTextField = (id) => {
+        const updatedFields = fields.filter((field) => field.id !== id);
+        setFields(updatedFields);
+    };
+
+    const handleChange = (id, newValue) => {
+        console.log(newValue)
+        const updatedFields = fields.map((field) =>
+            field.id === id ? { ...field, value: newValue } : field
+        );
+        setFields(updatedFields);
+    };
+    const [subjectList, setSubjectList] = React.useState([])
+    React.useEffect(() => {
+        axios.get('/teacher/subjectlist').then(res => {
+            setSubjectList(res.data)
+            console.log(res.data)
+        })
+    }, [update])
+    const updateTeacherSubject = () => {
+        fields.map((subject) => {
+            console.log(subject)
+            axios.post('/teacher/updateteachersubject', { subject_id: subject.value, teacher_id: localStorage.getItem('username') }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                }
+            }).then(res => {
+                alert('subject list updated successfully')
+            })
+        })
+
+    }
+    return (
+        <div style={{ paddingTop: 20 }}>
+            {fields.map((field) => (
+                <div key={field.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
+                    <TextField
+                        label={`Add Subject `}
+                        id={field.id}
+                        value={field.value}
+                        onChange={(e) => handleChange(field.id, e.target.value)}
+                        select
+                        sx={{ width: 'auto', minWidth: 250 }}
+                        InputProps={{
+                            sx: {
+                                borderRadius: 5,
+                            },
+                        }}
+                    >
+                        {subjectList ? subjectList.map((option, index) => (
+                            <MenuItem key={option._id} value={option._id}>
+                                {option.subject_id} - {option.subject_name}
+                            </MenuItem>
+                        )) : <></>}
+                    </TextField>
+                    <IconButton onClick={() => removeTextField(field.id)}>
+                        <RemoveIcon />
+                    </IconButton>
+                </div>
+            ))}
+            <AddSubjectButton onClick={addTextField} />
+            <Divider sx={{ paddingTop: 1 }} />
+            <ApprovalButton onClick={updateTeacherSubject} />
+        </div>
+    );
+};
 
 
 const StyledTextField = (props) => <TextField {...props} fullWidth sx={{
-    paddingTop: 1, paddingLeft: 4, paddingBottom: 1, fontSize: 20, '& .MuiInput-underline:after': {
+    paddingTop: 3, paddingLeft: 4, paddingBottom: 2, fontSize: 20, '& .MuiInput-underline:after': {
         borderBottomColor: '#6ca178c',
     },
     '& .MuiInput-underline:before': {
@@ -173,7 +299,7 @@ export default function Settings(props) {
             <Box sx={{ marginLeft: '30vw', paddingLeft: 3, marginTop: 15, paddingTop: 2, fontSize: 40, maxWidth: '55vw' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
                     <SettingsHeaderTypography > Details</SettingsHeaderTypography>
-
+                    {/* TODO: grid view for Details will look better */}
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography variant='h5' sx={{ padding: 2, fontFamily: 'serif' }} >
                             Edit
@@ -184,7 +310,8 @@ export default function Settings(props) {
                     </Box>
                 </Box>
                 <Divider sx={{ marginBottom: 2 }} />
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'baseline' }}>
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'baseline', paddingLeft: 2 }}>
                     <StyledTypography variant='h5'>Username </StyledTypography>
                     <StyledTextField edit={!switches.switch1} disabled={!switches.switch1} name='username' value={inputs.username}
                         onChange={handleChange}></StyledTextField>
@@ -193,27 +320,31 @@ export default function Settings(props) {
 
                     <StyledTextField edit={!switches.switch1} disabled={!switches.switch1} name='phone_no' value={inputs.phone_no} onChange={handleChange} ></StyledTextField>
                 </Box >
+
                 <Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
                         <SettingsHeaderTypography variant='h4' sx={{ fontSize: 28, fontWeight: 'bold', fontFamily: 'serif', paddingBottom: 2 }}>Subjects Taught</SettingsHeaderTypography>
 
-                        {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography variant='h5' sx={{ padding: 2, fontFamily: 'serif' }} >
-                                Edit
-                            </Typography>
-                            <IOSSwitch checked={switches.switch2} //TODO: change naming convention for switch 
-                                onChange={handleSwitchChange('switch2')}
-                            />
 
-
-                        </Box> */}
                     </Box>
                     <Divider sx={{ marginBottom: 2 }} />
+
                     {subjectList.map((item, index) => (
-                        <StyledTypography variant='h5'>{item}</StyledTypography>
+                        <Typography variant='h5' sx={{ paddingLeft: 2, paddingTop: 1, fontFamily: 'serif', fontSize: 22 }}>{item.subject_id} - {item.subject_name}</Typography>
                     ))
                     }
+
                 </Box>
+                <Box sx={{ paddingLeft: 1 }}>
+                    <DynamicTextFields />
+                </Box>
+                {/* <Divider sx={{ marginBottom: 2, marginTop: 3 }} /> */}
+
+
+
+
+                {/* <ApprovalButton /> TODO: figure how this can call multiple functions */}
+
 
             </Box >
         </>

@@ -17,7 +17,7 @@ const SubjectSchema = mongoose.Schema(
         branch: {
             type: String,
             required: true,
-            ref: 'Branch'
+
         }
 
     }

@@ -6,7 +6,8 @@ const StudentIATSchema = require('./schemas/StudentIATSchema');
 const MarksSchema = require('./schemas/MarksSchema');
 const StudentsSchema = require('./schemas/StudentsSchema');
 // const { Db } = require('mongodb');
-const TeacherSubjectsSchema = require('./schamas_revamp/TeacherSubjectSchema')
+const TeacherSubjectsSchema = require('./schamas_revamp/TeacherSubjectSchema');
+const SubjectsSchema = require('./schamas_revamp/SubjectsSchema');
 
 
 router.post('/login', async (req, res) => {
@@ -292,7 +293,7 @@ router.post('/excelbyid', async (req, res) => {
         res.status(500).send(error.keyValue)
     }
 })
-router.post('/updatesubjectlist', async (req, res) => {
+router.post('/updateteachersubject', async (req, res) => {
     try {
         console.log(req.body)
         const { subject_id, teacher_id } = req.body;
@@ -327,14 +328,45 @@ router.post('/updateexcel', async (req, res) => {
 })
 router.post('/teachersubjects', async (req, res) => {
     try {
-        console.log(req.body)
-        const teachersubjects = await TeacherSubjectsSchema.find(
-            { teacher_id: req.body.teacher_id },
-            { subject_id: 1, _id: 0 }
-        );
 
+        const teachersubjects = await TeacherSubjectsSchema.find(
+            { teacher_id: req.body.teacher_id }
+        ).populate('subject_id');
+        console.log(teachersubjects)
         const subject_list = teachersubjects.map(subject => subject.subject_id);
         res.json({ subject_list })
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err.keyValue)
+    }
+})
+
+router.get('/subjectlist', async (req, res) => {
+    try {
+        const subject_list = await SubjectsSchema.find({})
+        // console.log(subject_list)
+        res.send(subject_list)
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err.keyValue)
+    }
+})
+router.post('/addsubject', async (req, res) => {
+    try {
+        let subject;
+
+        const existingSubject = await SubjectsSchema.findOne({ subject_id: req.body.subject_id });
+
+        if (existingSubject) {
+            existingSubject.subject_name = req.body.subject_name;
+            existingSubject.branch = req.body.branch;
+            subject = await existingSubject.save();
+        } else {
+            subject = new SubjectsSchema(req.body);
+            await subject.save();
+        }
+        res.send('updated')
+
     } catch (err) {
         console.log(err)
         res.status(400).send(err.keyValue)

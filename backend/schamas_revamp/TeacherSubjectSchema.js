@@ -8,7 +8,7 @@ const TeacherSubjectSchema = mongoose.Schema(
         subject_id: {
             type: String,
             required: true,
-            unique: true
+            ref: 'Subject'
         },
         teacher_id: {
             type: String,

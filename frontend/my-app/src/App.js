@@ -17,33 +17,37 @@ import TeacherProfile from './components/TeacherProfile';
 import Gazette from './components/Gazette';
 import Settings from './components/Settings';
 import Header from './components/Header';
+import theme from './theme/palette';
+
 const teacher = '/teacher'
 const admin = '/admin'
 
 function App() {
   return (
-    <Box   >
+    <ThemeProvider theme={theme}>
+      <Box   >
 
 
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
-          <Route path='/login' element={<><Auth /></>}></Route>
-          <Route path='/entermarks' element={<><EnterMarks /></>}></Route>
-          <Route path='/viewexam' element={<><ViewExam /></>}></Route>
-          <Route path='/test' element={<><Test /></>}></Route>
-          <Route path='/' element={<><Home /></>}></Route>
-          <Route path='/exam' element={<><TeacherNav /></>} />
-          <Route path='/settings' element={<><Settings /></>} />
-          <Route path='/viewexam' element={<><ViewExam /></>} />
-          <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
-          <Route path='/adminhome' element={<><AdminHome /></>} />
-          <Route path='/profile' element={<><TeacherProfile /></>} />
-          <Route path='/creategazette' element={<><Gazette /></>} />
-        </Routes>
-      </BrowserRouter>
-    </Box>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
+            <Route path='/login' element={<><Auth /></>}></Route>
+            <Route path='/entermarks' element={<><EnterMarks /></>}></Route>
+            <Route path='/viewexam' element={<><ViewExam /></>}></Route>
+            <Route path='/test' element={<><Test /></>}></Route>
+            <Route path='/' element={<><Home /></>}></Route>
+            <Route path='/exam' element={<><TeacherNav /></>} />
+            <Route path='/settings' element={<><Settings /></>} />
+            <Route path='/viewexam' element={<><ViewExam /></>} />
+            <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
+            <Route path='/adminhome' element={<><AdminHome /></>} />
+            <Route path='/profile' element={<><TeacherProfile /></>} />
+            <Route path='/creategazette' element={<><Gazette /></>} />
+          </Routes>
+        </BrowserRouter>
+      </Box>
+    </ThemeProvider>
   );
 }
 

@@ -17,7 +17,7 @@ const SubjectListschema = mongoose.Schema( //TODO: implement schema
         teacher_id: {
             type: String,
             required: true,
-            ref: 'Branch'
+
         }
 
     }
