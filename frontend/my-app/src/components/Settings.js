@@ -11,7 +11,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Topbar from './Topbar';
 import { Paper, Switch, TextField, styled } from '@mui/material';
-
+import axios from 'axios'
 const borderColor = '#E0E0E0';
 const drawerWidth = 240;
 
@@ -67,6 +67,9 @@ const IOSSwitch = styled((props) => (
     },
 }));
 
+const capitalizeFirstLetter = ([first, ...rest]) => {
+    return first.toUpperCase() + rest.join('');
+}
 function SettingDrawer(props) {
 
     return (<div style={{ paddingLeft: '10vw' }}>
@@ -95,24 +98,49 @@ function SettingDrawer(props) {
         </Box></div >)
 }
 
-const StyledTextField = (props) => <TextField {...props} fullWidth sx={{ paddingTop: 1, fontSize: 20 }} variant='standard' InputProps={{
-    disableUnderline: true, style: {
-        fontSize: 20,
+
+
+const StyledTextField = (props) => <TextField {...props} fullWidth sx={{
+    paddingTop: 1, paddingLeft: 4, paddingBottom: 1, fontSize: 20, '& .MuiInput-underline:after': {
+        borderBottomColor: '#6ca178c',
     },
+    '& .MuiInput-underline:before': {
+        borderBottomColor: '#DDDDDD',
+    },
+    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+        borderBottomColor: '#999999',
+    },
+    "& .MuiInputBase-input.Mui-disabled": {
+        WebkitTextFillColor: "#000000", // Change this to the color you prefer
+    },
+}} variant='standard' InputProps={{
+    disableUnderline: props.edit ? true : false, style: {
+        fontSize: 22,
+        fontFamily: 'serif',
+        fontWeight: 'bold'
+    },
+
 }} />
-const StyledTypography = (props) => <Typography {...props} sx={{ paddingTop: 3, fontFamily: 'serif', fontSize: 20 }} />
+const StyledTypography = (props) => <Typography {...props} sx={{ paddingTop: 1, fontFamily: 'serif', fontSize: 22 }} />
+const SettingsHeaderTypography = (props) => <Typography {...props} variant='h4' sx={{ fontSize: 28, fontWeight: 'bold', fontFamily: 'serif', paddingBottom: 2, paddingTop: 3 }} />
+
 
 export default function Settings(props) {
+    const [update, setUpdate] = React.useState(false);
+    const [subjectList, setSubjectList] = React.useState([])
 
     // TODO: fetch teacher data from localstorage
     const [inputs, setInputs] = React.useState({
-        username: "",
+        username: capitalizeFirstLetter(localStorage.getItem('username')),
         phone_no: "",
     })
-    const [edit, setEdit] = React.useState(false)
-
-    const handleToggle = () => {
-        setEdit((prev) => !prev); // Toggle the state
+    const [switches, setSwitches] = React.useState({
+        switch1: false,
+        switch2: false,
+        switch3: false,
+    });
+    const handleSwitchChange = (name) => (event) => {
+        setSwitches({ ...switches, [name]: event.target.checked });
     };
     const handleChange = (e) => {
         setInputs((prevState) => ({
@@ -125,33 +153,69 @@ export default function Settings(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log('Submitted Value: ', inputs);
-        // TODO: implementation  
+        // TODO: implementation (Axios request for teacher data update)
     };
+    React.useEffect(() => {
+        axios.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+        }).then(res => {
+            setSubjectList(res.data.subject_list)
+            console.log(res.data.subject_list)
+        }) //TODO: implement backend for this url
+
+    }, [update]);
     return (
         <>
             <SettingDrawer />
             <Box sx={{ marginLeft: '30vw', paddingLeft: 3, marginTop: 15, paddingTop: 2, fontSize: 40, maxWidth: '55vw' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
-                    <Typography variant='h4' sx={{ fontSize: 28, fontWeight: 'bold', fontFamily: 'serif', paddingBottom: 2 }}> Details</Typography>
+                    <SettingsHeaderTypography > Details</SettingsHeaderTypography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography variant='h5' sx={{ padding: 2, fontFamily: 'serif' }} >
                             Edit
                         </Typography>
-                        <IOSSwitch checked={edit} // Set the checked state of the switch
-                            onChange={handleToggle} />
+                        <IOSSwitch
+                            checked={switches.switch1}
+                            onChange={handleSwitchChange('switch1')} />
                     </Box>
                 </Box>
-                <Divider />
+                <Divider sx={{ marginBottom: 2 }} />
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'baseline' }}>
                     <StyledTypography variant='h5'>Username </StyledTypography>
-                    <StyledTextField disabled={!edit} name='username' value={inputs.username}
+                    <StyledTextField edit={!switches.switch1} disabled={!switches.switch1} name='username' value={inputs.username}
                         onChange={handleChange}></StyledTextField>
                     <StyledTypography variant='h5'>Phone Number</StyledTypography>
 
 
-                    <StyledTextField disabled={!edit} name='phone_no' value={inputs.phone_no} onChange={handleChange} ></StyledTextField>
-                </Box ></Box>
+                    <StyledTextField edit={!switches.switch1} disabled={!switches.switch1} name='phone_no' value={inputs.phone_no} onChange={handleChange} ></StyledTextField>
+                </Box >
+                <Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
+                        <SettingsHeaderTypography variant='h4' sx={{ fontSize: 28, fontWeight: 'bold', fontFamily: 'serif', paddingBottom: 2 }}>Subjects Taught</SettingsHeaderTypography>
+
+                        {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography variant='h5' sx={{ padding: 2, fontFamily: 'serif' }} >
+                                Edit
+                            </Typography>
+                            <IOSSwitch checked={switches.switch2} //TODO: change naming convention for switch 
+                                onChange={handleSwitchChange('switch2')}
+                            />
+
+
+                        </Box> */}
+                    </Box>
+                    <Divider sx={{ marginBottom: 2 }} />
+                    {subjectList.map((item, index) => (
+                        <StyledTypography variant='h5'>{item}</StyledTypography>
+                    ))
+                    }
+                </Box>
+
+            </Box >
         </>
     )
 }

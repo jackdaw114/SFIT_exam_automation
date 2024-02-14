@@ -26,4 +26,4 @@ const MarksSchema = mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model('Marks', MarksSchema);
+module.exports = mongoose.model('Marks2', MarksSchema);

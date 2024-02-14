@@ -6,12 +6,12 @@ const mongoose = require('mongoose');
 const TeacherSubjectSchema = mongoose.Schema(
     {
         subject_id: {
-            type: Number,
+            type: String,
             required: true,
             unique: true
         },
         teacher_id: {
-            type: Number,
+            type: String,
             required: true
         },
 

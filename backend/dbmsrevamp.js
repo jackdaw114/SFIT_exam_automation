@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Admin = require('./schemas/AdminSchema')
 const Teacher = require('./schemas/TeacherSchema');
-const MarksSchema = require('./schemas_revamp/MarksSchema');
+const MarksSchema = require('./schamas_revamp/MarksSchema');
 const ExcelJS = require('exceljs');
 const xlsx = require('xlsx');
 

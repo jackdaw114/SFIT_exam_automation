@@ -6,7 +6,7 @@ const StudentIATSchema = require('./schemas/StudentIATSchema');
 const MarksSchema = require('./schemas/MarksSchema');
 const StudentsSchema = require('./schemas/StudentsSchema');
 // const { Db } = require('mongodb');
-
+const TeacherSubjectsSchema = require('./schamas_revamp/TeacherSubjectSchema')
 
 
 router.post('/login', async (req, res) => {
@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/updateemail', async (req, res) => {
     console.log(req.body)
-    let filter =  { email : req.body.email } 
+    let filter = { email: req.body.email }
     let update = { email: req.body.new_email }
     try {
         // console.log(filter)
@@ -44,7 +44,7 @@ router.post('/updateemail', async (req, res) => {
             res.status(201).send("Same email")
         }
         else {
-            let Teacher1 = await Teacher.findOneAndUpdate(filter,update);
+            let Teacher1 = await Teacher.findOneAndUpdate(filter, update);
             if (Teacher1) {
                 res.status(200).send('ok')
                 console.log(Teacher1)
@@ -60,7 +60,7 @@ router.post('/updateemail', async (req, res) => {
 
 router.post('/updatenumber', async (req, res) => {
     console.log(req.body)
-    let filter =  { phoneNo : req.body.phoneNo } 
+    let filter = { phoneNo: req.body.phoneNo }
     let update = { phoneNo: req.body.new_phoneNo }
     try {
         // console.log(filter)
@@ -70,7 +70,7 @@ router.post('/updatenumber', async (req, res) => {
             res.status(201).send("Same number!")
         }
         else {
-            let Teacher1 = await Teacher.findOneAndUpdate(filter,update);
+            let Teacher1 = await Teacher.findOneAndUpdate(filter, update);
             if (Teacher1) {
                 res.status(200).send('ok')
                 console.log(Teacher1)
@@ -86,7 +86,7 @@ router.post('/updatenumber', async (req, res) => {
 
 router.post('/updatename', async (req, res) => {
     console.log(req.body)
-    let filter =  { username : req.body.username } 
+    let filter = { username: req.body.username }
     let update = { username: req.body.new_username }
     try {
         // console.log(filter)
@@ -96,7 +96,7 @@ router.post('/updatename', async (req, res) => {
             res.status(201).send("Same password")
         }
         else {
-            let Teacher1 = await Teacher.findOneAndUpdate(filter,update);
+            let Teacher1 = await Teacher.findOneAndUpdate(filter, update);
             if (Teacher1) {
                 res.status(200).send('ok')
                 console.log(Teacher1)
@@ -113,7 +113,7 @@ router.post('/updatename', async (req, res) => {
 
 router.post('/changepassword', async (req, res) => {
     console.log(req.body)
-    let filter =  { password : req.body.password } 
+    let filter = { password: req.body.password }
     let update = { password: req.body.new_password }
     try {
         // console.log(filter)
@@ -123,7 +123,7 @@ router.post('/changepassword', async (req, res) => {
             res.status(201).send("Same Password")
         }
         else {
-            let Teacher1 = await Teacher.findOneAndUpdate(filter,update);
+            let Teacher1 = await Teacher.findOneAndUpdate(filter, update);
             if (Teacher1) {
                 res.status(200).send('ok')
                 console.log(Teacher1)
@@ -280,6 +280,7 @@ router.post('/fetchexcel', async (req, res) => {
     }
 })
 
+
 router.post('/excelbyid', async (req, res) => {
     try {
         console.log(req.body._id)
@@ -291,6 +292,28 @@ router.post('/excelbyid', async (req, res) => {
         res.status(500).send(error.keyValue)
     }
 })
+router.post('/updatesubjectlist', async (req, res) => {
+    try {
+        console.log(req.body)
+        const { subject_id, teacher_id } = req.body;
+
+        let teacherSubject = await TeacherSubjectsSchema.findOne({ subject_id, teacher_id });
+
+        if (!teacherSubject) {
+            teacherSubject = new TeacherSubjectsSchema({ subject_id, teacher_id });
+        } else {
+            teacherSubject.subject_id = subject_id;
+            teacherSubject.teacher_id = teacher_id;
+        }
+
+        await teacherSubject.save();
+
+        res.json({ success: true, message: 'Teacher subject list updated successfully.' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error.message);
+    }
+});
 
 router.post('/updateexcel', async (req, res) => {
     try {
@@ -302,5 +325,19 @@ router.post('/updateexcel', async (req, res) => {
         res.status(500).send(error.keyValue)
     }
 })
+router.post('/teachersubjects', async (req, res) => {
+    try {
+        console.log(req.body)
+        const teachersubjects = await TeacherSubjectsSchema.find(
+            { teacher_id: req.body.teacher_id },
+            { subject_id: 1, _id: 0 }
+        );
 
+        const subject_list = teachersubjects.map(subject => subject.subject_id);
+        res.json({ subject_list })
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err.keyValue)
+    }
+})
 module.exports = router;    
