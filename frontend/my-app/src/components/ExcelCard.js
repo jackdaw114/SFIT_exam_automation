@@ -27,7 +27,7 @@ export default function ExcelCard(props) {
                     </Typography> */}
                 </CardContent>
                 <div className="absolute w-full text-center flex justify-center items-center select-none transition-all
-                duration-150 ease-in-out hover:text-sky-900 hover:opacity-25 font-anta font-thin opacity-15 text-6xl">
+                duration-150 ease-in-out hover:text-sky-900 hover:opacity-25 font-anta font-thin opacity-5 text-6xl">
 
 
                     {props.department}
