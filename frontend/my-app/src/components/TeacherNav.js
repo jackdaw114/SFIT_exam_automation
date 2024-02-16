@@ -8,6 +8,7 @@ import { saveAs } from "file-saver";
 import ExcelCard from "./ExcelCard";
 import './TeacherNav.css'
 import { useNavigate } from "react-router";
+import * as Romanice from 'romanice';
 
 
 
@@ -106,18 +107,22 @@ export default function TeacherNav() {
     // useEffect(() => {
     //     console.log(jsonData)
     // }, [jsonData])
+
+    // Arabic Numerals to Roman - Library
+    const { romanice } = Romanice;
+    const standardConverter = romanice();
     return (
         <>
             <div className='container-teacher-nav'>
 
                 <Box className='selection-box'>
-                    <Box sx={{ borderRadius: 3, margin: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-around', minWidth: '70%' }}>
+                    <Box sx={{ borderRadius: 2, margin: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', minWidth: '85%' }} className=" justify-evenly">
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Select Examination</InputLabel>
                                 <Select onChange={handleChangeType} value={type} label="Select Examination" >
-                                    <MenuItem value="oral">Oral</MenuItem>
-                                    <MenuItem value="practical">Practical</MenuItem>
+                                    <MenuItem value="oral/practical">Oral/Practical</MenuItem>
+                                    {/* <MenuItem value="practical">Practical</MenuItem> */}
                                     <MenuItem value="theory">Theory</MenuItem>
                                     <MenuItem value="term-work">Term Work</MenuItem>
                                     <MenuItem value="iat">IAT</MenuItem>
@@ -148,14 +153,14 @@ export default function TeacherNav() {
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Semester</InputLabel>
                                 <Select onChange={handleChangeSemester} value={semester} label="Semester" >
-                                    <MenuItem value={1}>Sem 1</MenuItem>
-                                    <MenuItem value={2}>Sem 2</MenuItem>
-                                    <MenuItem value={3}>Sem 3</MenuItem>
-                                    <MenuItem value={4}>Sem 4</MenuItem>
-                                    <MenuItem value={5}>Sem 5</MenuItem>
-                                    <MenuItem value={6}>Sem 6</MenuItem>
-                                    <MenuItem value={7}>Sem 7</MenuItem>
-                                    <MenuItem value={8}>Sem 8</MenuItem>
+                                    <MenuItem value={1}>Sem {standardConverter.toRoman(1)}</MenuItem>
+                                    <MenuItem value={2}>Sem {standardConverter.toRoman(2)}</MenuItem>
+                                    <MenuItem value={3}>Sem {standardConverter.toRoman(3)}</MenuItem>
+                                    <MenuItem value={4}>Sem {standardConverter.toRoman(4)}</MenuItem>
+                                    <MenuItem value={5}>Sem {standardConverter.toRoman(5)}</MenuItem>
+                                    <MenuItem value={6}>Sem {standardConverter.toRoman(6)}</MenuItem>
+                                    <MenuItem value={7}>Sem {standardConverter.toRoman(7)}</MenuItem>
+                                    <MenuItem value={8}>Sem {standardConverter.toRoman(8)}</MenuItem>
                                 </Select>
                             </FormControl>
 
@@ -177,9 +182,9 @@ export default function TeacherNav() {
                         </div>
                     </Box>
                 </Box>
-                <Grid container spacing={5} sx={{ padding: 2 }}>
+                <Grid container spacing={1} sx={{ padding: 2 }}>
                     {cardData.map((val, index) => (
-                        <Grid item xs={3}>
+                        <Grid item xs={12}>
                             <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject} semester={val.semester} department={val.department} teacher_name={val.teacher_name}  ></ExcelCard>
                         </Grid>
 

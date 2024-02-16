@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { read, utils, write, writeFile } from "xlsx";
 import { Box, Button } from "@mui/material";
-
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import DownloadIcon from '@mui/icons-material/Download';
 
 export default function ViewExam(props) {
 
@@ -133,14 +134,14 @@ export default function ViewExam(props) {
             {/* <Box sx={{display:"flex",alignItems:'center',flexDirection:'column',width:'100vw'}}> */}
 
             {tableData ? <NewSheet tableData={table2Data} func={childToParent} /> : <></>}
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className="mb-24">
 
 
 
-                <Button variant="contained" color="success" onClick={handleUpdate}>Update</Button>
+                <Button variant="contained" color="success" onClick={handleUpdate} className=" mx-14">Update <AutorenewIcon fontSize="small" className=" pl-1" /> </Button>
                 <input type="file" className="fileSelect"
                     onChange={(e) => handleInput(e)} />
-                <Button variant="contained" onClick={handleDownload} >Download File</Button>
+                <Button variant="contained" onClick={handleDownload} >Download File <DownloadIcon fontSize="small" className="pl-2" /> </Button>
             </Box>
 
 

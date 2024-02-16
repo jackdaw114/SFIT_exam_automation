@@ -25,9 +25,7 @@ const admin = '/admin'
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Box   >
-
-
+      <Box>
         <BrowserRouter>
           <Header />
           <Routes>

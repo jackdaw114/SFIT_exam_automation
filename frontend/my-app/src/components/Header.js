@@ -32,7 +32,7 @@ export default function Header() {
                 </Typography>
             </Box>
             {/* <div style={{ position: 'absolute', right: 10 }}> */}
-            <Stack direction="row" spacing={5} marginRight={1} zIndex={1}>
+            <Stack direction="row" spacing={5} marginRight={1} zIndex={1} alignItems="center">
 
                 {
                     (localStorage.getItem("isAdmin") == 'false') &&
