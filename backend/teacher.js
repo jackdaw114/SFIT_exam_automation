@@ -296,15 +296,18 @@ router.post('/excelbyid', async (req, res) => {
 router.post('/updateteachersubject', async (req, res) => {
     try {
         console.log(req.body)
-        const { subject_id, teacher_id } = req.body;
+        const { subject_id, teacher_id, practical, oral, term } = req.body;
 
         let teacherSubject = await TeacherSubjectsSchema.findOne({ subject_id, teacher_id });
 
         if (!teacherSubject) {
-            teacherSubject = new TeacherSubjectsSchema({ subject_id, teacher_id });
+            teacherSubject = new TeacherSubjectsSchema({ subject_id, teacher_id, practical, oral, term });
         } else {
             teacherSubject.subject_id = subject_id;
             teacherSubject.teacher_id = teacher_id;
+            teacherSubject.practical = practical;
+            teacherSubject.oral = oral;
+            teacherSubject.term = term;
         }
 
         await teacherSubject.save();
@@ -332,8 +335,12 @@ router.post('/teachersubjects', async (req, res) => {
         const teachersubjects = await TeacherSubjectsSchema.find(
             { teacher_id: req.body.teacher_id }
         ).populate('subject_id');
-        console.log(teachersubjects)
-        const subject_list = teachersubjects.map(subject => subject.subject_id);
+        const subject_list = teachersubjects.map(doc => {
+            const { __v, teacher_id, _id, subject_id, ...filteredVariables } = doc.toObject(); // Convert Mongoose document to plain JavaScript object
+            return { ...filteredVariables, ...subject_id };
+        });
+        // console.log(filteredVariables)
+
         res.json({ subject_list })
     } catch (err) {
         console.log(err)

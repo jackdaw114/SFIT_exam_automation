@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import Header from "./Header";
 import { toExcel } from "./Excel";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { read, utils, write, writeFile } from "xlsx";
 import { saveAs } from "file-saver";
@@ -14,9 +14,8 @@ import * as Romanice from 'romanice';
 
 export default function TeacherNav() {
 
-    const [type, setType] = useState('hello')
+    const [type, setType] = useState('')
     const [subject, setSubject] = useState('')
-    const [subjectId, setSubjectId] = useState('')
     const [semester, setSemester] = useState('')
     const [department, setDepartment] = useState('')
     const [studentDetails, setStudentDetails] = useState([])
@@ -26,21 +25,13 @@ export default function TeacherNav() {
     const navigate = useNavigate()
     const [subjectList, setSubjectList] = useState([])
     const handleChangeType = (e) => {
-        console.log(e.target)
         setType(e.target.value)
+        // console.log(e.target.value)
     }
     const handleChangeSubject = (e) => {
-        const selectedSubjectId = e.target.value;
         setSubject(e.target.value)
-        const selectedItem = subjectList.find(item => item.subject_id === selectedSubjectId);
-        if (selectedItem) {
-            const selectedItemId = selectedItem._id;
-            setSubjectId(selectedItemId)
-            console.log(selectedItemId)
-        }
-    };
-    // console.log(e.target.value)
-
+        // console.log(e.target.value)
+    }
     const handleChangeSemester = (e) => {
         setSemester(e.target.value)
         // console.log(e.target.value)
@@ -95,10 +86,10 @@ export default function TeacherNav() {
                 marks_type: type,
                 teacher_name: localStorage.getItem('username'),
                 sheet: toExcel(theJsonData),
-                subject: subjectId,
+                subject: subject,
                 semester: semester,
                 department: department,
-                year: '2024',
+                year: year,
             }, {
                 headers: {
                     "Content-Type": "application/json",
@@ -128,42 +119,62 @@ export default function TeacherNav() {
                 <Box className='selection-box'>
                     <Box sx={{ borderRadius: 2, margin: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', minWidth: '85%' }} className=" justify-evenly">
-
+                            <FormControl sx={{ minWidth: 200 }}>
+                                <InputLabel>Select Examination</InputLabel>
+                                <Select onChange={handleChangeType} value={type} label="Select Examination" >
+                                    <MenuItem value="oral/practical">Oral/Practical</MenuItem>
+                                    {/* <MenuItem value="practical">Practical</MenuItem> */}
+                                    <MenuItem value="theory">Theory</MenuItem>
+                                    <MenuItem value="term-work">Term Work</MenuItem>
+                                    <MenuItem value="iat">IAT</MenuItem>
+                                </Select>
+                            </FormControl>
 
 
                             <FormControl sx={{ minWidth: 200 }}>
+                                <InputLabel>Year</InputLabel>
+                                <Select onChange={handleChangeYear} value={year} label="Year">
+                                    <MenuItem value="2022">2022</MenuItem>
+                                    <MenuItem value="2023">2023</MenuItem>
+                                    <MenuItem value="2024">2024</MenuItem>
+
+                                </Select>
+                            </FormControl>
+
+                            <FormControl sx={{ minWidth: 200 }}>
+                                <InputLabel>Department</InputLabel>
+                                <Select onChange={handleChangeDepartment} value={department} label="Department" >
+                                    <MenuItem value="CMPN">CMPN</MenuItem>
+                                    <MenuItem value="EXTC">EXTC</MenuItem>
+                                    <MenuItem value="MECH">MECH</MenuItem>
+                                    <MenuItem value="INFT">INFT</MenuItem>
+                                </Select>
+                            </FormControl>
+
+                            <FormControl sx={{ minWidth: 200 }}>
+                                <InputLabel>Semester</InputLabel>
+                                <Select onChange={handleChangeSemester} value={semester} label="Semester" >
+                                    <MenuItem value={1}>Sem {standardConverter.toRoman(1)}</MenuItem>
+                                    <MenuItem value={2}>Sem {standardConverter.toRoman(2)}</MenuItem>
+                                    <MenuItem value={3}>Sem {standardConverter.toRoman(3)}</MenuItem>
+                                    <MenuItem value={4}>Sem {standardConverter.toRoman(4)}</MenuItem>
+                                    <MenuItem value={5}>Sem {standardConverter.toRoman(5)}</MenuItem>
+                                    <MenuItem value={6}>Sem {standardConverter.toRoman(6)}</MenuItem>
+                                    <MenuItem value={7}>Sem {standardConverter.toRoman(7)}</MenuItem>
+                                    <MenuItem value={8}>Sem {standardConverter.toRoman(8)}</MenuItem>
+                                </Select>
+                            </FormControl>
+
+                            <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Subject</InputLabel>
-                                <Select onChange={(e) => handleChangeSubject(e)} value={subject} label="Subject" >
+                                <Select onChange={handleChangeSubject} value={subject} label="Subject" >
                                     {subjectList.map((item, index) => (
 
-                                        <MenuItem value={item.subject_id} data-id={item._id}>{item.subject_id} - {item.subject_name}</MenuItem>
+                                        <MenuItem value={item.subject_id}>{item.subject_id} - {item.subject_name}</MenuItem>
 
                                     ))}
 
                                 </Select>
-                            </FormControl>
-                            <FormControl sx={{ minWidth: 200 }}>
-                                <InputLabel>Select Type of Marks</InputLabel>
-                                {subject ? (
-                                    subjectList.map((item, index) => {
-                                        if (item.subject_id === subject) {
-                                            return (
-                                                <Select onChange={handleChangeType} value={type} label="Select Examination">
-
-                                                    {item.practical && <MenuItem key={index} value='practical'>Practical</MenuItem>}
-                                                    {item.oral && <MenuItem key={index} value='oral'>Oral</MenuItem>}
-                                                    {item.term && <MenuItem key={index} value='term'>Term</MenuItem>}
-
-                                                </Select>
-                                            );
-                                        }
-                                        return null; // If the subject_id doesn't match, return null
-                                    })
-                                ) : (
-                                    <Select onChange={handleChangeType} value={type} label="Select Examination">
-                                        <MenuItem value=''>Please Select Subject</MenuItem>
-                                    </Select>
-                                )}
                             </FormControl>
                         </Box>
                         <div>
@@ -180,7 +191,7 @@ export default function TeacherNav() {
 
                     ))}
                 </Grid>
-            </div >
+            </div>
         </>
     )
 }

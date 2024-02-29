@@ -6,6 +6,7 @@ import './Header.css'
 import { motion } from 'framer-motion';
 
 
+// TODO: add a navigate to home 
 
 export default function Header() {
     const navigate = useNavigate()
@@ -17,7 +18,7 @@ export default function Header() {
     }
 
     const navigatetoprofile = () => {
-        navigate('/profile')
+        navigate('/settings')
     }
     return (
         <AppBar className='header-bar' sx={{ position: 'relative', flexDirection: 'row', alignItems: 'center', backgroundColor: '#292F36' }} elevation={0}>

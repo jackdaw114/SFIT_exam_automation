@@ -10,13 +10,14 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Topbar from './Topbar';
-import { Button, MenuItem, Paper, Switch, TextField, styled } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, MenuItem, Paper, Switch, TextField, styled } from '@mui/material';
 import axios from 'axios'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import CircleIcon from '@mui/icons-material/Circle';
+
 
 // TODO: use a variable to control font size(font size is 22) 
 // TODO: figure out padding values( make them uniform   )
@@ -152,9 +153,21 @@ const ApprovalButton = ({ onClick }) => {
 const DynamicTextFields = () => {
     const [fields, setFields] = React.useState([]);
     const [update, setUpdate] = React.useState();
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+    const [checkboxes, setCheckboxes] = React.useState([
+
+    ]);
+    const [subjectList, setSubjectList] = React.useState([])
+    const handleCheckboxChange = (index, fieldName) => {
+        const updatedCheckboxes = [...checkboxes];
+        updatedCheckboxes[index][fieldName] = !updatedCheckboxes[index][fieldName];
+        setCheckboxes(updatedCheckboxes);
+    };
     const addTextField = () => {
         const newFields = [...fields, { id: fields.length + 1, value: '' }];
+        const newCheckbox = [...checkboxes, { term: false, oral: false, practical: false }]
         setFields(newFields);
+        setCheckboxes(newCheckbox);
     };
 
     const removeTextField = (id) => {
@@ -169,7 +182,6 @@ const DynamicTextFields = () => {
         );
         setFields(updatedFields);
     };
-    const [subjectList, setSubjectList] = React.useState([])
     React.useEffect(() => {
         axios.get('/teacher/subjectlist').then(res => {
             setSubjectList(res.data)
@@ -177,22 +189,24 @@ const DynamicTextFields = () => {
         })
     }, [update])
     const updateTeacherSubject = () => {
-        fields.map((subject) => {
-            console.log(subject)
-            axios.post('/teacher/updateteachersubject', { subject_id: subject.value, teacher_id: localStorage.getItem('username') }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                }
-            }).then(res => {
-                alert('subject list updated successfully')
-            })
+        fields.map((subject, index) => {
+            if (subject.value) {
+                console.log(subject)
+                axios.post('/teacher/updateteachersubject', { subject_id: subject.value, teacher_id: localStorage.getItem('username'), ...checkboxes[index] }, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                    }
+                }).then(res => {
+                    alert('subject list updated successfully')
+                })
+            }
         })
 
     }
     return (
         <div style={{ paddingTop: 20 }}>
-            {fields.map((field) => (
+            {fields.map((field, index) => (
                 <div key={field.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
                     <TextField
                         label={`Add Subject `}
@@ -213,8 +227,36 @@ const DynamicTextFields = () => {
                             </MenuItem>
                         )) : <></>}
                     </TextField>
-                    <IconButton onClick={() => removeTextField(field.id)}>
-                        <RemoveIcon />
+                    {/* TODO: u might want to make it a component do this last also change the styling here if u desire */}
+
+                    <FormControlLabel sx={{ paddingLeft: 5 }}
+                        control={<Checkbox
+                            checked={checkboxes[index].term}
+                            onChange={() => handleCheckboxChange(index, 'term')}
+                        />}
+                        label="Term Work"
+                        labelPlacement='top'
+                    />
+                    <FormControlLabel sx={{ paddingLeft: 5 }}
+                        control={<Checkbox
+                            checked={checkboxes[index].oral}
+                            onChange={() => handleCheckboxChange(index, 'oral')}
+                        />}
+                        label="Oral"
+                        labelPlacement='top'
+                    />
+                    <FormControlLabel sx={{ paddingLeft: 5 }}
+                        control={<Checkbox
+                            checked={checkboxes[index].practical}
+                            onChange={() => handleCheckboxChange(index, 'practical')}
+                        />}
+                        label="Practicals"
+                        labelPlacement='top'
+                    />
+
+
+                    <IconButton sx={{ marginLeft: 10, border: 1 }} onClick={() => removeTextField(field.id)}>
+                        <RemoveIcon sx={{ color: 'red' }} />
                     </IconButton>
                 </div>
             ))}
@@ -299,7 +341,7 @@ export default function Settings(props) {
             <Box sx={{ marginLeft: '30vw', paddingLeft: 3, marginTop: 15, paddingTop: 2, fontSize: 40, maxWidth: '55vw' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
                     <SettingsHeaderTypography > Details</SettingsHeaderTypography>
-                    {/* TODO: grid view for Details will look better */}
+                    {/* TODO: grid view for Details will look better {this is the personal data section } */}
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography variant='h5' sx={{ padding: 2, fontFamily: 'serif' }} >
                             Edit
@@ -327,10 +369,13 @@ export default function Settings(props) {
 
 
                     </Box>
+                    {/* TODO: change padding here {this is the Subjects taught settings } */}
                     <Divider sx={{ marginBottom: 2 }} />
 
                     {subjectList.map((item, index) => (
-                        <Typography variant='h5' sx={{ paddingLeft: 2, paddingTop: 1, fontFamily: 'serif', fontSize: 22 }}>{item.subject_id} - {item.subject_name}</Typography>
+                        // TODO: change styling here aswell {this is the Subjects taught settings }
+
+                        <Typography variant='h5' sx={{ paddingLeft: 2, paddingTop: 1, fontFamily: 'serif', fontSize: 22 }}>{item.subject_id} - {item.subject_name} </Typography>
                     ))
                     }
 

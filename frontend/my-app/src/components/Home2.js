@@ -18,6 +18,8 @@ import BuildIcon from '@mui/icons-material/Build';
 import Header from './Header';
 import { useNavigate } from "react-router";
 
+
+// TODO: better styling for the grid 
 function HomeGrid() {
     const navigate = useNavigate()
     const boxMinHeight = 200;
