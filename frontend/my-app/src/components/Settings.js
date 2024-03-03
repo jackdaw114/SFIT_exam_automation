@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Topbar from './Topbar';
-import { Button, Checkbox, FormControlLabel, MenuItem, Paper, Switch, TextField, styled } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, MenuItem, Paper, Popper, Switch, TextField, styled } from '@mui/material';
 import axios from 'axios'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import IconButton from '@mui/material/IconButton';
@@ -214,22 +214,35 @@ const DynamicTextFields = () => {
                         value={field.value}
                         onChange={(e) => handleChange(field.id, e.target.value)}
                         select
-                        sx={{ width: 'auto', minWidth: 250 }}
+
+                        sx={{ width: 'auto', minWidth: 300 }}
                         InputProps={{
                             sx: {
                                 borderRadius: 5,
                             },
                         }}
-                    >
-                        {subjectList ? subjectList.map((option, index) => (
-                            <MenuItem key={option._id} value={option._id}>
+
+                    >{subjectList ? (
+
+
+                        subjectList.map((option, index) => (
+                            <MenuItem PopperProps={{
+                                sx: {
+                                    borderRadius: 5,
+                                },
+                            }} key={option._id} value={option._id} >
                                 {option.subject_id} - {option.subject_name}
                             </MenuItem>
-                        )) : <></>}
+                        ))
+
+
+                    ) : (
+                        <></>
+                    )}
                     </TextField>
                     {/* TODO: u might want to make it a component do this last also change the styling here if u desire */}
 
-                    <FormControlLabel sx={{ paddingLeft: 5 }}
+                    <FormControlLabel sx={{ marginLeft: 10 }}
                         control={<Checkbox
                             checked={checkboxes[index].term}
                             onChange={() => handleCheckboxChange(index, 'term')}
@@ -237,7 +250,7 @@ const DynamicTextFields = () => {
                         label="Term Work"
                         labelPlacement='top'
                     />
-                    <FormControlLabel sx={{ paddingLeft: 5 }}
+                    <FormControlLabel sx={{ marginLeft: 10 }}
                         control={<Checkbox
                             checked={checkboxes[index].oral}
                             onChange={() => handleCheckboxChange(index, 'oral')}
@@ -245,7 +258,7 @@ const DynamicTextFields = () => {
                         label="Oral"
                         labelPlacement='top'
                     />
-                    <FormControlLabel sx={{ paddingLeft: 5 }}
+                    <FormControlLabel sx={{ marginLeft: 10 }}
                         control={<Checkbox
                             checked={checkboxes[index].practical}
                             onChange={() => handleCheckboxChange(index, 'practical')}

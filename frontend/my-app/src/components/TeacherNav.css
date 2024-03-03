@@ -2,7 +2,8 @@
     padding: 0%;
     margin: 0%;
     background-color: #e7f1ef;
-
+    min-height: 100vh;
+    /*TODO: fix this to solve scrolling issue prolly put the background color 1 layer higher  */
 }
 
 

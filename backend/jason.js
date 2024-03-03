@@ -8,8 +8,17 @@ const xlsx = require('xlsx');
 
 router.post('/creategazette', async (req, res) => {
     try {
-        let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
+        // let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
 
+        let filteredMarks = await MarksSchema.find({})
+            .populate('subject') // Populate the author field
+
+        let data = filteredMarks.filter(subj =>
+            subj.subject.branch === req.body.department &&
+            // subj.subject.semester === req.body.semester &&
+            subj.year === req.body.year
+        )
+        console.log(data)
         let workbook_object = {}
 
         let c = 0;
@@ -19,7 +28,7 @@ router.post('/creategazette', async (req, res) => {
             workbook_object[c] = {
                 sheet: temp_worksheet.Sheets[temp_worksheet.SheetNames[0]],
                 marks_type: x.marks_type,
-                subject: x.subject
+                subject: x.subject.subject_name
             }
             c++;
         })
@@ -92,6 +101,7 @@ router.post('/creategazette', async (req, res) => {
                 temp_sheet[`${item}${entry + 3}`] = { t: 's', v: `${student_data[pid][`sub${index + 5}`]['term-work']}/${student_data[pid][`sub${index + 5}`]['oral']}` }
 
             })
+            // TODO: fix this by implementing a subject list ig
 
             entry += entry_dist
         })
@@ -131,7 +141,7 @@ function StudentDictionary(pid, marks, subject, type, subj_list, json) {
             'sub8': { 'term-work': '', 'oral': '', 'theory': '' },
             'sub9': { 'term-work': '', 'oral': '', 'theory': '' },
         }
-        json[pid][subject][type] = marks;
+        json[pid]['sub1'][type] = marks;
 
     }
 

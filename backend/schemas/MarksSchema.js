@@ -4,9 +4,10 @@ const MarksSchema = mongoose.Schema(
     {
         marks_type: String,
         teacher_name: String,
-        subject: String,
-        semester: Number,
-        department: String,
+        subject: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Subject'
+        },
         sheet: String,
         year: String
     }

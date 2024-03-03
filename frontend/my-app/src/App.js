@@ -21,7 +21,7 @@ import theme from './theme/palette';
 
 const teacher = '/teacher'
 const admin = '/admin'
-
+// TODO: Verify if someone is logged in if so redirect to correct page or login page
 function App() {
   return (
     <ThemeProvider theme={theme}>

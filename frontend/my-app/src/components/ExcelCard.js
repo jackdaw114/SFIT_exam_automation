@@ -19,7 +19,8 @@ export default function ExcelCard(props) {
 
 
                     <Typography variant="h6" color="text.secondary" className="font-semibold transition-all duration-200 ease-in-out group-hover:text-red-800/90">
-                        {(props.subject[0]).toUpperCase() + props.subject.slice(1)}: {props.marks_type[0].toUpperCase() + props.marks_type.slice(1)} - Sem {standardConverter.toRoman(props.semester)}
+                        {(props.subject[0]).toUpperCase() + props.subject.slice(1)}: {props.marks_type[0].toUpperCase() + props.marks_type.slice(1)} - Sem
+                        {/* TODO: put this back after updating subject list {standardConverter.toRoman(props.semester)} */}
                     </Typography>
 
                     {/* <Typography color="text.secondary">

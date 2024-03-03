@@ -61,6 +61,7 @@ export default function TeacherNav() {
                 Accept: "application/json",
             }
         }).then((res) => {
+            console.log(res.data)
             setCardData(res.data)
         })
         axios.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
@@ -96,9 +97,8 @@ export default function TeacherNav() {
                 teacher_name: localStorage.getItem('username'),
                 sheet: toExcel(theJsonData),
                 subject: subjectId,
-                semester: semester,
-                department: department,
                 year: '2024',
+                // TODO: find a way of setting a year here 
             }, {
                 headers: {
                     "Content-Type": "application/json",
@@ -175,7 +175,8 @@ export default function TeacherNav() {
                 <Grid container spacing={1} sx={{ padding: 2 }}>
                     {cardData.map((val, index) => (
                         <Grid item xs={12}>
-                            <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject} semester={val.semester} department={val.department} teacher_name={val.teacher_name}  ></ExcelCard>
+                            <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject.subject_name} department={val.subject.branch} teacher_name={val.teacher_name}  ></ExcelCard>
+                            {/* TODO: put back this after reset db semester={val.subject.semester} */}
                         </Grid>
 
                     ))}

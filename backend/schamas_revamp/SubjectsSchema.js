@@ -18,6 +18,10 @@ const SubjectSchema = mongoose.Schema(
             type: String,
             required: true,
 
+        },
+        semester: {
+            type: Number,
+            required: true
         }
 
     }

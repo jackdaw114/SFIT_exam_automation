@@ -8,6 +8,7 @@ const StudentsSchema = require('./schemas/StudentsSchema');
 // const { Db } = require('mongodb');
 const TeacherSubjectsSchema = require('./schamas_revamp/TeacherSubjectSchema');
 const SubjectsSchema = require('./schamas_revamp/SubjectsSchema');
+const { mongo } = require('mongoose');
 
 
 router.post('/login', async (req, res) => {
@@ -158,9 +159,7 @@ router.post('/entermarks', async (req, res) => {
             marks_type: req.body.marks_type,
             sheet: req.body.sheet,
             teacher_name: req.body.teacher_name,
-            subject: req.body.subject,
-            semester: req.body.semester,
-            department: req.body.department,
+            subject: mongo.ObjectId(req.body.subject),
         })
         try {
             const saved = await newMarks.save()
@@ -272,7 +271,7 @@ router.post('/uploadexcel', async (req, res) => {
 router.post('/fetchexcel', async (req, res) => {
     try {
         let teacher = req.body.teacher_name
-        let data = await MarksSchema.find({ teacher_name: teacher }, { sheet: 0 })
+        let data = await MarksSchema.find({ teacher_name: teacher }, { sheet: 0 }).populate('subject')
         console.log(data)
         res.status(200).send(data)
     } catch (err) {

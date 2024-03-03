@@ -6,7 +6,7 @@ import './Header.css'
 import { motion } from 'framer-motion';
 
 
-// TODO: add a navigate to home 
+// TODO: add a navigate to home we dont have a way of going back to the previous page
 
 export default function Header() {
     const navigate = useNavigate()
