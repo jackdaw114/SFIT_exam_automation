@@ -154,10 +154,14 @@ const DynamicTextFields = () => {
     const [fields, setFields] = React.useState([]);
     const [update, setUpdate] = React.useState();
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-    const [checkboxes, setCheckboxes] = React.useState([
-
-    ]);
+    const [checkboxes, setCheckboxes] = React.useState([]);
+    const [classCheckboxes, setClassCheckboxes] = React.useState([]);
     const [subjectList, setSubjectList] = React.useState([])
+
+
+
+
+
     const handleCheckboxChange = (index, fieldName) => {
         const updatedCheckboxes = [...checkboxes];
         updatedCheckboxes[index][fieldName] = !updatedCheckboxes[index][fieldName];
@@ -189,10 +193,11 @@ const DynamicTextFields = () => {
         })
     }, [update])
     const updateTeacherSubject = () => {
+        // TODO: implement class system!!!!!!!, maybe even a semester one(optional) 
         fields.map((subject, index) => {
             if (subject.value) {
                 console.log(subject)
-                axios.post('/teacher/updateteachersubject', { subject_id: subject.value, teacher_id: localStorage.getItem('username'), ...checkboxes[index] }, {
+                axios.post('/teacher/updateteachersubject', { subject_id: subject.value, teacher_id: localStorage.getItem('username'), ...checkboxes[index], }, {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",

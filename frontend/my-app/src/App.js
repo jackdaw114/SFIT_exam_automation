@@ -8,8 +8,8 @@ import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import EnterMarks from './components/EnterMarks';
 import Auth from './components/Auth';
 import Test from './components/Excel'
-import TeacherNav from './components/TeacherNav';
-import ViewExam from './components/ViewExam';
+import TeacherNav from './components/SheetPortal';
+import ViewExam from './components/SheetView';
 import TeacherHome from './components/TeacherHome';
 import AdminHome from './components/AdminHome';
 import TheOgHome2 from './components/TheOgHome2'

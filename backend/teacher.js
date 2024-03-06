@@ -6,8 +6,8 @@ const StudentIATSchema = require('./schemas/StudentIATSchema');
 const MarksSchema = require('./schemas/MarksSchema');
 const StudentsSchema = require('./schemas/StudentsSchema');
 // const { Db } = require('mongodb');
-const TeacherSubjectsSchema = require('./schamas_revamp/TeacherSubjectSchema');
-const SubjectsSchema = require('./schamas_revamp/SubjectsSchema');
+const TeacherSubjectsSchema = require('./schemas_revamp/TeacherSubjectSchema');
+const SubjectsSchema = require('./schemas_revamp/SubjectsSchema');
 const { mongo } = require('mongoose');
 
 

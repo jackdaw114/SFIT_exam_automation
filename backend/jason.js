@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Admin = require('./schemas/AdminSchema')
 const Teacher = require('./schemas/TeacherSchema');
-const MarksSchema = require('./schemas/MarksSchema');
+const MarksSchema = require('./schemas_revamp/MarksSchema');
+const StudentSchema = require('./schemas/StudentsSchema')
+const SubjectListSchema = require('./schemas_revamp/SubjectListSchema')
 const ExcelJS = require('exceljs');
 const xlsx = require('xlsx');
 
@@ -11,7 +13,8 @@ router.post('/creategazette', async (req, res) => {
         // let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
 
         let filteredMarks = await MarksSchema.find({})
-            .populate('subject') // Populate the author field
+            .populate('subject') // Populate the author field   
+        const subject_list = await SubjectListSchema.find({ subject_list: req.data.subject_list })
 
         let data = filteredMarks.filter(subj =>
             subj.subject.branch === req.body.department &&
@@ -101,7 +104,7 @@ router.post('/creategazette', async (req, res) => {
                 temp_sheet[`${item}${entry + 3}`] = { t: 's', v: `${student_data[pid][`sub${index + 5}`]['term-work']}/${student_data[pid][`sub${index + 5}`]['oral']}` }
 
             })
-            // TODO: fix this by implementing a subject list ig
+            // TODO: fix this by implementing a subject l
 
             entry += entry_dist
         })
@@ -145,9 +148,51 @@ function StudentDictionary(pid, marks, subject, type, subj_list, json) {
 
     }
 
-}            // temp_sheet[`C${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub1']['oral']}` }
-// temp_sheet[`D${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub2']['term']}/${student_data[pid]['sub2']['oral']}` }
-// temp_sheet[`E${entry + 1}`] = { t: 's', v: `${student_data[pid]['sub1']['term']}/${student_data[pid]['sub3']['oral']}` }
-// temp_sheet[`E${entry}`] = { t: 's', v: student_data[pid]['sub3']['theory'] }
+}
+
+router.post('/create_student_marks', async (req, res) => {
+    try {
+        const students = await StudentSchema.find({ subjects: { $in: [req.body.subject] }, semester: req.body.semester })
+        console.log(students)
+        if (students !== undefined) {
+            const marksPromises = students.map(async (student) => {
+                const newMarks = new Marks({
+                    student_id: student.pid,
+                    subject: req.body.subject,
+                    marks_type: req.body.marks_type,
+                    year: 2024 //TODO: could be an identification issue here for year (should be more specific ??? idk)
+                });
+                await newMarks.save();
+            });
+            await Promise.all(marksPromises);
+            console.log(`Marks created for students with subject ${req.body.subject}`);
+            res.send('done')
+        }
+        else {
+            res.send('no students')
+        }
+    } catch (error) {
+        res.send(error)
+        console.error('Error creating marks:', error);
+        throw error;
+    }
+})
+
+router.post('/getdata', async (req, res) => {
+    try {
+        const MarksList = await MarksSchema.find({ subject: req.body.subject, marks_type: req.body.marks_type, year: 2024 }) //TODO: figure year stuff out as well 
+        const StudentList = await Promise.all(MarksList.map(async (marks) => {
+            const student = await StudentSchema.findOne({ pid: marks.student_id });
+            return { pid: student.pid, name: student.name, marks: marks.marks };
+        }));
+        res.send(StudentList);
+    } catch (error) {
+        res.status(500).send(error);
+        console.error('Error fetching data:', error);
+    }
+});
+
+
+
 
 module.exports = router;   

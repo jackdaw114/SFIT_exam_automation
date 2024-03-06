@@ -46,7 +46,7 @@ export default function ViewExam(props) {
     }
 
     useEffect(() => {
-        axios.post('/teacher/excelbyid', { _id: location.state._id }, {
+        axios.post('/teacher/excelbyid', { _id: location.state._id }, {// TODO: different query here for getting 3 things subject code , year , class
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
