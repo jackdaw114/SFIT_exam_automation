@@ -82,10 +82,12 @@ export default function TeacherNav() {
     const handleSubmit = async (e) => {
         //  let jsonData = []
         const theJsonData = []
+        console.log(subject.charAt(3))
         axios.post('/jason/create_student_marks', {
-            semester: parseInt(subject.charAt(2)),
-            type: type,
-            subject: subject
+            semester: parseInt(subject.charAt(3)),
+            marks_type: type,
+            subject: subject,
+
         }, {
 
             headers: {
@@ -96,7 +98,7 @@ export default function TeacherNav() {
 
         }).then((res) => {
             console.log(res.data)
-            navigate('/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(2)), } })
+            navigate('/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), } })
 
         })
         //console.log( jsonData)

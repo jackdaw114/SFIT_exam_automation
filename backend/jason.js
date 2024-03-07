@@ -152,17 +152,20 @@ function StudentDictionary(pid, marks, subject, type, subj_list, json) {
 
 router.post('/create_student_marks', async (req, res) => {
     try {
-        const students = await StudentSchema.find({ subjects: { $in: [req.body.subject] }, semester: req.body.semester })
+        console.log(req.body)
+        const students = await StudentSchema.find({ subject_ids: { $in: [req.body.subject] }, semester: req.body.semester })
         console.log(students)
         if (students !== undefined) {
             const marksPromises = students.map(async (student) => {
-                const newMarks = new Marks({
-                    student_id: student.pid,
-                    subject: req.body.subject,
+                const newMarks = new MarksSchema({
+                    student_pid: student.pid,
+                    subject_code: req.body.subject,
                     marks_type: req.body.marks_type,
-                    year: 2024 //TODO: could be an identification issue here for year (should be more specific ??? idk)
+                    year: 2024,
+                    semester: req.body.semester //TODO: could be an identification issue here for year (should be more specific ??? idk)
                 });
                 await newMarks.save();
+                console.log('saved')
             });
             await Promise.all(marksPromises);
             console.log(`Marks created for students with subject ${req.body.subject}`);
@@ -180,9 +183,11 @@ router.post('/create_student_marks', async (req, res) => {
 
 router.post('/getdata', async (req, res) => {
     try {
-        const MarksList = await MarksSchema.find({ subject: req.body.subject, marks_type: req.body.marks_type, year: 2024 }) //TODO: figure year stuff out as well 
+        console.log(req.body)
+        const MarksList = await MarksSchema.find({ subject_code: req.body.subject_id, marks_type: req.body.marks_type, year: 2024 }) //TODO: figure year stuff out as well 
+        console.log(MarksList)
         const StudentList = await Promise.all(MarksList.map(async (marks) => {
-            const student = await StudentSchema.findOne({ pid: marks.student_id });
+            const student = await StudentSchema.findOne({ pid: marks.student_pid });
             return { pid: student.pid, name: student.name, marks: marks.marks };
         }));
         res.send(StudentList);

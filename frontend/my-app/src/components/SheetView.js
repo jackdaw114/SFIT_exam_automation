@@ -9,7 +9,7 @@ const SheetView = () => {
     let location = useLocation();
     useEffect(() => {
         axios.post('/jason/getdata', {
-            subject: location.state.subject,
+            subject_id: location.state.subject,
             marks_type: location.state.marks_type,
             semester: location.state.semester // TODO: change this to teacher backend when complete
         }, {
@@ -18,7 +18,8 @@ const SheetView = () => {
                 Accept: "application/json",
             }
         }).then(res => {
-            setSheetData(res.data.sheet_array);
+            console.log(res.data)
+            setSheetData(res.data);
         });
     }, []);
 
@@ -57,8 +58,8 @@ const SheetView = () => {
                 <tbody>
                     {sheetData && sheetData.map((row, index) => (
                         <tr key={index}>
-                            <td contentEditable="true" onBlur={(e) => handleEdit(index, 'student_name', e.target.textContent)}>
-                                {row.student_name}
+                            <td contentEditable="true" onBlur={(e) => handleEdit(index, 'name', e.target.textContent)}>
+                                {row.name}
                             </td>
                             <td contentEditable="true" onBlur={(e) => handleEdit(index, 'pid', e.target.textContent)}>
                                 {row.pid}
