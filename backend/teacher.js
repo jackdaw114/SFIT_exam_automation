@@ -185,8 +185,13 @@ router.get('/getmarks', async (req, res) => {
 })
 router.get('/getstudents', async (req, res) => {
     try {
-        const Students = await StudentsSchema.find({})
-        console.log(Students)
+        const Students = await StudentsSchema.aggregate([
+            {
+                $match: {
+                    subject_ids: { $exists: false }
+                }
+            }
+        ]);
         res.status(200).send(Students)
     } catch (err) {
         res.status(500).send(err)
