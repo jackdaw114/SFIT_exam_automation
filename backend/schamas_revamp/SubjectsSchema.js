@@ -21,7 +21,6 @@ const SubjectSchema = mongoose.Schema(
         },
         semester: {
             type: Number,
-            required: true
         }
 
     }

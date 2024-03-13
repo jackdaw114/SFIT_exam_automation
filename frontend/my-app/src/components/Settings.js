@@ -184,7 +184,8 @@ const DynamicTextFields = () => {
     };
     React.useEffect(() => {
         axios.get('/teacher/subjectlist').then(res => {
-            setSubjectList(res.data)
+            setSubjectList(res.data.sort((a, b) => a.subject_id.localeCompare(b.subject_id
+            )))
             console.log(res.data)
         })
     }, [update])

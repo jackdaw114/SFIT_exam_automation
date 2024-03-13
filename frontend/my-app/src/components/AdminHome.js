@@ -32,7 +32,6 @@ export default function AdminHome() {
     }
     return (
         <>
-            <Header />
             <Box paddingTop={11} display={'flex'} justifyContent={'space-around'}>
                 <Button variant='outlined' onClick={() => setChoice(1)}>CREATE TEACHER</Button>
                 <Button variant='outlined' onClick={() => setChoice(2)}>DELETE TEACHER</Button>
