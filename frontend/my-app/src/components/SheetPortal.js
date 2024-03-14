@@ -6,7 +6,7 @@ import axios from "axios";
 import { read, utils, write, writeFile } from "xlsx";
 import { saveAs } from "file-saver";
 import ExcelCard from "./ExcelCard";
-import './TeacherNav.css'
+import './Sheets.css'
 import { useNavigate } from "react-router";
 import * as Romanice from 'romanice';
 
@@ -39,23 +39,11 @@ export default function TeacherNav() {
             console.log(selectedItemId)
         }
     };
-    // console.log(e.target.value)
 
-    const handleChangeSemester = (e) => {
-        setSemester(e.target.value)
-        // console.log(e.target.value)
-    }
-    const handleChangeDepartment = (e) => {
-        setDepartment(e.target.value)
-        // console.log(e.target.value)
-    }
-    const handleChangeYear = (e) => {
-        setYear(e.target.value)
-        // console.log(e.target.value)
-    }
+
 
     useEffect(() => {
-        axios.post('/teacher/fetchexcel', { teacher_name: localStorage.getItem('username') }, {
+        axios.post('/jason/get_exam', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
@@ -167,7 +155,7 @@ export default function TeacherNav() {
                 <Grid container spacing={1} sx={{ padding: 2 }}>
                     {cardData.map((val, index) => (
                         <Grid item xs={12}>
-                            <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject.subject_name} department={val.subject.branch} teacher_name={val.teacher_name}  ></ExcelCard>
+                            <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject.subject_id} teacher_name={val.teacher_name}  ></ExcelCard>
                             {/* TODO: put back this after reset db semester={val.subject.semester} */}
                         </Grid>
 

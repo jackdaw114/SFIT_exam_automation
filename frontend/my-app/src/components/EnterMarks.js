@@ -6,7 +6,7 @@ import axios from "axios";
 import { read, utils, write, writeFile } from "xlsx";
 import { saveAs } from "file-saver";
 import ExcelCard from "./ExcelCard";
-import './TeacherNav.css'
+import './Sheets.css'
 import { useNavigate } from "react-router";
 
 

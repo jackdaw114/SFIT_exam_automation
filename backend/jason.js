@@ -8,6 +8,11 @@ const SubjectListSchema = require('./schemas_revamp/SubjectListSchema')
 const ExcelJS = require('exceljs');
 const xlsx = require('xlsx');
 
+const TeacherSubjectsSchema = require('./schemas_revamp/TeacherSubjectSchema');
+const TeacherSchema = require('./schemas/TeacherSchema');
+const SubjectsSchema = require('./schemas_revamp/SubjectsSchema');
+const { default: mongoose } = require('mongoose');
+
 router.post('/creategazette', async (req, res) => {
     try {
         // let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
@@ -150,6 +155,29 @@ function StudentDictionary(pid, marks, subject, type, subj_list, json) {
 
 }
 
+
+router.post('/update_data', async (req, res) => {
+    try {
+        console.log(req.body);
+        const updatedData = req.body.updated_data;
+        const marksType = req.body.marks_type;
+        const subjectId = req.body.subject_id;
+
+        // Iterate through updated data and update marks for each student
+        for (const data of updatedData) {
+            console.log({ student_pid: data.pid, marks_type: marksType, subject_code: subjectId });
+            // Update document using the Mongoose model
+            let test = await MarksSchema.findOneAndUpdate({ student_pid: data.pid, marks_type: marksType, subject_code: subjectId }, { marks: data.marks });
+            console.log(test)
+        }
+
+        res.status(200).send("Marks updated successfully");
+    } catch (error) {
+        // Handle errors and send appropriate response to the client
+        console.error('Error updating marks:', error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 router.post('/create_student_marks', async (req, res) => {
     try {
         console.log(req.body)
@@ -197,7 +225,19 @@ router.post('/getdata', async (req, res) => {
     }
 });
 
-
+router.post('/get_exam', async (req, res) => {
+    try {
+        let teacherSubject = await TeacherSubjectsSchema.find({ teacher_id: req.body.teacher_id }).populate('subject_id')
+        for (const sub of teacherSubject) {
+            if (MarksSchema.find({ subject_id: sub.subject_id.subject_id, marks_type: subject.subject }))
+        }
+        console.log(subject_array)
+        res.send(teacherSubject)
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err.keyValue)
+    }
+})
 
 
 module.exports = router;   

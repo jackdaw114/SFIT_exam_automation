@@ -31,8 +31,10 @@ const SheetView = () => {
 
 
     const handleUpdate = () => {
-        axios.post('/json/updateData', {
-            updated_data: sheetData
+        axios.post('/jason/update_data', {
+            updated_data: sheetData,
+            subject_id: location.state.subject,
+            marks_type: location.state.marks_type
         }, {
             headers: {
                 "Content-Type": "application/json",

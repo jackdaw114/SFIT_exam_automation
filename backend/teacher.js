@@ -328,7 +328,7 @@ router.post('/updateexcel', async (req, res) => {
         res.status(500).send(error.keyValue)
     }
 })
-router.post('/teachersubjects', async (req, res) => {
+router.post('/teachersubjects', async (req, res) => { //i assume this is done
     try {
 
         const teachersubjects = await TeacherSubjectsSchema.find(
