@@ -229,7 +229,7 @@ router.post('/get_exam', async (req, res) => {
     try {
         let teacherSubject = await TeacherSubjectsSchema.find({ teacher_id: req.body.teacher_id }).populate('subject_id')
         for (const sub of teacherSubject) {
-            if (MarksSchema.find({ subject_id: sub.subject_id.subject_id, marks_type: subject.subject }))
+            // if (MarksSchema.find({ subject_id: sub.subject_id.subject_id, marks_type: subject.subject }))
         }
         console.log(subject_array)
         res.send(teacherSubject)
