@@ -182,8 +182,22 @@ router.post('/create_student_marks', async (req, res) => {
     try {
         console.log(req.body)
         const students = await StudentSchema.find({ subject_ids: { $in: [req.body.subject] }, semester: req.body.semester })
+
+        const check_teacher = await TeacherSubjectsSchema.findOne({ teacher_id: req.body.teacher_id })
+        let flag = false;
+        console.log(check_teacher.created[req.body.marks_type])
+        if (!check_teacher.created[req.body.marks_type]) {
+            flag = true;
+            await TeacherSubjectsSchema.findOneAndUpdate({ teacher_id: req.body.teacher_id }, {
+                $set: {
+                    [`created.${req.body.marks_type}`]: true
+                }
+            })
+        }
+
         console.log(students)
-        if (students !== undefined) {
+        if (students !== undefined && flag === true) {
+
             const marksPromises = students.map(async (student) => {
                 const newMarks = new MarksSchema({
                     student_pid: student.pid,
@@ -197,6 +211,9 @@ router.post('/create_student_marks', async (req, res) => {
             });
             await Promise.all(marksPromises);
             console.log(`Marks created for students with subject ${req.body.subject}`);
+            res.send('done')
+        }
+        else if (!flag) {
             res.send('done')
         }
         else {
@@ -229,9 +246,9 @@ router.post('/get_exam', async (req, res) => {
     try {
         let teacherSubject = await TeacherSubjectsSchema.find({ teacher_id: req.body.teacher_id }).populate('subject_id')
         for (const sub of teacherSubject) {
-            // if (MarksSchema.find({ subject_id: sub.subject_id.subject_id, marks_type: subject.subject }))
+
         }
-        console.log(subject_array)
+
         res.send(teacherSubject)
     } catch (err) {
         console.log(err)

@@ -75,7 +75,7 @@ export default function TeacherNav() {
             semester: parseInt(subject.charAt(3)),
             marks_type: type,
             subject: subject,
-
+            teacher_id: localStorage.getItem('username')
         }, {
 
             headers: {
@@ -153,13 +153,17 @@ export default function TeacherNav() {
                     </Box>
                 </Box>
                 <Grid container spacing={1} sx={{ padding: 2 }}>
+
+                    {/*                     
                     {cardData.map((val, index) => (
                         <Grid item xs={12}>
                             <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject.subject_id} teacher_name={val.teacher_name}  ></ExcelCard>
-                            {/* TODO: put back this after reset db semester={val.subject.semester} */}
+                             TODO: put back this after reset db semester={val.subject.semester} 
                         </Grid>
 
                     ))}
+ */}
+
                 </Grid>
             </div >
         </>
