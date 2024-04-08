@@ -32,7 +32,10 @@ const StudentSchema = mongoose.Schema(
 
         }
 
-    }
+    }, { strict: false }
 )
+
+// TODO: implement class (A/B)
+
 
 module.exports = mongoose.model('Student', StudentSchema);

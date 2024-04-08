@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Topbar from './Topbar';
-import { Button, Checkbox, FormControlLabel, MenuItem, Paper, Popper, Switch, TextField, styled } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, MenuItem, Paper, Popper, Radio, Switch, TextField, styled } from '@mui/material';
 import axios from 'axios'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import IconButton from '@mui/material/IconButton';
@@ -159,7 +159,13 @@ const DynamicTextFields = () => {
     const [subjectList, setSubjectList] = React.useState([])
 
 
-
+    const handleClassChange = (index, fieldName) => {
+        console.log(fieldName)
+        const updatedCheckboxes = [...classCheckboxes];
+        updatedCheckboxes[index] = { selectedValue: fieldName };
+        console.log(updatedCheckboxes)
+        setClassCheckboxes(updatedCheckboxes);
+    };
 
 
     const handleCheckboxChange = (index, fieldName) => {
@@ -170,6 +176,8 @@ const DynamicTextFields = () => {
     const addTextField = () => {
         const newFields = [...fields, { id: fields.length + 1, value: '' }];
         const newCheckbox = [...checkboxes, { term: false, oral: false, practical: false }]
+        const newClassCheckbox = [...classCheckboxes, { selectedValue: 'A' }]
+        setClassCheckboxes(newClassCheckbox)
         setFields(newFields);
         setCheckboxes(newCheckbox);
     };
@@ -193,11 +201,10 @@ const DynamicTextFields = () => {
         })
     }, [update])
     const updateTeacherSubject = () => {
-        // TODO: implement class system!!!!!!!, maybe even a semester one(optional) 
         fields.map((subject, index) => {
             if (subject.value) {
                 console.log(subject)
-                axios.post('/teacher/updateteachersubject', { subject_id: subject.value, teacher_id: localStorage.getItem('username'), ...checkboxes[index], }, {
+                axios.post('/teacher/updateteachersubject', { subject_id: subject.value, teacher_id: localStorage.getItem('username'), ...checkboxes[index], class: classCheckboxes[index]['selectedValue'] }, {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",
@@ -212,76 +219,105 @@ const DynamicTextFields = () => {
     return (
         <div style={{ paddingTop: 20 }}>
             {fields.map((field, index) => (
-                <div key={field.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
-                    <TextField
-                        label={`Add Subject `}
-                        id={field.id}
-                        value={field.value}
-                        onChange={(e) => handleChange(field.id, e.target.value)}
-                        select
+                <div>
+                    <div key={field.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
+                        <TextField
+                            label={`Add Subject `}
+                            id={field.id}
+                            value={field.value}
+                            onChange={(e) => handleChange(field.id, e.target.value)}
+                            select
 
-                        sx={{ width: 'auto', minWidth: 300 }}
-                        InputProps={{
-                            sx: {
-                                borderRadius: 5,
-                            },
-                        }}
-
-                    >{subjectList ? (
-
-
-                        subjectList.map((option, index) => (
-                            <MenuItem PopperProps={{
+                            sx={{ width: 'auto', minWidth: 300 }}
+                            InputProps={{
                                 sx: {
                                     borderRadius: 5,
                                 },
-                            }} key={option._id} value={option._id} >
-                                {option.subject_id} - {option.subject_name}
-                            </MenuItem>
-                        ))
+                            }}
+
+                        >{subjectList ? (
 
 
-                    ) : (
-                        <></>
-                    )}
-                    </TextField>
-                    {/* TODO: u might want to make it a component do this last also change the styling here if u desire */}
-
-                    <FormControlLabel sx={{ marginLeft: 10 }}
-                        control={<Checkbox
-                            checked={checkboxes[index].term}
-                            onChange={() => handleCheckboxChange(index, 'term')}
-                        />}
-                        label="Term Work"
-                        labelPlacement='top'
-                    />
-                    <FormControlLabel sx={{ marginLeft: 10 }}
-                        control={<Checkbox
-                            checked={checkboxes[index].oral}
-                            onChange={() => handleCheckboxChange(index, 'oral')}
-                        />}
-                        label="Oral"
-                        labelPlacement='top'
-                    />
-                    <FormControlLabel sx={{ marginLeft: 10 }}
-                        control={<Checkbox
-                            checked={checkboxes[index].practical}
-                            onChange={() => handleCheckboxChange(index, 'practical')}
-                        />}
-                        label="Practicals"
-                        labelPlacement='top'
-                    />
+                            subjectList.map((option, index) => (
+                                <MenuItem PopperProps={{
+                                    sx: {
+                                        borderRadius: 5,
+                                    },
+                                }} key={option._id} value={option._id} >
+                                    {option.subject_id} - {option.subject_name}
+                                </MenuItem>
+                            ))
 
 
-                    <IconButton sx={{ marginLeft: 10, border: 1 }} onClick={() => removeTextField(field.id)}>
-                        <RemoveIcon sx={{ color: 'red' }} />
-                    </IconButton>
+                        ) : (
+                            <></>
+                        )}
+                        </TextField>
+                        {/* TODO: u might want to make it a component do this last also change the styling here if u desire */}
+
+                        <FormControlLabel sx={{ marginLeft: 10 }}
+                            control={<Checkbox
+                                checked={checkboxes[index].term}
+                                onChange={() => handleCheckboxChange(index, 'term')}
+                            />}
+                            label="Term Work"
+                            labelPlacement='top'
+                        />
+                        <FormControlLabel sx={{ marginLeft: 10 }}
+                            control={<Checkbox
+                                checked={checkboxes[index].oral}
+                                onChange={() => handleCheckboxChange(index, 'oral')}
+                            />}
+                            label="Oral"
+                            labelPlacement='top'
+                        />
+                        <FormControlLabel sx={{ marginLeft: 10 }}
+                            control={<Checkbox
+                                checked={checkboxes[index].practical}
+                                onChange={() => handleCheckboxChange(index, 'practical')}
+                            />}
+                            label="Practicals"
+                            labelPlacement='top'
+                        />
+
+
+                        <IconButton sx={{ marginLeft: 10, border: 1 }} onClick={() => removeTextField(field.id)}>
+                            <RemoveIcon sx={{ color: 'red' }} />
+                        </IconButton>
+                    </div>
+
+                    <div>
+
+                        <FormControlLabel sx={{ marginLeft: 10 }}
+                            control={<Radio
+                                checked={classCheckboxes[index]['selectedValue'] === 'A'}
+                                onChange={() => handleClassChange(index, 'A')}
+                                value='A'
+                                name="class-radio"
+
+                            />}
+                            label="A"
+                            labelPlacement='top'
+                        />
+                        <FormControlLabel sx={{ marginLeft: 10 }}
+                            control={<Radio
+                                checked={classCheckboxes[index]['selectedValue'] === 'B'}
+                                onChange={() => handleClassChange(index, 'B')}
+                                value='B'
+                                name="class-radio"
+                            />}
+                            label="B"
+                            labelPlacement='top'
+                        />
+                    </div>
                 </div>
-            ))}
+
+            ))
+            }
             <AddSubjectButton onClick={addTextField} />
             <Divider sx={{ paddingTop: 1 }} />
             <ApprovalButton onClick={updateTeacherSubject} />
-        </div>
+        </div >
     );
 };
 

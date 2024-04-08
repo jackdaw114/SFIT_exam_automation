@@ -23,18 +23,29 @@ export default function TeacherNav() {
     const [year, setYear] = useState(0)
     const [jsonData, setJsonData1] = useState([])
     const [cardData, setCardData] = useState([])
+    const [index, setIndex] = useState(0);
     const navigate = useNavigate()
+    const [class_name, setClassName] = useState([])
     const [subjectList, setSubjectList] = useState([])
     const handleChangeType = (e) => {
         console.log(e.target)
         setType(e.target.value)
     }
+    const handleChangeClass = (e) => {
+        console.log(e.target)
+        console.log(subjectList.find(item => item.subject_id === subject)?.class)
+        setClassName(e.target.value)
+    }
     const handleChangeSubject = (e) => {
         const selectedSubjectId = e.target.value;
         setSubject(e.target.value)
         const selectedItem = subjectList.find(item => item.subject_id === selectedSubjectId);
+
         if (selectedItem) {
             const selectedItemId = selectedItem._id;
+
+            console.log(subjectList.find(item => item.subject_id === subject)?.class)
+
             setSubjectId(selectedItemId)
             console.log(selectedItemId)
         }
@@ -59,7 +70,7 @@ export default function TeacherNav() {
             }
         }).then(res => {
             console.log(res.data.subject_list)
-            console.log(res.data)
+            // console.log(res.data)
             setSubjectList(res.data.subject_list)
         })
 
@@ -75,6 +86,7 @@ export default function TeacherNav() {
             semester: parseInt(subject.charAt(3)),
             marks_type: type,
             subject: subject,
+            class: class_name,
             teacher_id: localStorage.getItem('username')
         }, {
 
@@ -101,6 +113,8 @@ export default function TeacherNav() {
     // Arabic Numerals to Roman - Library
     const { romanice } = Romanice;
     const standardConverter = romanice();
+
+
     return (
         <>
             <div className='container-teacher-nav'>
@@ -126,6 +140,7 @@ export default function TeacherNav() {
                                 <InputLabel>Select Type of Marks</InputLabel>
                                 {subject ? (
                                     subjectList.map((item, index) => {
+
                                         if (item.subject_id === subject) {
                                             return (
                                                 <Select onChange={handleChangeType} value={type} label="Select Examination">
@@ -142,6 +157,21 @@ export default function TeacherNav() {
                                 ) : (
                                     <Select onChange={handleChangeType} value={type} label="Select Examination">
                                         <MenuItem value=''>Please Select Subject</MenuItem>
+                                    </Select>
+                                )}
+                            </FormControl>
+                            <FormControl sx={{ minWidth: 200 }}>
+                                <InputLabel>Enter class</InputLabel>
+                                {subject ? (
+                                    <Select onChange={handleChangeClass} value={class_name}>
+                                        {subjectList.find(item => item.subject_id === subject).class.map((item, index) => {
+                                            return <MenuItem key={index} value={item} > {item} </MenuItem>
+                                        })
+                                        }
+                                    </Select>
+                                ) : (
+                                    <Select onChange={handleChangeClass} value={class_name} label="Select Examination">
+                                        <MenuItem value='' key={10} >Please Select Subject</MenuItem>
                                     </Select>
                                 )}
                             </FormControl>

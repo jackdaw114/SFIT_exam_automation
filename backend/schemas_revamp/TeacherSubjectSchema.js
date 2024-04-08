@@ -14,6 +14,10 @@ const TeacherSubjectSchema = mongoose.Schema(
             type: String,
             required: true
         },
+        class: {
+            type: Array,
+            required: true
+        },
         term: Boolean,
         oral: Boolean,
         practical: Boolean,

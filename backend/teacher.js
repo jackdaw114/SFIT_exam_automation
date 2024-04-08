@@ -294,19 +294,19 @@ router.post('/excelbyid', async (req, res) => {
 })
 router.post('/updateteachersubject', async (req, res) => {
     try {
-        console.log(req.body)
-        const { subject_id, teacher_id, practical, oral, term } = req.body;
+        const { subject_id, teacher_id, practical, oral, term, class: class_name } = req.body;
 
         let teacherSubject = await TeacherSubjectsSchema.findOne({ subject_id, teacher_id });
 
         if (!teacherSubject) {
-            teacherSubject = new TeacherSubjectsSchema({ subject_id, teacher_id, practical, oral, term });
+            teacherSubject = new TeacherSubjectsSchema({ subject_id, teacher_id, practical, oral, term, class: class_name });
         } else {
             teacherSubject.subject_id = subject_id;
             teacherSubject.teacher_id = teacher_id;
             teacherSubject.practical = practical;
             teacherSubject.oral = oral;
             teacherSubject.term = term;
+            teacherSubject.class = [...teacherSubject.class, class_name];
         }
 
         await teacherSubject.save();

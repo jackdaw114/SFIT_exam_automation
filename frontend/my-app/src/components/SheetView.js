@@ -8,6 +8,7 @@ const SheetView = () => {
     const [sheetData, setSheetData] = useState([]);
     let location = useLocation();
     useEffect(() => {
+        console.log(location.state)
         axios.post('/jason/getdata', {
             subject_id: location.state.subject,
             marks_type: location.state.marks_type,
