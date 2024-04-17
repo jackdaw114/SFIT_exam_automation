@@ -5,20 +5,16 @@ const mongoose = require('mongoose');
 
 const SubjectListschema = mongoose.Schema( //TODO: implement schema 
     {
-        subject_id: {
+        subject_ids: [{
             type: String,
-            required: true,
-            unique: true
+        }],
+        branch: {
+            type: String,
         },
-        subject_name: {
+        semester: {
             type: String,
-            required: true
-        },
-        teacher_id: {
-            type: String,
-            required: true,
-
         }
+
 
     }
 )

@@ -30,8 +30,7 @@ const StudentSchema = mongoose.Schema(
         {
             type: String,
 
-        }
-
+        },
     }, { strict: false }
 )
 

@@ -296,7 +296,7 @@ router.post('/updateteachersubject', async (req, res) => {
     try {
         const { subject_id, teacher_id, practical, oral, term, class: class_name } = req.body;
 
-        let teacherSubject = await TeacherSubjectsSchema.findOne({ subject_id, teacher_id });
+        let teacherSubject = await TeacherSubjectsSchema.findOne({ subject_id, teacher_id, class: class_name });
 
         if (!teacherSubject) {
             teacherSubject = new TeacherSubjectsSchema({ subject_id, teacher_id, practical, oral, term, class: class_name });
@@ -306,7 +306,7 @@ router.post('/updateteachersubject', async (req, res) => {
             teacherSubject.practical = practical;
             teacherSubject.oral = oral;
             teacherSubject.term = term;
-            teacherSubject.class = [...teacherSubject.class, class_name];
+            teacherSubject.class = class_name;
         }
 
         await teacherSubject.save();
