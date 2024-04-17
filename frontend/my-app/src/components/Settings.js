@@ -84,23 +84,23 @@ const capitalizeFirstLetter = ([first, ...rest]) => {
 }
 function SettingDrawer(props) {
 
-    return (<div style={{ paddingLeft: '10vw' }}>
-        <Box sx={{ minHeight: '100%', position: 'absolute', height: '100%', overflowX: 'scroll', maxWidth: '20vw', width: '15vw' }}>
+    return (<div className='-mt-32'>
+        <Box className="pl-10 pt-5 h-screen w-1/4 bg-slate-300 absolute">
+            {/* <Box sx={{ minHeight: '100%', position: 'absolute', height: '100%', maxWidth: '20vw', width: '15vw' }}> */}
 
-            <List sx={{ borderRight: 1, marginTop: 5, borderColor: borderColor }}>
-                <ListItem sx={{ fontSize: 40, padding: 2, fontFamily: 'serif', fontWeight: 'bold', }}>Settings</ListItem>
+            <List>
+                <ListItem sx={{ fontSize: 40, padding: 1, fontWeight: 'bold', }}>Settings</ListItem>
                 {['Details', 'Subjects', 'Update'].map((text, index) => (
-                    <ListItem key={text} >
+                    <ListItem key={text}  >
                         <ListItemButton sx={{
                             border: 1, borderRadius: 100,
                             borderColor: 'transparent',
-                            '&:hover': {
-                                borderColor: borderColor,
-                                background: 'transparent',
-                            },
-                        }}>
+
+                        }}
+                            className=' hover:bg-lime-200/80 group '
+                        >
                             <ListItemIcon>
-                                <CircleIcon />
+                                <CircleIcon className="text-slate-700 group-hover:text-slate-500 transition-all duration-200 ease-in-out" />
                             </ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItemButton>
@@ -338,13 +338,13 @@ const StyledTextField = (props) => <TextField {...props} fullWidth sx={{
 }} variant='standard' InputProps={{
     disableUnderline: props.edit ? true : false, style: {
         fontSize: 22,
-        fontFamily: 'serif',
+
         fontWeight: 'bold'
     },
 
 }} />
-const StyledTypography = (props) => <Typography {...props} sx={{ paddingTop: 1, fontFamily: 'serif', fontSize: 22 }} />
-const SettingsHeaderTypography = (props) => <Typography {...props} variant='h4' sx={{ fontSize: 28, fontWeight: 'bold', fontFamily: 'serif', paddingBottom: 2, paddingTop: 3 }} />
+const StyledTypography = (props) => <Typography {...props} sx={{ paddingTop: 1, fontSize: 22, fontFamily: "Open Sans" }} />
+const SettingsHeaderTypography = (props) => <Typography {...props} variant='h4' sx={{ fontSize: 28, fontWeight: 'bold', fontFamily: "Open Sans", paddingBottom: 2, paddingTop: 3 }} />
 
 
 export default function Settings(props) {
@@ -391,61 +391,64 @@ export default function Settings(props) {
     }, [update]);
     return (
         <>
-            <SettingDrawer />
-            <Box sx={{ marginLeft: '30vw', paddingLeft: 3, marginTop: 15, paddingTop: 2, fontSize: 40, maxWidth: '55vw' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
-                    <SettingsHeaderTypography > Details</SettingsHeaderTypography>
-                    {/* TODO: grid view for Details will look better {this is the personal data section } */}
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography variant='h5' sx={{ padding: 2, fontFamily: 'serif' }} >
-                            Edit
-                        </Typography>
-                        <IOSSwitch
-                            checked={switches.switch1}
-                            onChange={handleSwitchChange('switch1')} />
-                    </Box>
-                </Box>
-                <Divider sx={{ marginBottom: 2 }} />
+            <div className=' font-opensans'>
 
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'baseline', paddingLeft: 2 }}>
-                    <StyledTypography variant='h5'>Username </StyledTypography>
-                    <StyledTextField edit={!switches.switch1} disabled={!switches.switch1} name='username' value={inputs.username}
-                        onChange={handleChange}></StyledTextField>
-                    <StyledTypography variant='h5'>Phone Number</StyledTypography>
-
-
-                    <StyledTextField edit={!switches.switch1} disabled={!switches.switch1} name='phone_no' value={inputs.phone_no} onChange={handleChange} ></StyledTextField>
-                </Box >
-
-                <Box>
+                <SettingDrawer />
+                <Box sx={{ marginLeft: '30vw', paddingLeft: 3, marginTop: 15, paddingTop: 2, fontSize: 40, maxWidth: '55vw', fontFamily: "opensans" }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
-                        <SettingsHeaderTypography variant='h4' sx={{ fontSize: 28, fontWeight: 'bold', fontFamily: 'serif', paddingBottom: 2 }}>Subjects Taught</SettingsHeaderTypography>
-
-
+                        <SettingsHeaderTypography > Details</SettingsHeaderTypography>
+                        {/* TODO: grid view for Details will look better {this is the personal data section } */}
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography variant='h5' sx={{ padding: 2, }} >
+                                Edit
+                            </Typography>
+                            <IOSSwitch
+                                checked={switches.switch1}
+                                onChange={handleSwitchChange('switch1')} />
+                        </Box>
                     </Box>
-                    {/* TODO: change padding here {this is the Subjects taught settings } */}
                     <Divider sx={{ marginBottom: 2 }} />
 
-                    {subjectList.map((item, index) => (
-                        // TODO: change styling here aswell {this is the Subjects taught settings }
-
-                        <Typography variant='h5' sx={{ paddingLeft: 2, paddingTop: 1, fontFamily: 'serif', fontSize: 22 }}>{item.subject_id} - {item.subject_name} </Typography>
-                    ))
-                    }
-
-                </Box>
-                <Box sx={{ paddingLeft: 1 }}>
-                    <DynamicTextFields />
-                </Box>
-                {/* <Divider sx={{ marginBottom: 2, marginTop: 3 }} /> */}
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'baseline', paddingLeft: 2 }} className="font-opensans">
+                        <StyledTypography variant='h5'>Username </StyledTypography>
+                        <StyledTextField edit={!switches.switch1} disabled={!switches.switch1} name='username' value={inputs.username}
+                            onChange={handleChange}></StyledTextField>
+                        <StyledTypography variant='h5'>Phone Number</StyledTypography>
 
 
+                        <StyledTextField edit={!switches.switch1} disabled={!switches.switch1} name='phone_no' value={inputs.phone_no} onChange={handleChange} ></StyledTextField>
+                    </Box >
+
+                    <Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
+                            <SettingsHeaderTypography variant='h4' sx={{ fontSize: 28, fontWeight: 'bold', paddingBottom: 2 }}>Subjects Taught</SettingsHeaderTypography>
 
 
-                {/* <ApprovalButton /> TODO: figure how this can call multiple functions */}
+                        </Box>
+                        {/* TODO: change padding here {this is the Subjects taught settings } */}
+                        <Divider sx={{ marginBottom: 2 }} />
+
+                        {subjectList.map((item, index) => (
+                            // TODO: change styling here aswell {this is the Subjects taught settings }
+
+                            <Typography variant='h5' sx={{ paddingLeft: 2, paddingTop: 1, fontSize: 22 }}>{item.subject_id} - {item.subject_name} </Typography>
+                        ))
+                        }
+
+                    </Box>
+                    <Box sx={{ paddingLeft: 1 }}>
+                        <DynamicTextFields />
+                    </Box>
+                    {/* <Divider sx={{ marginBottom: 2, marginTop: 3 }} /> */}
 
 
-            </Box >
+
+
+                    {/* <ApprovalButton /> TODO: figure how this can call multiple functions */}
+
+
+                </Box >
+            </div>
         </>
     )
 }
