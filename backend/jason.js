@@ -54,7 +54,7 @@ router.post('/create_student_marks', async (req, res) => {
         })
 
         const check_teacher = await TeacherSubjectsSchema.findOne({ teacher_id: req.body.teacher_id })
-        let flag = false;
+        let flag = true;
         console.log(check_teacher.created[req.body.marks_type])
         if (!check_teacher.created[req.body.marks_type]) {
             flag = true;
