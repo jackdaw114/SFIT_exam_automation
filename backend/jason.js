@@ -46,7 +46,12 @@ router.post('/update_data', async (req, res) => {
 router.post('/create_student_marks', async (req, res) => {
     try {
         console.log(req.body)
-        const students = await StudentSchema.find({ subject_ids: { $in: [req.body.subject] }, semester: req.body.semester, class: req.body.class })
+        const students = await StudentSchema.find({
+            subject_ids: { $in: [req.body.subject] },
+            semester: req.body.semester,
+
+            class: req.body.class
+        })
 
         const check_teacher = await TeacherSubjectsSchema.findOne({ teacher_id: req.body.teacher_id })
         let flag = false;
@@ -101,18 +106,25 @@ router.post('/create_student_marks', async (req, res) => {
 router.post('/getdata', async (req, res) => {
     try {
         console.log(req.body)
-        const students = await StudentSchema.find({ subject_ids: { $in: [req.body.subject_id] }, semester: req.body.semester, class: req.body.class }
+        const students = await StudentSchema.find({
+            subject_ids: { $in: [req.body.subject_id] },
+            semester: req.body.semester,
+            class: req.body.class_name
+        }
             ,
             {
                 pid: true,
                 name: true,
                 [req.body.marks_type]: true
             })
+
+        console.log(students)
+
         const sendData = await students.map((student) => {
             const { [req.body.marks_type]: marksTypeValue, ...remainingData } = student.toObject();
             return { ...remainingData, marks: marksTypeValue[req.body.subject_id] }
         })
-        console.log(sendData)
+        console.log(students)
         res.send(sendData); //TODO: add filer before sending so that only marks type and subject gets sent alonn gwith name
     } catch (error) {
         res.status(500).send(error);

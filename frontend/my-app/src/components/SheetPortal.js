@@ -98,7 +98,7 @@ export default function TeacherNav() {
 
         }).then((res) => {
             console.log(res.data)
-            navigate('/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), } })
+            navigate('/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), class: class_name } })
 
         })
         //console.log( jsonData)

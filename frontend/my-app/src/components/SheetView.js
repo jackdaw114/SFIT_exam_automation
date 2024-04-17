@@ -12,7 +12,8 @@ const SheetView = () => {
         axios.post('/jason/getdata', {
             subject_id: location.state.subject,
             marks_type: location.state.marks_type,
-            semester: location.state.semester // TODO: change this to teacher backend when complete
+            semester: location.state.semester, // TODO: change this to teacher backend when complete
+            class_name:location.state.class
         }, {
             headers: {
                 "Content-Type": "application/json",
