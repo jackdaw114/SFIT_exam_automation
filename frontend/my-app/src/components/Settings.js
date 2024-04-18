@@ -89,7 +89,7 @@ function SettingDrawer(props) {
             {/* <Box sx={{ minHeight: '100%', position: 'absolute', height: '100%', maxWidth: '20vw', width: '15vw' }}> */}
 
             <List>
-                <ListItem sx={{ fontSize: 40, padding: 1, fontWeight: 'bold', }}>Settings</ListItem>
+                <ListItem sx={{ fontSize: 40, padding: 1, fontWeight: 'bold', fontFamily: "Open Sans" }}>Settings</ListItem>
                 {['Details', 'Subjects', 'Update'].map((text, index) => (
                     <ListItem key={text}  >
                         <ListItemButton sx={{
@@ -323,7 +323,7 @@ const DynamicTextFields = () => {
 
 
 const StyledTextField = (props) => <TextField {...props} fullWidth sx={{
-    paddingTop: 3, paddingLeft: 4, paddingBottom: 2, fontSize: 20, '& .MuiInput-underline:after': {
+    paddingTop: 3, paddingBottom: 2, fontSize: 20, '& .MuiInput-underline:after': {
         borderBottomColor: '#6ca178c',
     },
     '& .MuiInput-underline:before': {
@@ -391,33 +391,39 @@ export default function Settings(props) {
     }, [update]);
     return (
         <>
-            <div className=' font-opensans'>
+            <div className='font-opensans'>
 
                 <SettingDrawer />
                 <Box sx={{ marginLeft: '30vw', paddingLeft: 3, marginTop: 15, paddingTop: 2, fontSize: 40, maxWidth: '55vw', fontFamily: "opensans" }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
-                        <SettingsHeaderTypography > Details</SettingsHeaderTypography>
-                        {/* TODO: grid view for Details will look better {this is the personal data section } */}
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography variant='h5' sx={{ padding: 2, }} >
-                                Edit
-                            </Typography>
-                            <IOSSwitch
-                                checked={switches.switch1}
-                                onChange={handleSwitchChange('switch1')} />
+                    <div className=' bg-slate-100 p-10 rounded-lg mb-10'>
+
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
+                            <SettingsHeaderTypography > Details</SettingsHeaderTypography>
+                            {/* TODO: grid view for Details will look better {this is the personal data section } */}
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant='h5' sx={{ padding: 2, }} >
+                                    Edit
+                                </Typography>
+                                <IOSSwitch
+                                    checked={switches.switch1}
+                                    onChange={handleSwitchChange('switch1')} />
+                            </Box>
                         </Box>
-                    </Box>
-                    <Divider sx={{ marginBottom: 2 }} />
+                        <Divider sx={{ marginBottom: 2 }} />
 
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'baseline', paddingLeft: 2 }} className="font-opensans">
-                        <StyledTypography variant='h5'>Username </StyledTypography>
-                        <StyledTextField edit={!switches.switch1} disabled={!switches.switch1} name='username' value={inputs.username}
-                            onChange={handleChange}></StyledTextField>
-                        <StyledTypography variant='h5'>Phone Number</StyledTypography>
+                        <Box sx={{ paddingLeft: 2 }} className="font-opensans">
+                            <div className='flex justify-start'>
 
-
-                        <StyledTextField edit={!switches.switch1} disabled={!switches.switch1} name='phone_no' value={inputs.phone_no} onChange={handleChange} ></StyledTextField>
-                    </Box >
+                                <StyledTypography className="pt-7 w-1/4" variant='h5'>Username : &nbsp;</StyledTypography>
+                                <StyledTextField className="w-1/2" edit={!switches.switch1} disabled={!switches.switch1} name='username' value={inputs.username}
+                                    onChange={handleChange}></StyledTextField>
+                            </div>
+                            <div className='flex justify-start'>
+                                <StyledTypography className="pt-7 w-1/4" variant='h5'>Phone Number : &nbsp;</StyledTypography>
+                                <StyledTextField className="w-1/2" edit={!switches.switch1} disabled={!switches.switch1} name='phone_no' value={inputs.phone_no} onChange={handleChange} ></StyledTextField>
+                            </div>
+                        </Box >
+                    </div>
 
                     <Box>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
