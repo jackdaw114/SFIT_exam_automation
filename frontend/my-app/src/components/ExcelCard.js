@@ -14,13 +14,15 @@ export default function ExcelCard(props) {
     }
     return (
         <>
-            <Card sx={{ borderRadius: 2, }} elevation={2} className="group flex justify-between transition-colors hover:bg-green-50/80 ease-in-out duration-200 delay-75">
-                <CardContent className="pl-16 select-none">
+            <Card sx={{ borderRadius: 2, }} elevation={2} className="group flex justify-between transition-colors hover:bg-green-50/80 ease-in-out duration-200 delay-75 py-1">
+                <CardContent className="pl-10  select-none">
 
 
-                    <Typography variant="h6" color="text.secondary" className="font-semibold transition-all duration-200 ease-in-out group-hover:text-red-800/90">
-                        {(props.subject[0]).toUpperCase() + props.subject.slice(1)}: {props.marks_type[0].toUpperCase() + props.marks_type.slice(1)} - Sem
-                        {/* TODO: put this back after updating subject list {standardConverter.toRoman(props.semester)} */}
+                    <Typography variant="h5" color="text.secondary" className="font-semibold transition-all duration-200 ease-in-out group-hover:text-red-800/90 text-lg">
+                        {(props.subject[0]).toUpperCase() + " - " + props.subject.slice(1)}: {props.marks_type[0].toUpperCase() + props.marks_type.slice(1)} -
+                        Sem&nbsp;
+                        {standardConverter.toRoman(props.semester)}
+
                     </Typography>
 
                     {/* <Typography color="text.secondary">

@@ -54,7 +54,7 @@ export default function TeacherNav() {
 
 
     useEffect(() => {
-        axios.post('/jason/get_exam', { teacher_id: localStorage.getItem('username') }, {
+        axios.post('/jason/get_exams', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
@@ -186,15 +186,15 @@ export default function TeacherNav() {
                 </Box>
                 <Grid container spacing={1} sx={{ padding: 2 }}>
 
-                    {/*                     
+
                     {cardData.map((val, index) => (
                         <Grid item xs={12}>
-                            <ExcelCard marks_type={val.marks_type} _id={val._id} subject={val.subject.subject_id} teacher_name={val.teacher_name}  ></ExcelCard>
-                             TODO: put back this after reset db semester={val.subject.semester} 
+                            <ExcelCard marks_type={val.marks_type} subject={[val.subject_id, val.subject_name]} semester={val.semester} department={val.branch} class={val.class} ></ExcelCard>
+
                         </Grid>
 
                     ))}
- */}
+
 
                 </Grid>
             </div >

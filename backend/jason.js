@@ -288,25 +288,27 @@ router.post('/get_exams', async (req, res) => {
                 branch: populatedItem.subject_id.branch
             }
 
-            console.log(filteredItem)
+            // console.log(filteredItem)
             // Check if practical exam is created for this subject
-            if (populatedItem.created.practical === true) {
+            if (populatedItem.created.practical == true) {
                 // If practical exam is created, add it to the display list
                 DisplayList.push({ ...filteredItem, marks_type: 'practical' })
             }
 
-            if (populatedItem.created.oral === true) {
+            if (populatedItem.created.oral == true) {
                 // If practical exam is created, add it to the display list
                 DisplayList.push({ ...filteredItem, marks_type: 'oral' })
             }
-            if (populatedItem.created.term === true) {
+            if (populatedItem.created.term == true) {
                 // If practical exam is created, add it to the display list
                 DisplayList.push({ ...filteredItem, marks_type: 'term' })
             }
         }
 
         // Send the display list as the response
+        console.log(DisplayList)
         res.json(DisplayList)
+
 
     } catch (err) {
         // Handle errors
