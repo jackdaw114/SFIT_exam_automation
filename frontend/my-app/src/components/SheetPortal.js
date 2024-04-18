@@ -162,13 +162,15 @@ export default function TeacherNav() {
                             </FormControl>
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Enter class</InputLabel>
-                                {subject ? (
+                                {subject ? (<>
+                                    {console.log("MEOW", subjectList.find(item => item.subject_id === subject).class)}
                                     <Select onChange={handleChangeClass} value={class_name}>
-                                        {subjectList.find(item => item.subject_id === subject).class.map((item, index) => {
+                                        {[subjectList.find(item => item.subject_id === subject).class].map((item, index) => {
                                             return <MenuItem key={index} value={item} > {item} </MenuItem>
                                         })
                                         }
                                     </Select>
+                                </>
                                 ) : (
                                     <Select onChange={handleChangeClass} value={class_name} label="Select Examination">
                                         <MenuItem value='' key={10} >Please Select Subject</MenuItem>

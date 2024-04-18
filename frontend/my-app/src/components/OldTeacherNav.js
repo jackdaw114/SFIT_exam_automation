@@ -12,7 +12,7 @@ import * as Romanice from 'romanice';
 
 
 
-export default function TeacherNav() {
+export default function OldTeacherNav() {
 
     const [type, setType] = useState('')
     const [subject, setSubject] = useState('')
