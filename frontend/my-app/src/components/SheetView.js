@@ -13,13 +13,16 @@ const SheetView = () => {
     const [sheetData, setSheetData] = useState([]);
     let location = useLocation();
     useEffect(() => {
-        console.log(location.state)
-        axios.post('/jason/getdata', {
+        console.log("Current State= ", location.state)
+        const data = {
             subject_id: location.state.subject,
             marks_type: location.state.marks_type,
             semester: location.state.semester, // TODO: change this to teacher backend when complete
             class_name: location.state.class
-        }, {
+        }
+        console.log("Current Data=", data)
+
+        axios.post('/jason/getdata', data, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
