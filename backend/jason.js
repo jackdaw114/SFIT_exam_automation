@@ -268,6 +268,39 @@ router.post('/create_gazette', async (req, res) => {
     }
 })
 
+router.post('/get_student', async (req, res) => {
+    try {
+        const student = await StudentSchema.findOne({ pid: req.body.pid })
+        let sendData;
+        if (student) {
+            // Extract subject IDs from the student document
+            const subjectIds = student.subject_ids;
+
+            // Use Promise.all() to fetch all subjects in parallel
+            const subjectPromises = subjectIds.map(subjectId => {
+                return SubjectsSchema.findOne({ subject_id: subjectId });
+            });
+
+            // Wait for all subjects to be fetched
+            const subjects = await Promise.all(subjectPromises);
+
+            // Filter out any null values (in case a subject with a given ID is not found)
+            const filteredSubjects = subjects.filter(subject => subject !== null);
+            console.log(filteredSubjects)
+            // Now, filteredSubjects contains all the found subjects
+            sendData = filteredSubjects;
+        } else {
+            // Handle case where student is not found
+
+        }
+        res.json({ student: student, subjects: sendData })
+    } catch (err) {
+        // Handle errors
+        console.error(err)
+        res.status(500).send('Internal Server Error')
+    }
+})
+
 router.post('/get_exams', async (req, res) => {
     try {
         // Find teacher subjects based on the teacher_id from the request body
