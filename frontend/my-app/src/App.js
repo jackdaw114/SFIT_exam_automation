@@ -18,6 +18,8 @@ import Gazette from './components/Gazette';
 import Settings from './components/Settings';
 import Header from './components/Header';
 import theme from './theme/palette';
+import Report from './components/Report';
+import Analysis from './components/Analysis';
 
 const teacher = '/teacher'
 const admin = '/admin'
@@ -42,6 +44,8 @@ function App() {
             <Route path='/adminhome' element={<><AdminHome /></>} />
             <Route path='/profile' element={<><TeacherProfile /></>} />
             <Route path='/creategazette' element={<><Gazette /></>} />
+            <Route path='/report' element={<><Report /></>} />
+            <Route path='/analysis' element={<><Analysis /></>} />
           </Routes>
         </BrowserRouter>
       </Box>

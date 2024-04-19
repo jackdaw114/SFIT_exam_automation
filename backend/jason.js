@@ -315,7 +315,64 @@ router.post('/get_exams', async (req, res) => {
     }
 })
 
+router.post('/get_student', async (req, res) => {
+    try {
+        const student = await StudentSchema.findOne({ pid: req.body.pid })
+        let sendData;
+        if (student) {
+            // Extract subject IDs from the student document
+            const subjectIds = student.subject_ids;
 
+            // Use Promise.all() to fetch all subjects in parallel
+            const subjectPromises = subjectIds.map(subjectId => {
+                return SubjectsSchema.findOne({ subject_id: subjectId });
+            });
 
+            // Wait for all subjects to be fetched
+            const subjects = await Promise.all(subjectPromises);
+
+            // Filter out any null values (in case a subject with a given ID is not found)
+            const filteredSubjects = subjects.filter(subject => subject !== null);
+            console.log(filteredSubjects)
+            // Now, filteredSubjects contains all the found subjects
+            sendData = filteredSubjects;
+        } else {
+            // Handle case where student is not found
+
+        }
+        res.json({ student: student, subjects: sendData })
+    } catch (err) {
+        // Handle errors
+        console.error(err)
+        res.status(500).send('Internal Server Error')
+    }
+})
+router.post('/get_analytics', async (req, res) => {
+    try {
+        // 1. Find teacher subjects
+        const teacherSubjects = await TeacherSubjectsSchema.find({ teacher_id: req.body.teacher_id })
+            .populate('subject_id'); // Populate subject details
+
+        // 2. Extract subject IDs from teacher subjects
+        const teacherSubjectIds = teacherSubjects.map((subject) => subject.subject_id.subject_id === req.body.subject_id ? subject.subject_id.subject_id : null);
+        console.log(teacherSubjects)
+        console.log(teacherSubjectIds)
+        // 3. Find students with matching subject subscriptions (using $in operator)
+        const students = await StudentSchema.find({
+            subject_ids: { $in: teacherSubjectIds },
+        });
+        console.log(students.length)
+        teacherSubjectIds.map((subjectIds) => {
+            const studentPracsArray = students.map((student) => student.practical && student.practical[subjectIds] ? student.practical[subjectIds] : 0)
+            console.log(studentPracsArray)
+        })
+        // 4. Send student data as response
+        res.json(students);
+    } catch (err) {
+        // Handle errors
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 module.exports = router;   
