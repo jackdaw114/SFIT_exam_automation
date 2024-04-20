@@ -8,35 +8,42 @@ import EditIcon from '@mui/icons-material/Edit';
 import { read, utils, writeFile } from 'xlsx';
 import DownloadIcon from '@mui/icons-material/Download';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const SheetView = () => {
     const [isEdit, setIsEdit] = useState(false)
     const [sheetData, setSheetData] = useState([]);
     let location = useLocation();
-    useEffect(() => {
-        console.log("Current State= ", location.state)
-        const data = {
-            subject_id: location.state.subject,
-            marks_type: location.state.marks_type,
-            semester: location.state.semester, // TODO: change this to teacher backend when complete
-            class_name: location.state.class
-        }
-        console.log("Current Data=", data)
-
-        axios.post('/jason/getdata', data, {
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            }
-        }).then(res => {
-            console.log(res.data)
-            setSheetData(res.data);
-        });
-    }, []);
-
+    const [maxMarks, setMaxMarks] = useState(0);
     const handleEdit = (index, field, value) => {
         const updatedData = [...sheetData];
-        updatedData[index][field] = value;
-        setSheetData(updatedData);
+        let newValue = Number(value);
+
+        if (isNaN(newValue) || value.trim() === '') {
+            // Input is not a valid number or is empty
+            // Handle the error condition here if needed
+            console.log('weeeeee')
+            return;
+        }
+
+        if (newValue > maxMarks) {
+            // Value exceeds maxMarks
+            // Display a notification or handle the error condition here
+
+            updatedData[index][field] = -newValue;
+            setSheetData(updatedData);
+            console.log(sheetData)
+            toast("Value cannot exceed maxMarks.");
+            return;
+        }
+        else {
+            // Update the data
+            updatedData[index][field] = newValue;
+
+            setSheetData(updatedData);
+        }
     };
 
 
@@ -69,6 +76,8 @@ const SheetView = () => {
 
     const handleInput = async (e) => {
         e.preventDefault();
+
+
         const file = e.target.files[0];
 
         // Read the Excel file into an ArrayBuffer
@@ -108,13 +117,38 @@ const SheetView = () => {
         });
 
     };
+    useEffect(() => {
+        console.log("Current State= ", location.state)
 
 
+        switch (location.state.marks_type) {
+            case 'term':
+                setMaxMarks(50)
+                break;
+            case 'practical':
+                setMaxMarks(20)
+                break;
+            case 'oral':
+                setMaxMarks(5)
+        }
+        const data = {
+            subject_id: location.state.subject,
+            marks_type: location.state.marks_type,
+            semester: location.state.semester, // TODO: change this to teacher backend when complete
+            class_name: location.state.class
+        }
+        console.log("Current Data=", data)
 
-
-
-
-
+        axios.post('/jason/getdata', data, {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            }
+        }).then(res => {
+            console.log(res.data)
+            setSheetData(res.data);
+        });
+    }, []);
 
     return (
         <>
@@ -134,22 +168,30 @@ const SheetView = () => {
                         </tr>
                     </thead>
                     <tbody className='text-lg' >
-                        {sheetData && sheetData.map((row, index) => (
+                        {sheetData && sheetData.map((row, index) => {
+                            let background = '#ffffffff';
+                            if (row.marks < 0)
+                                background = '#FFB86F'
+                            else if (row.marks >= 0 && row.marks <= (maxMarks * 0.35))
+                                background = '#E36588'
+                            else if (row.marks == maxMarks)
+                                background = '#ADF7B6'
 
-                            <tr key={index} className=" flex-none  border-b-2 border-slate-700 " >
+                            return (
+                                <tr key={index} className=" flex-none  border-b-2 border-slate-700 " style={{ backgroundColor: background }} >
 
-                                <td className="text-center select-none" contentEditable="false" onBlur={(e) => handleEdit(index, 'pid', e.target.textContent)}>
-                                    {row.pid}
-                                </td>
-                                <td className="text-center select-none" contentEditable="false" onBlur={(e) => handleEdit(index, 'name', e.target.textContent)}>
-                                    {row.name}
-                                </td>
-                                <td className="text-center" contentEditable={isEdit} onBlur={(e) => handleEdit(index, 'marks', e.target.textContent)}>
-                                    {row.marks}
-                                </td>
+                                    <td className="text-center select-none" contentEditable="false" onBlur={(e) => handleEdit(index, 'pid', e.target.textContent)}>
+                                        {row.pid}
+                                    </td>
+                                    <td className="text-center select-none" contentEditable="false" onBlur={(e) => handleEdit(index, 'name', e.target.textContent)}>
+                                        {row.name}
+                                    </td>
+                                    <td className="text-center" contentEditable={isEdit} onBlur={(e) => handleEdit(index, 'marks', e.target.textContent)}>
+                                        {row.marks}
+                                    </td>
 
-                            </tr>
-                        ))}
+                                </tr>)
+                        })}
                     </tbody>
                 </table>
                 <div>
@@ -158,10 +200,11 @@ const SheetView = () => {
                     <Button color="info" sx={{ margin: '30px 5px' }} variant="contained" endIcon={isEdit ? <CancelIcon /> : <EditIcon />} onClick={() => { setIsEdit(!isEdit) }}>
                         {isEdit ? "Cancel" : "Edit"}
                     </Button>
-                    <input type="file" className="fileSelect" onChange={(e) => handleInput(e)} />
+                    <input type="file" className="fileSelect" onBlur={(e) => handleInput(e)} />
                     <Button variant="contained" onClick={handleDownload} >Download File <DownloadIcon fontSize="small" className="pl-2" /> </Button>
                 </div>
             </div>
+            <ToastContainer />
         </>
     );
 };
