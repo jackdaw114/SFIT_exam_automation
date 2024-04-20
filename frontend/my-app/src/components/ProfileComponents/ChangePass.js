@@ -7,26 +7,26 @@ import { useNavigate } from "react-router"
 export default function ChangePass() {
     const navigate = useNavigate()
     const [inputs, setInputs] = useState({
-        password: "", 
-        new_password: "", 
+        password: "",
+        new_password: "",
     })
     const labels = {
         password: "Current Password",
-        new_password: "New Password", 
+        new_password: "New Password",
     }
     const [password, setPassword] = useState(localStorage.getItem("password"))
     const [newPassword, setNewPassword] = useState("")
- 
+
     const handleChange = (e) => {
         setInputs((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
-            
+
         }))
     }
 
     const handleSubmit = () => {
-        localStorage.setItem("password",inputs.password)
+        localStorage.setItem("password", inputs.password)
         axios.post('/teacher/changepassword', { password: inputs.password, new_password: inputs.new_password }, {
             headers: {
                 "Content-Type": "application/json",
@@ -44,17 +44,17 @@ export default function ChangePass() {
             else if (res.status == 202) {
                 alert("Incorrect password! Re-Enter password")
             }
-            navigate('/profile')
+
         })
     }
 
     return (
         <>
             <Box padding={2} marginTop={5} display={'flex'} alignItems={'center'} flexDirection={'column'}>
-                        <Typography variant='h4' fontFamily='Ubuntu,medium'>Enter New Password</Typography>
+                <Typography variant='h4' fontFamily='Ubuntu,medium'>Enter New Password</Typography>
                 <LoginForm inputs={inputs} func={handleChange} font="black" labels={labels} />
                 <Button variant='contained' onClick={handleSubmit}>update</Button>
-                </Box>
+            </Box>
         </>
     )
 }

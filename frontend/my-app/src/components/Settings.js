@@ -17,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import CircleIcon from '@mui/icons-material/Circle';
+import ChangePass from './ProfileComponents/ChangePass';
 
 
 // TODO: use a variable to control font size(font size is 22) 
@@ -349,6 +350,7 @@ const SettingsHeaderTypography = (props) => <Typography {...props} variant='h4' 
 
 export default function Settings(props) {
     const [update, setUpdate] = React.useState(false);
+    const [pass, setPass] = React.useState(false);
     const [subjectList, setSubjectList] = React.useState([])
 
     // TODO: fetch teacher data from localstorage
@@ -377,6 +379,12 @@ export default function Settings(props) {
         console.log('Submitted Value: ', inputs);
         // TODO: implementation (Axios request for teacher data update)
     };
+
+    const handleClick = () => {
+        setPass(pass => !pass)
+    }
+
+
     React.useEffect(() => {
         axios.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
             headers: {
@@ -418,10 +426,15 @@ export default function Settings(props) {
                                 <StyledTextField className="w-1/2" edit={!switches.switch1} disabled={!switches.switch1} name='username' value={inputs.username}
                                     onChange={handleChange}></StyledTextField>
                             </div>
-                            <div className='flex justify-start'>
-                                <StyledTypography className="pt-7 w-1/4" variant='h5'>Phone Number : &nbsp;</StyledTypography>
-                                <StyledTextField className="w-1/2" edit={!switches.switch1} disabled={!switches.switch1} name='phone_no' value={inputs.phone_no} onChange={handleChange} ></StyledTextField>
-                            </div>
+
+                            <Button variant='contained' color='warning' onClick={handleClick}>Change Password</Button>
+
+                            {pass && <>
+                                <ChangePass />
+                            </>}
+
+
+
                         </Box >
                     </div>
 
