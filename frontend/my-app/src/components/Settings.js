@@ -85,8 +85,8 @@ const capitalizeFirstLetter = ([first, ...rest]) => {
 }
 function SettingDrawer(props) {
 
-    return (<div className='-mt-32'>
-        <Box className="pl-10 pt-5 h-screen w-1/4 bg-slate-300 absolute">
+    return (<div className='-mt-32  '>
+        <Box className="pl-10 pt-5 h-screen w-1/4 bg-slate-300 absolute ">
             {/* <Box sx={{ minHeight: '100%', position: 'absolute', height: '100%', maxWidth: '20vw', width: '15vw' }}> */}
 
             <List>
@@ -427,10 +427,10 @@ export default function Settings(props) {
                                     onChange={handleChange}></StyledTextField>
                             </div>
 
-                            <Button variant='contained' color='warning' onClick={handleClick}>Change Password</Button>
+                            {switches.switch1 && <Button variant='contained' color='warning' onClick={handleClick}>Change Password</Button>}
 
-                            {pass && <>
-                                <ChangePass />
+                            {switches.switch1 && pass && <>
+                                <ChangePass handleClick={handleClick} />
                             </>}
 
 

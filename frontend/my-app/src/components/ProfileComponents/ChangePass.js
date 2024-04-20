@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router"
 
-export default function ChangePass() {
+export default function ChangePass({ handleClick }) {
     const navigate = useNavigate()
     const [inputs, setInputs] = useState({
         password: "",
@@ -33,6 +33,7 @@ export default function ChangePass() {
                 Accept: "application/json",
             }
         }).then((res) => {
+
             setPassword(inputs.new_password)
             setNewPassword("")
             // console.log("This is the new e: ",email)
@@ -40,6 +41,8 @@ export default function ChangePass() {
                 alert('Password entered is the same!')
             else if (res.status == 200) {
                 alert('Password updated!')
+                handleClick();
+
             }
             else if (res.status == 202) {
                 alert("Incorrect password! Re-Enter password")
