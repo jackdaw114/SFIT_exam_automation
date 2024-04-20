@@ -5,6 +5,7 @@ import { useState } from 'react';
 import CreateTeacher from './CreateTeacher';
 import DeleteTeacher from './DeleteTeacher';
 import UpdateTeacher from './UpdateTeacher';
+import Gazette from './Gazette';
 
 export default function AdminHome() {
     let navigate = useNavigate()
@@ -22,6 +23,8 @@ export default function AdminHome() {
                 return (<DeleteTeacher />);
             case 3:
                 return (<UpdateTeacher />);
+            case 4:
+                return (<Gazette />);
             default: return (<></>)
         }
     }
@@ -33,15 +36,20 @@ export default function AdminHome() {
     return (
         <>
             {/* <Header /> */}
-            <Box paddingTop={11} display={'flex'} justifyContent={'space-around'}>
-                <Button variant='outlined' onClick={() => setChoice(1)}>CREATE TEACHER</Button>
-                <Button variant='outlined' onClick={() => setChoice(2)}>DELETE TEACHER</Button>
-                <Button variant='outlined' onClick={() => setChoice(3)}>Update TEACHER</Button>
-                {/* <Button variant='contained' onClick={() => setChoice(0)}>Generate Reports</Button> */}
-                <Button variant='contained' color='warning' onClick={() => handlenavigategazette()}>Generate Gazette</Button>
-            </Box>
+            <div className=" flex min-h-screen h-full ">
 
-            {renderChoice()}
+                <Box className="flex flex-col min-h-screen h-full bg-sky-100 w-1/5 ">
+                    <Button className='my-10 mx-8' variant='contained' onClick={() => setChoice(1)}>CREATE TEACHER</Button>
+                    <Button className='my-10 mx-8' variant='contained' onClick={() => setChoice(2)}>DELETE TEACHER</Button>
+                    <Button className='my-10 mx-8' variant='contained' onClick={() => setChoice(3)}>Update TEACHER</Button>
+                    {/* <Button variant='contained' onClick={() => setChoice(0)}>Generate Reports</Button> */}
+                    <Button className='my-10 mx-8' variant='contained' color='warning' onClick={() => setChoice(4)}>Generate Gazette</Button>
+                </Box>
+                <div className='w-4/5 flex justify-center  bg-slate-300'>
+
+                    {renderChoice()}
+                </div>
+            </div>
 
         </>
     )

@@ -10,7 +10,8 @@ module.exports = {
     extend: {
       fontFamily: {
         anta: ["Anta"],
-        opensans: ["Open Sans"]
+        opensans: ["Open Sans"],
+        mont: ["Montserrat"],
       },
       colors: {
         'primary': '#292F36',

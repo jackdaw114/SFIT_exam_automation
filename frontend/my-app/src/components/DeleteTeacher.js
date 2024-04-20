@@ -21,7 +21,7 @@ export default function DeleteTeacher() {
     }
 
     const handleSubmit = () => {
-        
+
         axios.post('/admin/deleteteacher', inputs, {
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +30,7 @@ export default function DeleteTeacher() {
         }).then((res) => {
             if (res.status == 500)
                 alert('Duplicate Record found. Please enter a unique userid')
-            else if(res.status == 200)
+            else if (res.status == 200)
                 alert('teacher deleted from database!')
             else
                 alert('Record not found')
@@ -39,11 +39,15 @@ export default function DeleteTeacher() {
     // console.log('this is create teacher')
     return (
         <>
-            <Box padding={2} marginTop={15} display={'flex'} alignItems={'center'} flexDirection={'column'}>
+            <div className=' flex justify-center items-center  px-10 '>
+                <div className=' bg-white rounded-xl -mt-20 p-5'>
+                    <Box padding={2} display={'flex'} alignItems={'center'} flexDirection={'column'}>
                         <Typography variant='h4' fontFamily='Ubuntu'>Enter Teacher Details</Typography>
-                <LoginForm inputs={inputs} func={handleChange} font="black" labels={labels}/>
-                <Button variant='contained' onClick={handleSubmit} color='warning' >Delete</Button>
-                </Box>
-            </>
+                        <LoginForm inputs={inputs} func={handleChange} font="black" labels={labels} />
+                        <Button variant='contained' onClick={handleSubmit} color='warning' >Delete</Button>
+                    </Box>
+                </div>
+            </div>
+        </>
     )
 }

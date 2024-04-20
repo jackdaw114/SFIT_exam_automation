@@ -6,12 +6,12 @@ import axios from 'axios';
 
 export default function UpdateTeacher() {
     const [inputs, setInputs] = useState({
-        username:"",
-        subject:""
+        username: "",
+        subject: ""
     })
     const labels = {
         username: "username",
-        subject:"subject"
+        subject: "subject"
     }
     const handleChange = (e) => {
         setInputs((prevState) => ({
@@ -37,11 +37,16 @@ export default function UpdateTeacher() {
     // console.log('this is create teacher')
     return (
         <>
-            <Box padding={2} marginTop={15} display={'flex'} alignItems={'center'} flexDirection={'column'}>
+            <div className=' flex justify-center items-center  px-10 '>
+                <div className=' bg-white rounded-xl -mt-20 p-5'>
+                    <Box padding={2} display={'flex'} alignItems={'center'} flexDirection={'column'}>
                         <Typography variant='h4' fontFamily='Ubuntu'>Update Teacher Details</Typography>
-                <LoginForm inputs={inputs} func={handleChange} labels={labels} font="black" />
-                <Button variant='contained' onClick={handleSubmit } >Update</Button>
-                </Box>
-            </>
+                        <LoginForm inputs={inputs} func={handleChange} labels={labels} font="black" />
+                        <Button variant='contained' onClick={handleSubmit} >Update</Button>
+                    </Box>
+                </div>
+            </div>
+
+        </>
     )
 }

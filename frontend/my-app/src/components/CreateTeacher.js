@@ -10,14 +10,14 @@ export default function CreateTeacher() {
         password: "",
         email: "",
         phoneNo: "",
-        subject:""
+        subject: ""
     })
     const labels = {
         username: "username",
         password: "password",
         email: "email",
         phoneNo: "phone number",
-        subject:"subject"
+        subject: "subject"
     }
     const handleChange = (e) => {
         setInputs((prevState) => ({
@@ -43,11 +43,16 @@ export default function CreateTeacher() {
     // console.log('this is create teacher')
     return (
         <>
-            <Box padding={2} marginTop={15} display={'flex'} alignItems={'center'} flexDirection={'column'}>
-                        <Typography variant='h4' fontFamily='Ubuntu'>Enter New Teacher Details</Typography>
-                <LoginForm inputs={inputs} func={handleChange} labels={labels} font="black" />
-                <Button variant='contained' onClick={handleSubmit} >ADD</Button>
-                </Box>
-            </>
+            <div className=' flex justify-center items-center  px-10 '>
+                <div className=' bg-white rounded-xl -mt-20 p-5'>
+
+                    <Box padding={2} display={'flex'} alignItems={'center'} flexDirection={'column'} className="justify-center">
+                        <Typography variant='h4' fontFamily='Ubuntu' className='mb-4'>Enter New Teacher Details</Typography>
+                        <LoginForm inputs={inputs} func={handleChange} labels={labels} font="black" />
+                        <Button variant='contained' onClick={handleSubmit} >ADD</Button>
+                    </Box>
+                </div>
+            </div>
+        </>
     )
 }

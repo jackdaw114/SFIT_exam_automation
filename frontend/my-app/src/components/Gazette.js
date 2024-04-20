@@ -11,18 +11,25 @@ export default function Gazette(props) {
     const [year, setYear] = useState(0)
     const navigate = useNavigate()
 
+    const [select, setSelect] = useState(['Year', 'Department', 'Semester'])
+
     const handleChangeSemester = (e) => {
-        setSemester(e.target.value)
+        setSemester(e.target.value);
+        setSelect(select.filter(item => item !== 'Semester'));
         // console.log(e.target.value)
-    }
+    };
+
     const handleChangeDepartment = (e) => {
-        setDepartment(e.target.value)
+        setDepartment(e.target.value);
+        setSelect(select.filter(item => item !== 'Department'));
         // console.log(e.target.value)
-    }
+    };
+
     const handleChangeYear = (e) => {
-        setYear(e.target.value)
+        setYear(e.target.value);
+        setSelect(select.filter(item => item !== 'Year'));
         // console.log(e.target.value)
-    }
+    };
     const handlesubmit = (e) => {
         axios.post('/jason/creategazette',
             { semester: semester, department: department, year: year },
@@ -37,21 +44,17 @@ export default function Gazette(props) {
     }
     return (
         <>
-            <div className='container-teacher-nav'>
-                <Header />
-                <Box className='selection-box'>
-                    <Box sx={{ borderRadius: 3, margin: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
+            <div className='w-full h-1/2'>
+                {/* <Header /> */}
+                <Box className=' mx-4'>
+                    <Box sx={{ borderRadius: 3, marginTop: 2, marginBottom: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-around', minWidth: '70%' }}>
-
-
-
                             <FormControl sx={{ minWidth: 200 }}>
                                 <InputLabel>Year</InputLabel>
                                 <Select onChange={handleChangeYear} value={year} label="Year" autoWidth>
                                     <MenuItem value="2022">2022</MenuItem>
                                     <MenuItem value="2023">2023</MenuItem>
                                     <MenuItem value="2024">2024</MenuItem>
-
                                 </Select>
                             </FormControl>
 
@@ -81,12 +84,26 @@ export default function Gazette(props) {
 
 
                         </Box>
-                        <div>
 
-                            <Button variant="contained" color="warning" onClick={handlesubmit} >Create Gazette</Button>
+                        <div>
+                            <button
+                                className={`bg-orange-600 text-white font-mont py-2 px-4 rounded hover:shadow-lg transition-all duration-300 ease-in-out text-lg ${select.length !== 0 ? 'cursor-not-allowed opacity-50' : 'disabled:bg-gray-400 disabled:text-gray-700'}`}
+                                onClick={handlesubmit}
+                                disabled={select.length !== 0}
+                            >
+                                Create Gazette
+                            </button>
                         </div>
+
+
                     </Box>
                 </Box>
+                <div className=" h-full rounded-xl bg-white mx-4 flex justify-center items-center">
+                    <div className="text-5xl flex font-mont">
+
+                        {select.length ? <p>Please Select {select.join(', ')}</p> : <p className="text-6xl">Click on "Create Gazette"</p>}
+                    </div>
+                </div>
 
             </div>
         </>
