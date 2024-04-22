@@ -48,7 +48,7 @@ function App() {
               <Route path='/' element={<><Home /></>}></Route>
               <Route path='/exam' element={<><TeacherNav /></>} />
               <Route path='/settings' element={<><Settings /></>} />
-              <Route path='/viewexam' element={<><ViewExam /></>} />
+              {/* <Route path='/viewexam' element={<><ViewExam /></>} /> */}
               <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
               <Route path='/adminhome' element={<><AdminHome /></>} />
               <Route path='/profile' element={<><TeacherProfile /></>} />
