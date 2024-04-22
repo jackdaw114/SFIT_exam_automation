@@ -90,7 +90,8 @@ export default function TeacherNav() {
             marks_type: type,
             subject: subject,
             class: class_name,
-            teacher_id: localStorage.getItem('username')
+            teacher_id: localStorage.getItem('username'),
+            subject_id: subjectId
         }, {
 
             headers: {
