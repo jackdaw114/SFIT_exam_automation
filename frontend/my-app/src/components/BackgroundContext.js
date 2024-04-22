@@ -5,10 +5,10 @@ export const BackgroundContext = createContext()
 
 
 export const BackgroundProvider = ({ children }) => {
-    const [backgroundColor, setBackgroundColor] = useState('#ffffff');
+    const [customBackgroundColor, setCustomBackgroundColor] = useState('#ffffff');
 
     return (
-        <BackgroundContext.Provider value={{ setBackgroundColor, backgroundColor, }}>
+        <BackgroundContext.Provider value={{ setCustomBackgroundColor, customBackgroundColor, }}>
             {children}
         </BackgroundContext.Provider>
     );
