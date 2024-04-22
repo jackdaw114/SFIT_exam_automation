@@ -5,6 +5,7 @@ const Teacher = require('./schemas/TeacherSchema');
 const MarksSchema = require('./schemas/MarksSchema');
 const ExcelJS = require('exceljs');
 const xlsx = require('xlsx');
+const TeacherSubjectSchema = require('./schemas_revamp/TeacherSubjectSchema');
 
 router.post('/login', async (req, res) => {
     try {
@@ -186,5 +187,26 @@ function StudentDictionary(pid, marks, subject, type, subj_list, json) {
         json[pid][subject][type] = marks;
     }
 }
+
+router.post('/get_unverified_teacher_subject', async (req, res) => {
+    try {
+        const teachers = await TeacherSubjectSchema.find({ verified: false })
+        res.send(teachers)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('error')
+    }
+})
+
+router.post('/verify_teacher_subject', async (req, res) => {
+    try {
+        const updateTeacher = await TeacherSubjectSchema.findOneAndUpdate({ _id: req.body._id }, { $set: { verified: true } })
+        res.status(200).send(updateTeacher)
+    } catch (error) {
+
+        console.log(error)
+        res.status(500).send('error')
+    }
+})
 
 module.exports = router;   

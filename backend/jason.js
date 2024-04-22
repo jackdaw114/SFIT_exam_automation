@@ -91,7 +91,7 @@ router.post('/create_student_marks', async (req, res) => {
             });
             await Promise.all(marksPromises);
             console.log(`Marks created for students with subject ${req.body.subject}`);
-            res.send('done')
+            res.send(marksPromises)
         }
         else if (!flag) {
             res.send('done')
@@ -403,6 +403,8 @@ router.post('/get_aggregate', async (req, res) => {
         res.status(500).send('Internal Server Error')
     }
 })
+
+
 
 
 module.exports = router;   
