@@ -10,6 +10,13 @@ import './Sheets.css'
 import { useNavigate } from "react-router";
 import * as Romanice from 'romanice';
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+
 
 
 export default function TeacherNav() {
@@ -77,6 +84,15 @@ export default function TeacherNav() {
     }
         , [])
 
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const handleSubmit = async (e) => {
         //  let jsonData = []
@@ -117,7 +133,7 @@ export default function TeacherNav() {
 
     return (
         <>
-            <div className='container-teacher-nav'>
+            <div className='container-teacher-nav w-12/12'>
 
                 <Box className='selection-box'>
                     <Box sx={{ borderRadius: 2, margin: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
@@ -181,22 +197,50 @@ export default function TeacherNav() {
                         <div>
 
                             <Button variant="contained" color="warning" onClick={handleSubmit}>Open</Button>
+                            {/* <Dialog
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">
+                                    {"Use Google's location service?"}
+                                </DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-description">
+                                        Let Google help apps determine location. This means sending anonymous
+                                        location data to Google, even when no apps are running.
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleClose}>Disagree</Button>
+                                    <Button onClick={handleClose} autoFocus>
+                                        Agree
+                                    </Button>
+                                </DialogActions>
+                            </Dialog> */}
+
                         </div>
                     </Box>
                 </Box>
-                <Grid container spacing={1} sx={{ padding: 2 }}>
+
+                <div className="pb-20 ">
+
+                    <Grid container spacing={1} className=" flex justify-center">
 
 
-                    {cardData.map((val, index) => (
-                        <Grid item xs={12}>
-                            <ExcelCard marks_type={val.marks_type} subject={[val.subject_id, val.subject_name]} semester={val.semester} department={val.branch} class={val.class} ></ExcelCard>
+                        {cardData.map((val, index) => (
+                            <Grid item xs={12}>
+                                <ExcelCard marks_type={val.marks_type} subject={[val.subject_id, val.subject_name]} semester={val.semester} department={val.branch} class={val.class} ></ExcelCard>
 
-                        </Grid>
+                            </Grid>
 
-                    ))}
+                        ))}
 
 
-                </Grid>
+                    </Grid>
+                </div>
+
             </div >
         </>
     )

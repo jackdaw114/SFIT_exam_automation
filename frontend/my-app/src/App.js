@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/Navbar';
 import { Box, ThemeProvider } from '@mui/material';
-import Home from './components/Home2';
+import Home from './components/TeacherHome';
 import VerifyEligibility from './components/VerifyEligibility';
 import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import EnterMarks from './components/EnterMarks';
@@ -22,6 +22,8 @@ import Report from './components/Report';
 
 const teacher = '/teacher'
 const admin = '/admin'
+
+const Separator = <div className='mt-24'></div>
 // TODO: Verify if someone is logged in if so redirect to correct page or login page
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
       <Box>
         <BrowserRouter>
           <Header />
+          {Separator}
           <Routes>
             <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
             <Route path='/login' element={<><Auth /></>}></Route>

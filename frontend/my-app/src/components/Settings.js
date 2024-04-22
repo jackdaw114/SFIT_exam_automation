@@ -85,7 +85,7 @@ const capitalizeFirstLetter = ([first, ...rest]) => {
 }
 function SettingDrawer(props) {
 
-    return (<div className='-mt-32  '>
+    return (<div className='-mt-5  '>
         <Box className="pl-10 pt-5 h-screen w-1/4 bg-slate-300 absolute ">
             {/* <Box sx={{ minHeight: '100%', position: 'absolute', height: '100%', maxWidth: '20vw', width: '15vw' }}> */}
 
@@ -401,8 +401,13 @@ export default function Settings(props) {
         <>
             <div className='font-opensans'>
 
-                <SettingDrawer />
-                <Box sx={{ marginLeft: '30vw', paddingLeft: 3, marginTop: 15, paddingTop: 2, fontSize: 40, maxWidth: '55vw', fontFamily: "opensans" }}>
+                {/* <SettingDrawer /> */}
+                <Box sx={{
+                    paddingLeft: 3, marginTop: 2,
+                    paddingTop: 2,
+                    paddingBottom: 3,
+                    fontSize: 40, maxWidth: '55vw', fontFamily: "opensans"
+                }}>
                     <div className=' bg-slate-100 p-10 rounded-lg mb-10'>
 
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>

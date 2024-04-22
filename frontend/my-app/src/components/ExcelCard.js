@@ -21,8 +21,8 @@ export default function ExcelCard(props) {
     }
     return (
         <>
-            <Card sx={{ borderRadius: 2, }} elevation={2} className="group flex justify-between transition-colors hover:bg-green-50/80 ease-in-out duration-200 delay-75 py-1">
-                <CardContent className="pl-10  select-none">
+            <Card sx={{ borderRadius: 2, }} elevation={2} className="w-full group flex justify-between transition-colors hover:bg-green-50/80 ease-in-out duration-200 delay-75 py-1">
+                <CardContent className="  select-none">
 
 
                     <Typography variant="h5" color="text.secondary" className="font-semibold transition-all duration-200 ease-in-out group-hover:text-red-800/90 text-lg">
@@ -36,7 +36,7 @@ export default function ExcelCard(props) {
                         Year: {props.year}
                     </Typography> */}
                 </CardContent>
-                <div className="absolute w-full text-center flex justify-center items-center select-none transition-all
+                <div className="  absolute w-4/5 text-center flex justify-center items-center select-none transition-all
                 duration-150 ease-in-out hover:text-sky-900 hover:opacity-25 font-anta font-thin opacity-5 text-6xl">
 
 
