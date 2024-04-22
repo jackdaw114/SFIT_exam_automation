@@ -3,11 +3,15 @@ const app = express();
 const cors = require('cors')
 const ConnectDB = require("./connect");
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
 
 ConnectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 app.use(cors())
 const StudentSchema = require("./schemas/StudentIATSchema")
 const AdminSchema = require('./schemas/AdminSchema');

@@ -97,13 +97,15 @@ export default function TeacherNav() {
     const handleSubmit = async (e) => {
         //  let jsonData = []
         const theJsonData = []
+        console.log(subjectId)
         console.log(subject.charAt(3))
         axios.post('/jason/create_student_marks', {
             semester: parseInt(subject.charAt(3)),
             marks_type: type,
             subject: subject,
             class: class_name,
-            teacher_id: localStorage.getItem('username')
+            teacher_id: localStorage.getItem('username'),
+            subject_id: subjectId
         }, {
 
             headers: {

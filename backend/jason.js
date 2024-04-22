@@ -45,27 +45,28 @@ router.post('/update_data', async (req, res) => {
 
 router.post('/create_student_marks', async (req, res) => {
     try {
-        console.log(req.body)
+        // console.log(req.body)
         const students = await StudentSchema.find({
             subject_ids: { $in: [req.body.subject] },
             semester: req.body.semester,
 
             class: req.body.class
         })
-
-        const check_teacher = await TeacherSubjectsSchema.findOne({ teacher_id: req.body.teacher_id })
-        let flag = true;
+        console.log(req.body.class)
+        const check_teacher = await TeacherSubjectsSchema.findOne({ teacher_id: req.body.teacher_id, subject_id: req.body.subject_id, class: req.body.class })
+        let flag = false;
         console.log(check_teacher.created[req.body.marks_type])
         if (!check_teacher.created[req.body.marks_type]) {
             flag = true;
-            await TeacherSubjectsSchema.findOneAndUpdate({ teacher_id: req.body.teacher_id }, {
+            const test = await TeacherSubjectsSchema.findOneAndUpdate({ teacher_id: req.body.teacher_id, subject_id: req.body.subject_id, class: req.body.class }, {
                 $set: {
                     [`created.${req.body.marks_type}`]: true
                 }
             })
+            console.log(test)
         }
 
-        console.log(students)
+        // console.log(students)
         if (students !== undefined && flag === true) {
 
             const marksPromises = students.map(async (student) => {
@@ -339,7 +340,7 @@ router.post('/get_exams', async (req, res) => {
         }
 
         // Send the display list as the response
-        console.log(DisplayList)
+        // console.log(DisplayList)
         res.json(DisplayList)
 
 
@@ -350,7 +351,56 @@ router.post('/get_exams', async (req, res) => {
     }
 })
 
+router.post('/get_aggregate', async (req, res) => {
+    try {
+        console.log(req.body.data_list, "this is the datalist")
+        console.log(req.body.data_list[0].subject)
 
+        const dataList = req.body.data_list; // Extracting the "data_list" array from the request body
+
+
+        let data = [];
+        let labels = [];
+        for (const item of dataList) {
+            console.log(item);
+            const students = await StudentSchema.aggregate([
+                {
+                    $match: {
+                        subject_ids: { $in: [item.subject] },
+                        class: item.class
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        total: { $sum: `$${item.marks_type}.${item.subject}` },
+                        count: { $sum: 1 },
+                    }
+                },
+            ]);
+            if (students.length > 0) {
+                const max_marks = {
+                    'term': 50,
+                    'practical': 20,
+                    'oral': 5
+                }
+                const avg = (students[0].total / students[0].count) / max_marks[item.marks_type] * 100
+
+                data.push(avg)
+                labels.push(item.subject)
+                console.log(`Total for subject: ${item.subject}, class: ${item.class} is: ${students[0].total} in ${students[0].total_entries} entries`);
+                console.log(JSON.stringify(students[0], null, 2))
+                console.log(data)
+            } else {
+                console.log(`No students found for subject: ${item.subject}, class: ${item.class}`);
+            }
+        }
+        res.json({ data: data, labels: labels })
+    } catch (err) {
+        console.error(err)
+        res.status(500).send('Internal Server Error')
+    }
+})
 
 
 module.exports = router;   
