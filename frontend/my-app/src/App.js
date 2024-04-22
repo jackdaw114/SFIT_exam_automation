@@ -20,6 +20,8 @@ import Header from './components/Header';
 import theme from './theme/palette';
 import Report from './components/Report';
 import Analysis from './components/Analysis';
+import Background from './components/Background';
+import { BackgroundProvider } from './components/BackgroundContext';
 
 
 const teacher = '/teacher'
@@ -30,29 +32,33 @@ const Separator = () => <div className='mt-24'></div>
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Box>
-        <BrowserRouter>
-          <Header />
-          <Separator />
-          <Routes>
-            <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
-            <Route path='/login' element={<><Auth /></>}></Route>
-            <Route path='/entermarks' element={<><EnterMarks /></>}></Route>
-            <Route path='/viewexam' element={<><ViewExam /></>}></Route>
-            <Route path='/test' element={<><Test /></>}></Route>
-            <Route path='/' element={<><Home /></>}></Route>
-            <Route path='/exam' element={<><TeacherNav /></>} />
-            <Route path='/settings' element={<><Settings /></>} />
-            <Route path='/viewexam' element={<><ViewExam /></>} />
-            <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
-            <Route path='/adminhome' element={<><AdminHome /></>} />
-            <Route path='/profile' element={<><TeacherProfile /></>} />
-            <Route path='/creategazette' element={<><Gazette /></>} />
-            <Route path='/report' element={<><Report /></>} />
-            <Route path='/analysis' element={<><Analysis /></>} />
-          </Routes>
-        </BrowserRouter>
-      </Box>
+      <BackgroundProvider>
+
+        <Box >
+          <Background />
+          <BrowserRouter>
+            <Header />
+            <Separator />
+            <Routes>
+              <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
+              <Route path='/login' element={<><Auth /></>}></Route>
+              <Route path='/entermarks' element={<><EnterMarks /></>}></Route>
+              <Route path='/viewexam' element={<><ViewExam /></>}></Route>
+              <Route path='/test' element={<><Test /></>}></Route>
+              <Route path='/' element={<><Home /></>}></Route>
+              <Route path='/exam' element={<><TeacherNav /></>} />
+              <Route path='/settings' element={<><Settings /></>} />
+              <Route path='/viewexam' element={<><ViewExam /></>} />
+              <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
+              <Route path='/adminhome' element={<><AdminHome /></>} />
+              <Route path='/profile' element={<><TeacherProfile /></>} />
+              <Route path='/creategazette' element={<><Gazette /></>} />
+              <Route path='/report' element={<><Report /></>} />
+              <Route path='/analysis' element={<><Analysis /></>} />
+            </Routes>
+          </BrowserRouter>
+        </Box>
+      </BackgroundProvider>
     </ThemeProvider>
   );
 }

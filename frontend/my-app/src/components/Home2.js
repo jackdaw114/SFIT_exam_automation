@@ -130,7 +130,7 @@ function HomeGrid() {
 
 export default function Home() {
     return (
-        <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh' }}>
+        <Box className='h_background' sx={{ flexGrow: 1, minHeight: '100vh', backgroundColor: '#444444', }}>
 
             <HomeGrid />
         </Box >
