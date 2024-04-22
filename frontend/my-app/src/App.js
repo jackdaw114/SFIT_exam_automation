@@ -25,7 +25,7 @@ import Analysis from './components/Analysis';
 const teacher = '/teacher'
 const admin = '/admin'
 
-const Separator = <div className='mt-24'></div>
+const Separator = () => <div className='mt-24'></div>
 // TODO: Verify if someone is logged in if so redirect to correct page or login page
 function App() {
   return (
@@ -33,7 +33,7 @@ function App() {
       <Box>
         <BrowserRouter>
           <Header />
-          {Separator}
+          <Separator />
           <Routes>
             <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
             <Route path='/login' element={<><Auth /></>}></Route>
