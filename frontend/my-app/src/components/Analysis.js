@@ -124,7 +124,7 @@ export default function Analysis() {
         <>
             <div className=''>
 
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 50, marginRight: 50, marginTop: 70, flexWrap: 'wrap' }} >
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 70, flexWrap: 'wrap' }} >
 
                     {teacherSubjects ? teacherSubjects.map((teacherSubject, index) => (
                         <div key={index}>
@@ -142,7 +142,7 @@ export default function Analysis() {
                     update Graph
                     <br />
                 </Button >
-                <Box sx={{ height: '80vh', flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Box sx={{ minHeight: '0vh', flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
                     {data ?
                         (data.labels.length > 2) ?

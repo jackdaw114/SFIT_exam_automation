@@ -41,11 +41,11 @@ export default function TeacherHome() {
                     </div>
                 </div>
 
-                <div className="flex h-full w-full">
+                <div className="flex h-full " style={{ maxWidth: '100vw' }}>
                     <div className=" h-full" style={{ marginLeft: '20vw' }} ></div>
-                    <div className="render_pages h-full bg-slate-200 " style={{ width: '100%' }}>
+                    <div className=" bg-slate-200 " style={{ width: '80vw' }}>
 
-                        <div className="  ">
+                        <div className="  " style={{ maxWidth: '80vw' }}>
                             {pageComponent}
                         </div>
                     </div>
