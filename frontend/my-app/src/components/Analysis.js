@@ -142,7 +142,7 @@ export default function Analysis() {
                     update Graph
                     <br />
                 </Button >
-                <Box sx={{ minHeight: '0vh', flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Box sx={{ maxHeight: '80vh', maxWidth: '100%', flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
                     {data ?
                         (data.labels.length > 2) ?

@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import Header from "./Header";
 import { toExcel } from "./Excel";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { read, utils, write, writeFile } from "xlsx";
 import { saveAs } from "file-saver";
@@ -17,6 +17,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import SheetView from "./SheetView";
+import { BackgroundContext } from "./BackgroundContext";
 
 
 
@@ -36,7 +37,7 @@ export default function TeacherNav() {
     const navigate = useNavigate()
     const [class_name, setClassName] = useState([])
     const [subjectList, setSubjectList] = useState([])
-
+    const { setCustomBackgroundColor } = useContext(BackgroundContext)
 
 
     const handleChangeSubject = (e) => {
@@ -57,6 +58,7 @@ export default function TeacherNav() {
 
 
     useEffect(() => {
+        setCustomBackgroundColor('#E5E5E5')
         axios.post('/jason/get_exams', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
