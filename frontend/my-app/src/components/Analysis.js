@@ -122,34 +122,37 @@ export default function Analysis() {
     }
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 50, marginRight: 50, marginTop: 70, flexWrap: 'wrap' }} >
+            <div className=''>
 
-                {teacherSubjects ? teacherSubjects.map((teacherSubject, index) => (
-                    <div key={index}>
-                        <label>
-                            <input
-                                onChange={(event) => handleCheckboxChange(event, teacherSubject)}
-                                type="checkbox"
-                            />
-                            {`${teacherSubject.subject_id} ${teacherSubject.subject_name}, ${teacherSubject.marks_type} - ${teacherSubject.class} `}
-                        </label>
-                    </div>
-                )) : <></>}
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 50, marginRight: 50, marginTop: 70, flexWrap: 'wrap' }} >
+
+                    {teacherSubjects ? teacherSubjects.map((teacherSubject, index) => (
+                        <div key={index}>
+                            <label>
+                                <input
+                                    onChange={(event) => handleCheckboxChange(event, teacherSubject)}
+                                    type="checkbox"
+                                />
+                                {`${teacherSubject.subject_id} ${teacherSubject.subject_name}, ${teacherSubject.marks_type} - ${teacherSubject.class} `}
+                            </label>
+                        </div>
+                    )) : <></>}
+                </div>
+                <Button variant='contained' onClick={handleClick}>
+                    update Graph
+                    <br />
+                </Button >
+                <Box sx={{ height: '80vh', flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+                    {data ?
+                        (data.labels.length > 2) ?
+                            <Radar data={data} options={optionsRadar} /> :
+                            <Bar options={optionsBar} data={data} />
+
+                        : <></>
+                    }
+                </Box>
             </div>
-            <Button variant='contained' onClick={handleClick}>
-                update Graph
-                <br />
-            </Button >
-            <Box sx={{ height: '80vh', flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-
-                {data ?
-                    (data.labels.length > 2) ?
-                        <Radar data={data} options={optionsRadar} /> :
-                        <Bar options={optionsBar} data={data} />
-
-                    : <></>
-                }
-            </Box>
         </>
     )
 }
