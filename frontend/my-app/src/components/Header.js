@@ -21,7 +21,7 @@ export default function Header() {
         navigate('/settings')
     }
     return (
-        <AppBar className='header-bar' sx={{ position: 'fixed', flexDirection: 'row', alignItems: 'center', backgroundColor: '#292F36' }} elevation={0}>
+        <AppBar className='header-bar ' sx={{ position: 'fixed', flexDirection: 'row', alignItems: 'center', }} elevation={0}>
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2, zIndex: -1 }}>
                 <img src={img} style={{ height: 60 }} />
 

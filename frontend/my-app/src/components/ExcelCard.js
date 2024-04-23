@@ -12,7 +12,7 @@ export default function ExcelCard(props) {
     const handleSubmit = (e) => {
         navigate('/viewexam', {
             state: {
-                subject_id: props.subject[0],
+                subject: props.subject[0],
                 marks_type: props.marks_type,
                 semester: props.semester,
                 class_name: props.class
