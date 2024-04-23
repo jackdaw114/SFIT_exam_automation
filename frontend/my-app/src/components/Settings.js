@@ -408,7 +408,7 @@ export default function Settings(props) {
                     paddingBottom: 3,
                     fontSize: 40, maxWidth: '55vw', fontFamily: "opensans"
                 }}>
-                    <div className=' bg-slate-100 p-10 rounded-lg mb-10'>
+                    <div className=' bg-slate-100 shadow-md p-10 rounded-lg mb-10'>
 
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'last baseline' }}>
                             <SettingsHeaderTypography > Details</SettingsHeaderTypography>

@@ -43,7 +43,7 @@ export default function TeacherHome() {
 
                 <div className="flex h-full " style={{ maxWidth: '100vw' }}>
                     <div className=" h-full" style={{ marginLeft: '20vw' }} ></div>
-                    <div className=" bg-slate-200 " style={{ width: '80vw' }}>
+                    <div className="  " style={{ width: '80vw' }}>
 
                         <div className="  " style={{ maxWidth: '80vw' }}>
                             {pageComponent}

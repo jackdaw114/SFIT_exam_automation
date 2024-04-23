@@ -24,7 +24,7 @@ import { BackgroundContext } from "./BackgroundContext";
 
 export default function TeacherNav() {
 
-    const [type, setType] = useState('hello')
+    const [type, setType] = useState('')
     const [subject, setSubject] = useState('')
     const [subjectId, setSubjectId] = useState('')
     const [semester, setSemester] = useState('')
@@ -40,7 +40,10 @@ export default function TeacherNav() {
     const { setCustomBackgroundColor } = useContext(BackgroundContext)
 
 
+    const open_list = []
+
     const handleChangeSubject = (e) => {
+        open_list.push(0)
         const selectedSubjectId = e.target.value;
         setSubject(e.target.value)
         const selectedItem = subjectList.find(item => item.subject_id === selectedSubjectId);
@@ -58,7 +61,7 @@ export default function TeacherNav() {
 
 
     useEffect(() => {
-        setCustomBackgroundColor('#E5E5E5')
+        setCustomBackgroundColor('#e7f1ef')
         axios.post('/jason/get_exams', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
@@ -126,7 +129,7 @@ export default function TeacherNav() {
             <div className='container-teacher-nav w-12/12'>
 
                 <Routes>
-                    <Route path="/" element={<Home subjectList={subjectList} handleChangeSubject={handleChangeSubject} type={type} setType={setType} subject={subject} setSubject={setSubject} class_name={class_name} setClassName={setClassName} handleSubmit={handleSubmit} cardData={cardData} />} />
+                    <Route path="/" element={<Home open_list={open_list} subjectList={subjectList} handleChangeSubject={handleChangeSubject} type={type} setType={setType} subject={subject} setSubject={setSubject} class_name={class_name} setClassName={setClassName} handleSubmit={handleSubmit} cardData={cardData} />} />
                     <Route path="/viewexam" element={<SheetView />} />
                 </Routes>
 
@@ -135,13 +138,26 @@ export default function TeacherNav() {
     )
 }
 
-function Home({ subjectList, handleChangeSubject, type, setType, subject, setSubject, class_name, setClassName, handleSubmit, cardData }) {
+function Home({ open_list, subjectList, handleChangeSubject, type, setType, subject, setSubject, class_name, setClassName, handleSubmit, cardData }) {
+
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const handleChangeType = (e) => {
+        open_list.push(0)
         console.log(e.target)
         setType(e.target.value)
     }
+
     const handleChangeClass = (e) => {
+        open_list.push(0)
         console.log(e.target)
         console.log(subjectList.find(item => item.subject_id === subject)?.class)
         setClassName(e.target.value)
@@ -194,7 +210,7 @@ function Home({ subjectList, handleChangeSubject, type, setType, subject, setSub
                             <InputLabel>Enter class</InputLabel>
                             {subject ? (<>
                                 {console.log("MEOW", subjectList.find(item => item.subject_id === subject).class)}
-                                <Select onChange={handleChangeClass} value={class_name}>
+                                <Select onChange={handleChangeClass} value={class_name} label="Enter Class">
                                     {[subjectList.find(item => item.subject_id === subject).class].map((item, index) => {
                                         return <MenuItem key={index} value={item} > {item} </MenuItem>
                                     })
@@ -202,37 +218,52 @@ function Home({ subjectList, handleChangeSubject, type, setType, subject, setSub
                                 </Select>
                             </>
                             ) : (
-                                <Select onChange={handleChangeClass} value={class_name} label="Select Examination">
+                                <Select value={class_name} label="Enter Class">
                                     <MenuItem value='' key={10} >Please Select Subject</MenuItem>
                                 </Select>
                             )}
                         </FormControl>
+
                     </Box>
                     <div>
+                        {(type && subject && class_name.length) ?
 
-                        <Button variant="contained" color="warning" onClick={handleSubmit}>Open</Button>
-                        {/* <Dialog
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
-                            >
-                                <DialogTitle id="alert-dialog-title">
-                                    {"Use Google's location service?"}
-                                </DialogTitle>
-                                <DialogContent>
-                                    <DialogContentText id="alert-dialog-description">
-                                        Let Google help apps determine location. This means sending anonymous
-                                        location data to Google, even when no apps are running.
-                                    </DialogContentText>
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button onClick={handleClose}>Disagree</Button>
-                                    <Button onClick={handleClose} autoFocus>
-                                        Agree
-                                    </Button>
-                                </DialogActions>
-                            </Dialog> */}
+                            <Button variant="contained" color="warning" onClick={handleClickOpen}>Open</Button>
+                            :
+                            <Button variant="contained" disabled="true">Open</Button>
+
+                        }
+                        <Dialog
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">
+                                {"Instructions"}
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description1">
+                                    1. You may make changes to the marks by either changing it directly from the portal or by uploading an excel file ONLY.
+                                </DialogContentText>
+                                <DialogContentText id="alert-dialog-description2">
+                                    2. Do NOT upload any other type of file
+                                </DialogContentText>
+                                <DialogContentText id="alert-dialog-description3">
+                                    3. Please ensure correct file is uploaded
+                                </DialogContentText>
+                                <DialogContentText id="alert-dialog-description4">
+                                    4. After making changes, click on "UPDATE" button to submit changes
+                                </DialogContentText>
+
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose}>Disagree</Button>
+                                <Button onClick={handleSubmit} autoFocus>
+                                    Agree
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
 
                     </div>
                 </Box>
