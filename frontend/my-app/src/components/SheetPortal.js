@@ -271,7 +271,7 @@ function Home({ open_list, subjectList, handleChangeSubject, type, setType, subj
 
             <div className="pb-20 ">
 
-                <Grid container spacing={1} className=" flex justify-center">
+                <Grid container spacing={1} className=" flex justify-center px-4">
 
 
                     {cardData.map((val, index) => (

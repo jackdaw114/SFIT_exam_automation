@@ -21,7 +21,7 @@ export default function ExcelCard(props) {
     }
     return (
         <>
-            <Card sx={{ borderRadius: 2, }} elevation={2} className="w-full group flex justify-between transition-colors hover:bg-green-50/80 ease-in-out duration-200 delay-75 py-1">
+            <Card sx={{ borderRadius: 2, }} elevation={2} className=" relative w-full group flex justify-between transition-colors hover:bg-green-50/80 ease-in-out duration-200 delay-75 py-1">
                 <CardContent className="  select-none">
 
 
@@ -36,13 +36,17 @@ export default function ExcelCard(props) {
                         Year: {props.year}
                     </Typography> */}
                 </CardContent>
-                <div className="  absolute w-4/5 text-center flex justify-center items-center select-none transition-all
-                duration-150 ease-in-out hover:text-sky-900 hover:opacity-25 font-anta font-thin opacity-5 text-6xl">
+
+
+                <div className=" w-full  absolute  flex justify-center items-center select-none transition-all
+                duration-150 ease-in-out hover:text-sky-900 hover:opacity-15 font-anta font-thin opacity-5 text-6xl">
 
 
                     {props.department}
 
+
                 </div>
+
                 <CardActions className="pr-16">
                     <Button size="small" onClick={handleSubmit} className=" px-8 transition-all hover:bg-sky-900/80  hover:text-white duration-150 ease-in-out hover:shadow-md rounded-2xl hover:border-2">Expand <ArrowOutwardIcon fontSize="small" className=" pl-1  opacity-75 -mt-0.5" /> </Button>
                     <Button size="small" color="warning"><DeleteIcon /></Button>
