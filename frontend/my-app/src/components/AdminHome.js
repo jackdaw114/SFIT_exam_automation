@@ -6,6 +6,7 @@ import CreateTeacher from './CreateTeacher';
 import DeleteTeacher from './DeleteTeacher';
 import UpdateTeacher from './UpdateTeacher';
 import Gazette from './Gazette';
+import Report from './Report';
 
 export default function AdminHome() {
     let navigate = useNavigate()
@@ -25,6 +26,8 @@ export default function AdminHome() {
                 return (<UpdateTeacher />);
             case 4:
                 return (<Gazette />);
+            case 5:
+                return (<Report />)
             default: return (<></>)
         }
     }
@@ -44,6 +47,7 @@ export default function AdminHome() {
                     <Button className='my-10 mx-8' variant='contained' onClick={() => setChoice(3)}>Update TEACHER</Button>
                     {/* <Button variant='contained' onClick={() => setChoice(0)}>Generate Reports</Button> */}
                     <Button className='my-10 mx-8' variant='contained' color='warning' onClick={() => setChoice(4)}>Generate Gazette</Button>
+                    <Button className='my-10 mx-8' variant='contained' color='warning' onClick={() => setChoice(5)}>Generate Report</Button>
                 </Box>
                 <div className='w-4/5 flex justify-center  bg-slate-300'>
 

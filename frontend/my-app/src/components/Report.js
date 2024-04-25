@@ -3,6 +3,7 @@ import { Page, Text, View, Document, StyleSheet, PDFViewer, Image, Font } from '
 import zIndex from '@mui/material/styles/zIndex';
 import img from '../imgtest/favicon.png';
 import axios from 'axios';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Input } from '@mui/material';
 
 // Font.register({ family: 'Roboto', src: source });
 
@@ -269,6 +270,38 @@ const MyDocument = ({ data }) => {
 
 export default function Report() {
     const [student, setStudent] = useState();
+    const [open, setOpen] = useState(true)
+    const [pid, setPid] = useState(null);
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleSend = () => {
+        setOpen(false)
+        axios.post('/jason/get_student', { pid: pid }, {
+            headers: {
+
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+        }).then(res => {
+            setStudent(res.data)
+            setPid(null)
+            console.log(res.data)
+        })
+    }
+
+    const handleChange = (event) => {
+        console.log(pid)
+        if (!isNaN(Number(event.target.value)) && pid <= 99999) {
+            setPid(Number(event.target.value));
+        }
+    };
+
     React.useEffect(() => {
         axios.post('/jason/get_student', { pid: 222212 }, {
             headers: {
@@ -282,11 +315,43 @@ export default function Report() {
 
     }, []);
     return (
-        <PDFViewer style={{
-            position: 'fixed', width: '100vw', height: '100vh', top: 0, left: 0, zIndex: 9999
-        }}>
-            <MyDocument data={student} />
-        </ PDFViewer>
+        <>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                sx={{ zIndex: 99999 }}
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Select Student
+                </DialogTitle>
+                <DialogContent>
+                    <input
+                        id="input"
+                        value={pid}
+                        onChange={handleChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleSend} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <PDFViewer style={{
+                position: 'fixed', width: '80vw', height: '88vh', bottom: 0, right: 0, zIndex: 9999
+            }}>
+                <MyDocument data={student} />
+            </ PDFViewer>
+            <Button style={{
+                position: 'fixed', bottom: 0, right: 0, zIndex: 9999
+            }}
+                color='success' variant='contained' sx={{ zIndex: 99999 }} onClick={handleClickOpen}>
+                Select Student
+            </Button>
 
+        </>
     )
 }

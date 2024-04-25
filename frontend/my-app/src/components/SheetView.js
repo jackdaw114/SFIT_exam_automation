@@ -32,7 +32,7 @@ const SheetView = () => {
             // Value exceeds maxMarks
             // Display a notification or handle the error condition here
 
-            updatedData[index][field] = -newValue;
+            updatedData[index][field] = -8;
             setSheetData(updatedData);
             console.log(sheetData)
             toast("Value cannot exceed maxMarks.");
@@ -149,13 +149,20 @@ const SheetView = () => {
             setSheetData(res.data);
         });
     }, []);
+    const handleRestrict = (e) => {
+        console.log(e.target.textContent)
+
+        if (isNaN(Number(e.target.textContent)) || e.target.textContent == '-') {
+            toast("Value should be numeric.");
+        }
+    }
 
     return (
         <>
-            <div className='flex flex-col w-full justify-center items-center mt-20 font-opensans'>
+            <div className='flex flex-col w-full justify-center items-center  font-opensans'>
 
 
-                <table className='border-collapse border-slate-200 border-solid w-9/12 border-spacing-x-0 border-spacing-y-2 mb-2'>
+                <table className='border-collapse border-slate-200 border-solid w-9/12 border-spacing-x-0 border-spacing-y-2 mb-2 mt-10 '>
 
                     <caption class="caption-top opacity-60 mb-3">
                         Table - {location.state.subject} , {location.state.marks_type} Work
@@ -178,7 +185,7 @@ const SheetView = () => {
                                 background = '#ADF7B6'
 
                             return (
-                                <tr key={index} className=" flex-none  border-b-2 border-slate-700 " style={{ backgroundColor: background }} >
+                                <tr key={index} className=" flex-none  border-b-2 border-slate-700  " style={{ backgroundColor: background, maxHeight: '1.5rem' }} >
 
                                     <td className="text-center select-none" contentEditable="false" onBlur={(e) => handleEdit(index, 'pid', e.target.textContent)}>
                                         {row.pid}
@@ -186,7 +193,7 @@ const SheetView = () => {
                                     <td className="text-center select-none" contentEditable="false" onBlur={(e) => handleEdit(index, 'name', e.target.textContent)}>
                                         {row.name}
                                     </td>
-                                    <td className="text-center" contentEditable={isEdit} onBlur={(e) => handleEdit(index, 'marks', e.target.textContent)}>
+                                    <td className="text-center max-h-1" style={{ maxHeight: '1.5em' }} onInput={handleRestrict} contentEditable={isEdit} onBlur={(e) => handleEdit(index, 'marks', e.target.textContent)}>
                                         {row.marks}
                                     </td>
 
@@ -200,7 +207,7 @@ const SheetView = () => {
                     <Button color="info" sx={{ margin: '30px 5px' }} variant="contained" endIcon={isEdit ? <CancelIcon /> : <EditIcon />} onClick={() => { setIsEdit(!isEdit) }}>
                         {isEdit ? "Cancel" : "Edit"}
                     </Button>
-                    <input type="file" className="fileSelect" onBlur={(e) => handleInput(e)} />
+                    <input type="file" className="fileSelect" onChange={(e) => handleInput(e)} />
                     <Button variant="contained" onClick={handleDownload} >Download File <DownloadIcon fontSize="small" className="pl-2" /> </Button>
                 </div>
             </div>
