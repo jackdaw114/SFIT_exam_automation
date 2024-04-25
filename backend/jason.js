@@ -91,7 +91,7 @@ router.post('/create_student_marks', async (req, res) => {
             });
             await Promise.all(marksPromises);
             console.log(`Marks created for students with subject ${req.body.subject}`);
-            res.send('done')
+            res.send(marksPromises)
         }
         else if (!flag) {
             res.send('done')
@@ -183,8 +183,8 @@ router.post('/create_gazette', async (req, res) => {
         }) // TODO: this might not be useful but go figure
 
         SubList = SubjectList.subject_ids
-        console.log(students)
-        console.log(SubjectList)
+
+        console.log(SubList)
         console.log("hello")
         const template = xlsx.readFile('./ExcelTemplates/gazette_temp.xlsx')
         const temp_sheet = template.Sheets[template.SheetNames[0]]
@@ -217,15 +217,16 @@ router.post('/create_gazette', async (req, res) => {
                 return 1; // a should come after b in the sorted order
             }
         });
-
         await sortedStudents.forEach((student) => {
             // console.log('hello')
+
             temp_sheet[`A${entry}`] = { t: 's', v: student.pid };
             column_lista.forEach((item, index) => {
-                //console.log('item', item, 'iter:', index)
+                console.log('item', item, 'iter:', index)
 
                 if (index < SubList.length && student.practical && student.term && student.oral) {
                     console.log(index, "hello here")
+
                     if (student.practical.hasOwnProperty(SubList[index])) {
                         temp_sheet[`${item}${entry}`] = { t: 's', v: (student.practical && student.practical[SubList[index]]) ?? 'no data' }
                     }
@@ -403,6 +404,8 @@ router.post('/get_aggregate', async (req, res) => {
         res.status(500).send('Internal Server Error')
     }
 })
+
+
 
 
 module.exports = router;   

@@ -31,8 +31,8 @@ export default function Gazette(props) {
         // console.log(e.target.value)
     };
     const handlesubmit = (e) => {
-        axios.post('/jason/creategazette',
-            { semester: semester, department: department, year: year },
+        axios.post('/jason/create_gazette',
+            { semester: semester, branch: department, year: year },
             {
                 headers: {
                     "Content-Type": "application/json",

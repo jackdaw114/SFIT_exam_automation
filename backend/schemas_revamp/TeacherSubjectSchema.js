@@ -21,6 +21,10 @@ const TeacherSubjectSchema = mongoose.Schema(
         term: Boolean,
         oral: Boolean,
         practical: Boolean,
+        verified: {
+            type: Boolean,
+            default: false
+        },
         created: {
             term: {
                 type: Boolean,
