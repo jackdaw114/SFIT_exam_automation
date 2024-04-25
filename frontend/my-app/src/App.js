@@ -22,14 +22,20 @@ import Report from './components/Report';
 import Analysis from './components/Analysis';
 import Background from './components/Background';
 import { BackgroundProvider } from './components/BackgroundContext';
+import { getScrollbarWidth, useBodyScrollable } from './components/hooks/useBodyScrollable';
+import { useLayoutEffect } from 'react';
+import AdminHome2 from './components/AdminHome2';
 
 
 const teacher = '/teacher'
 const admin = '/admin'
 
+const scrollbarWidth = getScrollbarWidth();
 const Separator = () => <div className='mt-24'></div>
 // TODO: Verify if someone is logged in if so redirect to correct page or login page
+
 function App() {
+
   return (
     <ThemeProvider theme={theme}>
       <BackgroundProvider>
@@ -50,7 +56,7 @@ function App() {
               <Route path='/settings' element={<><Settings /></>} />
               {/* <Route path='/viewexam' element={<><ViewExam /></>} /> */}
               <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
-              <Route path='/adminhome' element={<><AdminHome /></>} />
+              <Route path='/adminhome' element={<><AdminHome2 /></>} />
               <Route path='/profile' element={<><TeacherProfile /></>} />
               <Route path='/creategazette' element={<><Gazette /></>} />
               <Route path='/report' element={<><Report /></>} />

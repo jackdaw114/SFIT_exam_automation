@@ -40,7 +40,7 @@ export default function DeleteTeacher() {
     return (
         <>
             <div className=' flex justify-center items-center  px-10 '>
-                <div className=' bg-white rounded-xl -mt-20 p-5'>
+                <div className=' bg-white rounded-xl p-5'>
                     <Box padding={2} display={'flex'} alignItems={'center'} flexDirection={'column'}>
                         <Typography variant='h4' fontFamily='Ubuntu'>Enter Teacher Details</Typography>
                         <LoginForm inputs={inputs} func={handleChange} font="black" labels={labels} />

@@ -32,10 +32,7 @@ export default function AdminHome() {
         }
     }
 
-    const handlenavigategazette = (e) => {
-        setChoice(0)
-        navigate('/creategazette')
-    }
+
     return (
         <>
             {/* <Header /> */}

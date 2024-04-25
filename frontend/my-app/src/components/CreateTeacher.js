@@ -44,7 +44,7 @@ export default function CreateTeacher() {
     return (
         <>
             <div className=' flex justify-center items-center  px-10 '>
-                <div className=' bg-white rounded-xl -mt-20 p-5'>
+                <div className=' bg-white rounded-xl p-5'>
 
                     <Box padding={2} display={'flex'} alignItems={'center'} flexDirection={'column'} className="justify-center">
                         <Typography variant='h4' fontFamily='Ubuntu' className='mb-4'>Enter New Teacher Details</Typography>

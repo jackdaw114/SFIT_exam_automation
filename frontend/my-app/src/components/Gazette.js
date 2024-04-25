@@ -44,7 +44,7 @@ export default function Gazette(props) {
     }
     return (
         <>
-            <div className='w-full h-1/2'>
+            <div className='w-full h-1/2 -mt-14'>
                 {/* <Header /> */}
                 <Box className=' mx-4'>
                     <Box sx={{ borderRadius: 3, marginTop: 2, marginBottom: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
