@@ -297,11 +297,11 @@ router.post('/updateteachersubject', async (req, res) => {
         const { subject_id, teacher_id, practical, oral, term, class: class_name } = req.body;
 
         let teacherSubject = await TeacherSubjectsSchema.findOne({ subject_id, teacher_id, class: class_name });
-
+        let sub_obj = new mongoose.Types.ObjectId(string_id);
         if (!teacherSubject) {
-            teacherSubject = new TeacherSubjectsSchema({ subject_id, teacher_id, practical, oral, term, class: class_name });
+            teacherSubject = new TeacherSubjectsSchema({ sub_obj, teacher_id, practical, oral, term, class: class_name });
         } else {
-            teacherSubject.subject_id = subject_id;
+            teacherSubject.subject_id = sub_obj;
             teacherSubject.teacher_id = teacher_id;
             teacherSubject.practical = practical;
             teacherSubject.oral = oral;

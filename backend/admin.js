@@ -190,7 +190,32 @@ function StudentDictionary(pid, marks, subject, type, subj_list, json) {
 
 router.post('/get_unverified_teacher_subject', async (req, res) => {
     try {
-        const teachers = await TeacherSubjectSchema.find({ verified: false })
+        const teachers = await TeacherSubjectSchema.aggregate([{
+            $match:
+                { verified: false }
+        },
+        {
+            $lookup: {
+                from: "Subject",
+                localField: "subject_id",
+                foreignField: "_id",
+                as: "subjectDetails"
+            }
+        },
+        {
+            $group: {
+                _id: "$teacher_id",
+                details: {
+                    $push: {
+                        subject: "$subjectDetails.subject_name",
+                        class: "$class",
+                        _id: "$_id",
+                    }
+                },
+
+            }
+        }])
+        console.log(teachers)
         res.send(teachers)
     } catch (error) {
         console.log(error)
@@ -203,7 +228,6 @@ router.post('/verify_teacher_subject', async (req, res) => {
         const updateTeacher = await TeacherSubjectSchema.findOneAndUpdate({ _id: req.body._id }, { $set: { verified: true } })
         res.status(200).send(updateTeacher)
     } catch (error) {
-
         console.log(error)
         res.status(500).send('error')
     }

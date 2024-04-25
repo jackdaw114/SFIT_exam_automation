@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const TeacherSubjectSchema = mongoose.Schema(
     {
         subject_id: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
             ref: 'Subject'
         },
