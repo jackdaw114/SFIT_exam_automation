@@ -44,8 +44,7 @@ export default function Gazette(props) {
     }
     return (
         <>
-            <div className='w-full h-1/2 -mt-14'>
-                {/* <Header /> */}
+            <div className='w-full h-full -mt-14'>
                 <Box className=' mx-4'>
                     <Box sx={{ borderRadius: 3, marginTop: 2, marginBottom: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-around', minWidth: '70%' }}>
@@ -98,7 +97,7 @@ export default function Gazette(props) {
 
                     </Box>
                 </Box>
-                <div className=" h-full rounded-xl bg-white mx-4 flex justify-center items-center">
+                <div className=" h-96 rounded-xl bg-white mx-4 flex justify-center items-center">
                     <div className="text-5xl flex font-mont">
 
                         {select.length ? <p>Please Select {select.join(', ')}</p> : <p className="text-6xl">Click on "Create Gazette"</p>}

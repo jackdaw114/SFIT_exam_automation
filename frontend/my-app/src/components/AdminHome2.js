@@ -32,11 +32,11 @@ export default function AdminHome2() {
     return (
         <>
             <div>
-                <TeacherNavbar handleItemClick={handleItemClick} list_items={list_items} />
+                <TeacherNavbar handleItemClick={handleItemClick} list_items={list_items} type="Admin" />
 
                 <div className="flex min-h-screen max-h-full bg-sky-100" style={{ maxWidth: '100vw' }}>
                     <div className=" h-full" style={{ marginLeft: '20vw' }} ></div>
-                    <div className="  " style={{ width: '80vw' }}>
+                    <div className=" h-screen " style={{ width: '80vw' }}>
 
                         <div className=" mt-20  " style={{ maxWidth: '80vw' }}>
                             {pageComponent}
