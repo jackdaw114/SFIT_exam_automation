@@ -5,6 +5,7 @@ import Gazette from "./Gazette";
 import Report from "./Report";
 import UpdateTeacher from "./UpdateTeacher";
 import { TeacherNavbar } from "./TeacherNavbar";
+import Notifications from "./SubscriptionRequests";
 
 export default function AdminHome2() {
     const [currentPage, setCurrentPage] = useState(null);
@@ -22,28 +23,25 @@ export default function AdminHome2() {
             setPageComponent(<Gazette />);
         } else if (page === 'Generate Reports') {
             setPageComponent(<Report />);
+        } else if (page === 'Notifications') {
+            setPageComponent(<Notifications />);
         } else {
             setPageComponent(null);
         }
     };
 
     const list_items = ['Create Teacher', 'Delete Teacher', 'Update Teacher', 'Generate Gazette', 'Generate Reports'];
-
+    const button_list = ["Notifications"];
     return (
         <>
             <div>
-                <TeacherNavbar handleItemClick={handleItemClick} list_items={list_items} type="Admin" />
+                <TeacherNavbar handleItemClick={handleItemClick} list_items={list_items} type="Admin" buttons={button_list} />
 
                 <div className="flex min-h-screen max-h-full bg-sky-100" style={{ maxWidth: '100vw' }}>
-                    <div className=" h-full" style={{ marginLeft: '20vw' }} ></div>
-                    <div className=" h-screen " style={{ width: '80vw' }}>
-
-                        <div className=" mt-20  " style={{ maxWidth: '80vw' }}>
-                            {pageComponent}
-                        </div>
+                    <div className=" mt-20  h-full" style={{ maxWidth: '80vw', width: '80vw', marginLeft: '20vw' }}>
+                        {pageComponent}
                     </div>
                 </div>
-
             </div>
 
         </>
