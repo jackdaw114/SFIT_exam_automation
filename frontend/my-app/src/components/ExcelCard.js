@@ -10,7 +10,7 @@ export default function ExcelCard(props) {
     const standardConverter = romanice();
     const navigate = useNavigate()
     const handleSubmit = (e) => {
-        navigate('/viewexam', {
+        navigate('/home/viewexam', {
             state: {
                 subject: props.subject[0],
                 marks_type: props.marks_type,

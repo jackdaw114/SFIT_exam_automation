@@ -1,18 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
-import Navbar from './components/Navbar';
 import { Box, ThemeProvider } from '@mui/material';
-import Home from './components/TeacherHome';
-import VerifyEligibility from './components/VerifyEligibility';
 import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
-import EnterMarks from './components/EnterMarks';
 import Auth from './components/Auth';
-import Test from './components/Excel'
 import TeacherNav from './components/SheetPortal';
 import ViewExam from './components/SheetView';
-import TeacherHome from './components/TeacherHome';
-import AdminHome from './components/AdminHome';
-import TheOgHome2 from './components/TheOgHome2'
 import TeacherProfile from './components/TeacherProfile';
 import Gazette from './components/Gazette';
 import Settings from './components/Settings';
@@ -22,47 +13,70 @@ import Report from './components/Report';
 import Analysis from './components/Analysis';
 import Background from './components/Background';
 import { BackgroundProvider } from './components/BackgroundContext';
-import { getScrollbarWidth, useBodyScrollable } from './components/hooks/useBodyScrollable';
-import { useLayoutEffect } from 'react';
-import AdminHome2 from './components/AdminHome2';
+import { TeacherNavbar } from './components/TeacherNavbar';
+import CreateTeacher from './components/CreateTeacher';
+import DeleteTeacher from './components/DeleteTeacher';
+import UpdateTeacher from './components/UpdateTeacher';
+import SubscriptionRequests from './components/SubscriptionRequests';
 
 
-const teacher = '/teacher'
-const admin = '/admin'
 
-const scrollbarWidth = getScrollbarWidth();
 const Separator = () => <div className='mt-24'></div>
 // TODO: Verify if someone is logged in if so redirect to correct page or login page
 
 function App() {
 
+
+
+  const teacher_list_items = [
+    ['Grading & Assessments', ""], ['Settings', "settings"], ['Analysis', "analysis"]
+  ];
+
+  const admin_list_items = [
+    ['Create Teacher', "create_teacher"],
+    ['Delete Teacher', "delete_teacher"],
+    ['Update Teacher', "update_teacher"],
+    ['Generate Gazette', "creategazette"],
+    ['Generate Reports', "report"],
+  ];
+
+  const button_list = ["Notifications"];
+
   return (
     <ThemeProvider theme={theme}>
       <BackgroundProvider>
-
-        <Box >
-          <Background />
+        <Background>
           <BrowserRouter>
             <Header />
             <Separator />
+            {/* <TeacherNavbar list_items={list_items} /> */}
             <Routes>
-              <Route path='/verifyeligibility' element={<><VerifyEligibility /></>}></Route>
-              <Route path='/login' element={<><Auth /></>}></Route>
-              <Route path='/entermarks' element={<><EnterMarks /></>}></Route>
-              <Route path='/viewexam' element={<><ViewExam /></>}></Route>
-              <Route path='/test' element={<><Test /></>}></Route>
-              <Route path='/' element={<><Home /></>}></Route>
-              <Route path='/exam' element={<><TeacherNav /></>} />
-              <Route path='/settings' element={<><Settings /></>} />
-              <Route path='/theog' element={<><TheOgHome2></TheOgHome2></>} />
-              <Route path='/adminhome' element={<><AdminHome2 /></>} />
-              <Route path='/profile' element={<><TeacherProfile /></>} />
-              <Route path='/creategazette' element={<><Gazette /></>} />
-              <Route path='/report' element={<><Report /></>} />
-              <Route path='/analysis' element={<><Analysis /></>} />
+              <Route path='/'>
+                <Route index element={<><Auth /></>}></Route>
+                <Route path='home' element={<TeacherNavbar list_items={teacher_list_items} />}>
+                  <Route path=''>
+                    <Route index element={<TeacherNav />} />
+                    <Route path='viewexam' element={<><ViewExam /></>} />
+                  </Route>
+                  <Route path='analysis' element={<><Analysis /></>} />
+                  <Route path='settings' element={<><Settings /></>} />
+                </Route>
+                <Route path='profile' element={<><TeacherProfile /></>} />
+
+                {/* admin routes */}
+                <Route path='adminhome' element={<><TeacherNavbar list_items={admin_list_items} type="Admin" buttons={button_list} /></>} >
+                  <Route path='create_teacher' element={<CreateTeacher />} />
+                  <Route path='delete_teacher' element={<DeleteTeacher />} />
+                  <Route path='update_teacher' element={<UpdateTeacher />} />
+                  <Route path='creategazette' element={<><Gazette /></>} />
+                  <Route path='report' element={<><Report /></>} />
+                  <Route path='notifications' element={<SubscriptionRequests />} />
+                </Route>
+              </Route>
             </Routes>
           </BrowserRouter>
-        </Box>
+
+        </Background>
       </BackgroundProvider>
     </ThemeProvider>
   );

@@ -107,7 +107,7 @@ export default function TeacherNav() {
 
         }).then((res) => {
             console.log(res.data)
-            navigate('/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), class: class_name } })
+            navigate('/home/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), class: class_name } })
 
         })
         //console.log( jsonData)
@@ -115,11 +115,7 @@ export default function TeacherNav() {
         // TODO: update function here somewhere for all (bulk update)
     }
 
-    // useEffect(() => {
-    //     console.log(jsonData)
-    // }, [jsonData])
 
-    // Arabic Numerals to Roman - Library
     const { romanice } = Romanice;
     const standardConverter = romanice();
 
@@ -128,10 +124,7 @@ export default function TeacherNav() {
         <>
             <div className='container-teacher-nav w-12/12'>
 
-                <Routes>
-                    <Route path="/" element={<Home open_list={open_list} subjectList={subjectList} handleChangeSubject={handleChangeSubject} type={type} setType={setType} subject={subject} setSubject={setSubject} class_name={class_name} setClassName={setClassName} handleSubmit={handleSubmit} cardData={cardData} />} />
-                    <Route path="/viewexam" element={<SheetView />} />
-                </Routes>
+                <Home open_list={open_list} subjectList={subjectList} handleChangeSubject={handleChangeSubject} type={type} setType={setType} subject={subject} setSubject={setSubject} class_name={class_name} setClassName={setClassName} handleSubmit={handleSubmit} cardData={cardData} />
 
             </div>
         </>

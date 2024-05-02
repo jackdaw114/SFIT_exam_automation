@@ -35,7 +35,7 @@ export default function AdminHome2() {
     return (
         <>
             <div>
-                <TeacherNavbar handleItemClick={handleItemClick} list_items={list_items} type="Admin" buttons={button_list} />
+                {/* <TeacherNavbar handleItemClick={handleItemClick} list_items={list_items} type="Admin" buttons={button_list} /> */}
 
                 <div className="flex min-h-screen max-h-full bg-sky-100" style={{ maxWidth: '100vw' }}>
                     <div className=" mt-20  h-full" style={{ maxWidth: '80vw', width: '80vw', marginLeft: '20vw' }}>

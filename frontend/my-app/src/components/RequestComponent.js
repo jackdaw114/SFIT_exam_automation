@@ -31,7 +31,7 @@ const RequestComponent = ({ status, idx, icons, bgColor }) => {
                     Requests
                 </div>
                 <motion.div
-                    className="child_div absolute bottom-0 right-0 mr-2 mb-2"
+                    className="child_div absolute bottom-0 right-0 mr-4 mb-1"
                     initial={{ opacity: 0, x: 4 }}
                     animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : 7 }}
                     transition={{ delay: 0.1 }}

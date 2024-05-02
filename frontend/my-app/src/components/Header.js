@@ -13,7 +13,7 @@ export default function Header() {
 
     const logout = () => {
         localStorage.clear()
-        navigate('/login')
+        navigate('/')
         localStorage.setItem('isLoggedIn', false)
     }
 

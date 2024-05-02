@@ -5,6 +5,7 @@ import TeacherNav from "./SheetPortal";
 import Settings from "./Settings";
 import Analysis from "./Analysis";
 import { TeacherNavbar } from "./TeacherNavbar";
+import { Outlet } from "react-router";
 
 
 export default function TeacherHome() {
@@ -29,14 +30,14 @@ export default function TeacherHome() {
     return (
         <>
             <div>
-                <TeacherNavbar handleItemClick={handleItemClick} list_items={list_items} />
+                {/* <TeacherNavbar handleItemClick={handleItemClick} list_items={list_items} /> */}
 
                 <div className="flex h-full " style={{ maxWidth: '100vw' }}>
                     <div className=" h-full" style={{ marginLeft: '20vw' }} ></div>
                     <div className="  " style={{ width: '80vw' }}>
 
                         <div className="  " style={{ maxWidth: '80vw' }}>
-                            {pageComponent}
+                            <Outlet />
                         </div>
                     </div>
                 </div>

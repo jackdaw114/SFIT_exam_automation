@@ -18,7 +18,7 @@ const SubscriptionRequests = () => {
     const icons_components = [accepted_icon, rejected_icon, pending_icon];
 
     return (
-        <div className=' -mt-14 w-full h-fit flex justify-center text-2xl font-mont font-medium'>
+        <div className='mt-5 w-full h-fit flex justify-center text-2xl font-mont font-medium'>
             <div className='w-11/12 flex justify-center '>
                 <div className=' aspect-square grid grid-rows-2 grid-cols-2 w-7/12  gap-10 transition-all'>
                     <Badge badgeContent={34} max={20} color='warning' className=' col-span-2 shadow-md duration-300 ease-in-out'>

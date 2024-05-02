@@ -330,19 +330,20 @@ router.post('/updateexcel', async (req, res) => {
 })
 router.post('/teachersubjects', async (req, res) => { //i assume this is done
     try {
-
+        // console.log(req.body)
         const teachersubjects = await TeacherSubjectsSchema.find(
             { teacher_id: req.body.teacher_id }
         ).populate('subject_id');
+        // console.log(teachersubjects)
         const subject_list = teachersubjects.map(doc => {
             const { __v, teacher_id, _id, subject_id, ...filteredVariables } = doc.toObject(); // Convert Mongoose document to plain JavaScript object
+            console.log(filteredVariables)
             return { ...filteredVariables, ...subject_id };
         });
-        // console.log(filteredVariables)
 
         res.json({ subject_list })
     } catch (err) {
-        console.log(err)
+        console.log(err + "HELLLOOO")
         res.status(400).send(err.keyValue)
     }
 })

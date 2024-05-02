@@ -386,14 +386,14 @@ export default function Settings(props) {
 
 
     React.useEffect(() => {
-        axios.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
+        axios.post('/teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
             }
         }).then(res => {
             setSubjectList(res.data.subject_list)
-            console.log(res.data.subject_list)
+            console.log("subject_list", res.data.subject_list)
         })
 
     }, [update]);
