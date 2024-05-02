@@ -475,7 +475,7 @@ router.post('/create_student_marks', async (req, res) => {
 router.post('/getdata', async (req, res) => {
     try {
         console.log("This is my req body=", req.body)
-        const students = await StudentSchema.find({
+        const students = await StudentsSchema.find({
             subject_ids: { $in: [req.body.subject_id] },
             semester: req.body.semester,
             class: req.body.class_name
