@@ -333,6 +333,7 @@ router.post('/get_student', async (req, res) => {
             sendData = filteredSubjects;
         } else {
             // Handle case where student is not found
+            console.log("Student not found!")
 
         }
         res.json({ student: student, subjects: sendData })
