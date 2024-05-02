@@ -412,7 +412,7 @@ router.post('/update_data', async (req, res) => {
 router.post('/create_student_marks', async (req, res) => {
     try {
         // console.log(req.body)
-        const students = await StudentSchema.find({
+        const students = await StudentsSchema.find({
             subject_ids: { $in: [req.body.subject] },
             semester: req.body.semester,
 
@@ -445,7 +445,7 @@ router.post('/create_student_marks', async (req, res) => {
                 updateObj[marksType] = { ...student[marksType] }
                 updateObj[marksType][subject] = -8;
                 console.log(updateObj)
-                StudentSchema.findOneAndUpdate(
+                StudentsSchema.findOneAndUpdate(
                     { _id: student._id },
                     { ...updateObj },
                     { new: true },
@@ -517,7 +517,7 @@ router.post('/get_exam', async (req, res) => {
 
 router.post('/get_student', async (req, res) => {
     try {
-        const student = await StudentSchema.findOne({ pid: req.body.pid })
+        const student = await StudentsSchema.findOne({ pid: req.body.pid })
         let sendData;
         if (student) {
             // Extract subject IDs from the student document

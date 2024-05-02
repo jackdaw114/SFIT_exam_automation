@@ -1,10 +1,16 @@
 
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import LoginForm from './LoginForm';
 import { Box, Button, Typography } from '@mui/material';
 import axios from 'axios';
+import { BackgroundContext } from './BackgroundContext';
 
 export default function CreateTeacher() {
+    const { setCustomBackgroundColor } = useContext(BackgroundContext)
+    useEffect(() => {
+        setCustomBackgroundColor('#e7f1ef')
+    })
+
     const [inputs, setInputs] = useState({
         username: "",
         password: "",

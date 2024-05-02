@@ -274,7 +274,7 @@ router.post('/create_gazette', async (req, res) => {
 
 router.post('/get_student', async (req, res) => {
     try {
-        const student = await StudentSchema.findOne({ pid: req.body.pid })
+        const student = await StudentsSchema.findOne({ pid: req.body.pid })
         let sendData;
         if (student) {
             // Extract subject IDs from the student document

@@ -282,7 +282,7 @@ export default function Report() {
     };
     const handleSend = () => {
         setOpen(false)
-        axios.post('/teacher/get_student', { pid: pid }, {
+        axios.post('/admin/get_student', { pid: pid }, {
             headers: {
 
                 "Content-Type": "application/json",
@@ -302,18 +302,7 @@ export default function Report() {
         }
     };
 
-    React.useEffect(() => {
-        axios.post('/teacher/get_student', { pid: 222212 }, {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            }
-        }).then(res => {
-            setStudent(res.data)
-            console.log(res.data)
-        })
 
-    }, []);
     return (
         <>
             <Dialog
