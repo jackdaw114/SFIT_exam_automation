@@ -48,7 +48,7 @@ const SheetView = () => {
 
 
     const handleUpdate = () => {
-        axios.post('/jason/update_data', {
+        axios.post('/teacher/update_data', {
             updated_data: sheetData,
             subject_id: location.state.subject,
             marks_type: location.state.marks_type
@@ -100,7 +100,7 @@ const SheetView = () => {
         // Now finalJsonData contains the JSON representation of your Excel data with _id included, excluding the first row
         console.log("This is final json", finalJsonData);
 
-        axios.post('/jason/update_data', {
+        axios.post('/teacher/update_data', {
             updated_data: finalJsonData,
             subject_id: location.state.subject,
             marks_type: location.state.marks_type
@@ -139,7 +139,7 @@ const SheetView = () => {
         }
         console.log("Current Data=", data)
 
-        axios.post('/jason/getdata', data, {
+        axios.post('/teacher/getdata', data, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",

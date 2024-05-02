@@ -11,9 +11,22 @@ import './Auth.css';
 
 
 const Auth = () => {
-
     const navigate = useNavigate()
     const [isAdmin, setIsAdmin] = useState(false)
+
+    useEffect(() => {
+        const url = ''
+        if (localStorage.getItem('isLoggedIn')) {
+            if (isAdmin) {
+                navigate('/home')
+            } else {
+                navigate('/adminhome')
+            }
+
+        }
+    })
+
+    // const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [inputs, setInputs] = useState({
         username: "",
         password: "",
@@ -50,6 +63,7 @@ const Auth = () => {
             localStorage.setItem('username', res.data.username)
             // localStorage.setItem('subjects', JSON.stringify(res.data.subjects))
             localStorage.setItem('isLoggedIn', true)
+
             console.log(res.data)
             if (isAdmin) {
                 localStorage.setItem('isAdmin', true)

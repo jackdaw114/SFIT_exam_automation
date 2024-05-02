@@ -21,7 +21,7 @@ const SubscriptionRequests = () => {
         <div className='mt-5 w-full h-fit flex justify-center text-2xl font-mont font-medium'>
             <div className='w-11/12 flex justify-center '>
                 <div className=' aspect-square grid grid-rows-2 grid-cols-2 w-7/12  gap-10 transition-all'>
-                    <Badge badgeContent={34} max={20} color='warning' className=' col-span-2 shadow-md duration-300 ease-in-out'>
+                    <Badge badgeContent={34} max={99} color='warning' className=' col-span-2 shadow-md duration-300 ease-in-out'>
                         <RequestComponent status="Pending" idx={2} icons={icons_components} bgColor="bg-[#6699CC]" />
                     </Badge>
                     <RequestComponent status="Accepted" idx={0} icons={icons_components} bgColor="bg-[#A0dbbC]" />

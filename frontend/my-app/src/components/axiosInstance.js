@@ -22,7 +22,7 @@ axiosInstance.interceptors.response.use(
     },
     (error) => {
         if (error.response) {
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 console.log("Not allowed bruh")
                 window.location.replace('/')
             } else {

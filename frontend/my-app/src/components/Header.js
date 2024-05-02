@@ -4,16 +4,20 @@ import { useNavigate } from "react-router-dom";
 import LogoutIcon from '@mui/icons-material/Logout';
 import './Header.css'
 import { motion } from 'framer-motion';
+import { Cookies } from 'react-cookie';
+import axios from 'axios';
 
 
 // TODO: add a navigate to home we dont have a way of going back to the previous page
-
+const cookie = new Cookies();
 export default function Header() {
     const navigate = useNavigate()
 
     const logout = () => {
         localStorage.clear()
-        navigate('/')
+        axios.get('/logout').then(() => {
+            navigate('/')
+        })
         localStorage.setItem('isLoggedIn', false)
     }
 
