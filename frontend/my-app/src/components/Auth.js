@@ -11,7 +11,7 @@ import './Auth.css';
 
 
 const Auth = () => {
- 
+
     const navigate = useNavigate()
     const [isAdmin, setIsAdmin] = useState(false)
     const [inputs, setInputs] = useState({
@@ -20,8 +20,8 @@ const Auth = () => {
     })
 
     const labels = {
-        username : "username",
-        password : "password"
+        username: "username",
+        password: "password"
     }
     const handleChange = (e) => {
         setInputs((prevState) => ({
@@ -39,7 +39,7 @@ const Auth = () => {
         if (isAdmin) {
             url = '/admin/login'
         } else {
-            url = '/teacher/login' 
+            url = '/teacher/login'
         }
         axios.post(url, inputs, {
             headers: {
@@ -104,24 +104,24 @@ const Auth = () => {
 
                     <Box
                         display="flex"
-                        // paddingLeft={3}
+                    // paddingLeft={3}
                     >
                         <Button
                             className='category-button'
                             onClick={() => {
                                 setIsAdmin(false)
                             }}
-                            endIcon={<GroupsIcon/>}
+                            endIcon={<GroupsIcon />}
                             sx={{ padding: "20px", width: "auto", color: 'white' }} >Teacher</Button>
                         <Button
                             className='category-button'
                             onClick={() => {
                                 setIsAdmin(true)
                             }}
-                            endIcon={<AccountBoxIcon/>}
+                            endIcon={<AccountBoxIcon />}
                             sx={{ padding: "20px", width: "auto", color: 'white' }}>Admin</Button>
 
-                    
+
                     </Box>
 
                     <LoginForm func={handleChange} inputs={inputs} font="white" labels={labels} />
