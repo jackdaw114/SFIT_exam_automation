@@ -7,28 +7,28 @@ const ExcelJS = require('exceljs');
 const xlsx = require('xlsx');
 const TeacherSubjectSchema = require('./schemas_revamp/TeacherSubjectSchema');
 
-router.post('/login', async (req, res) => {
-    try {
-        console.log(req.body)
-        let Admin1 = await Admin.findOne({ username: req.body.username });
-        console.log(req.body.password);
-        if (Admin1) {
-            if (req.body.password === Admin1.password) {
-                res.status(200).send(Admin1)
-            }
-            else {
-                res.status(400).send("Incorrect Password!")
-            }
-        }
-        else {
-            res.status(400).send("Admin does not exist in database!");
-        }
-    }
-    catch (err) {
-        res.status(500).send(err);
-        console.log("Error occured!");
-    }
-})
+// router.post('/login', async (req, res) => {
+//     try {
+//         console.log(req.body)
+//         let Admin1 = await Admin.findOne({ username: req.body.username });
+//         console.log(req.body.password);
+//         if (Admin1) {
+//             if (req.body.password === Admin1.password) {
+//                 res.status(200).send(Admin1)
+//             }
+//             else {
+//                 res.status(400).send("Incorrect Password!")
+//             }
+//         }
+//         else {
+//             res.status(400).send("Admin does not exist in database!");
+//         }
+//     }
+//     catch (err) {
+//         res.status(500).send(err);
+//         console.log("Error occured!");
+//     }
+// })
 
 router.post('/addteacher', async (req, res) => {
     try {
@@ -62,7 +62,128 @@ router.post('/deleteteacher', async (req, res) => {
         console.log(err);
     }
 })
+router.post('/update_subject_list', async (req, res) => {
+    try {
+        let existingSubjectList = await SubjectListSchema.findOne({ semester: req.body.semester, branch: req.body.branch })
+        if (existingSubjectList) {
+            existingSubjectList.subject_ids = req.body.subject_ids;
+            subjectList = await existingSubjectList.save();
+        }
+        else {
+            SubjectList = new SubjectListSchema(req.body);
+            await SubjectList.save();
+        }
+        res.send('updated')
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err.keyValue)
+    }
+})
 
+router.post('/create_gazette', async (req, res) => {
+    try {
+        let students = await StudentSchema.find({ semester: req.body.semester, branch: req.body.branch },
+            // {
+            //     pid: true,
+            //     name: true,
+            //     oral: true,
+            //     practical: true,
+            //     term: true,
+            // }
+        )
+        let SubjectList = await SubjectListSchema.findOne({ semester: req.body.semester, branch: req.body.branch }, {
+            subject_ids: true
+        }) // TODO: this might not be useful but go figure
+
+        SubList = SubjectList.subject_ids
+
+        console.log(SubList)
+        console.log("hello")
+        const template = xlsx.readFile('./ExcelTemplates/gazette_temp.xlsx')
+        const temp_sheet = template.Sheets[template.SheetNames[0]]
+
+        temp_sheet['!cols'] = [
+            { wch: 7 },
+            { wch: 35 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 7 },
+            { wch: 7 },
+            { wch: 7 }
+        ];
+        const entry_dist = 5;
+
+        let entry = 14;
+        const column_lista = ['C', 'D', 'E', 'F']
+        const column_listb = ['C', 'D', 'E', 'F', 'G']
+
+
+        let sortedStudents = await students.sort((a, b) => {
+            // Compare two elements based on a specific property
+            // For example, sorting based on the name property
+            if (a.pid < b.pid) {
+                return -1; // a should come before b in the sorted order
+            } else {
+                return 1; // a should come after b in the sorted order
+            }
+        });
+        await sortedStudents.forEach((student) => {
+            // console.log('hello')
+
+            temp_sheet[`A${entry}`] = { t: 's', v: student.pid };
+            column_lista.forEach((item, index) => {
+                console.log('item', item, 'iter:', index)
+
+                if (index < SubList.length && student.practical && student.term && student.oral) {
+                    console.log(index, "hello here")
+
+                    if (student.practical.hasOwnProperty(SubList[index])) {
+                        temp_sheet[`${item}${entry}`] = { t: 's', v: (student.practical && student.practical[SubList[index]]) ?? 'no data' }
+                    }
+                    if (student.term.hasOwnProperty(SubList[index]) && student.oral.hasOwnProperty(SubList[index])) {
+                        temp_sheet[`${item}${entry + 1}`] = {
+                            t: 's', v: student.oral && student.term && student.oral[SubList[index]] && student.term[SubList[index]] ? `${student.term[SubList[index]]}/${student.oral[SubList[index]]}` : 'no data'
+                        }
+                    }
+                }
+            })
+
+            column_listb.forEach((item, index) => {
+                //console.log('item', item, 'iter:', index)
+                if (index + 5 < SubList.length && student.practical && student.term && student.oral) {
+                    if (student.practical.hasOwnProperty(SubList[index + 5])) {
+
+                        temp_sheet[`${item}${entry + 2} `] = { t: 's', v: student.practical && student.practical[SubList[index + 5]] ? student.practical[SubList[index + 5]] : 'no data' }
+                    }
+
+                    if (student.term.hasOwnProperty(SubList[index + 5]) && student.oral.hasOwnProperty(SubList[index + 5])) {
+                        temp_sheet[`${item}${entry + 3} `] = {
+                            t: 's', v: student.oral && student.term && student.oral[SubList[index + 5]] && student.term[SubList[index + 5]] ? `${student.term[SubList[index + 5]]}/${student.orals[SubList[index + 5]]}` : 'no data'
+                        }
+                    }
+                }
+            })
+            entry += entry_dist
+        })
+        const newbook = xlsx.utils.book_new();
+        temp_sheet['!ref'] = 'A1:J500'
+
+        xlsx.utils.book_append_sheet(newbook, temp_sheet, 'test1')
+
+        xlsx.writeFile(newbook, 'temp2.xlsx')
+
+        res.send({ book: newbook })
+
+    } catch (err) {
+        console.log(err)
+        res.send(err)
+
+
+    }
+})
 router.post('/updateteacher', async (req, res) => {
     let filter = { username: req.body.username }
     let update = { subject: req.body.subject }
@@ -194,9 +315,10 @@ router.post('/get_unverified_teacher_subject', async (req, res) => {
             $match:
                 { verified: false }
         },
+
         {
             $lookup: {
-                from: "Subject",
+                from: "subjects",
                 localField: "subject_id",
                 foreignField: "_id",
                 as: "subjectDetails"
@@ -207,14 +329,14 @@ router.post('/get_unverified_teacher_subject', async (req, res) => {
                 _id: "$teacher_id",
                 details: {
                     $push: {
-                        subject: "$subjectDetails.subject_name",
+                        subject_details: "$subjectDetails",
                         class: "$class",
                         _id: "$_id",
                     }
                 },
 
             }
-        }])
+        },])
         console.log(teachers)
         res.send(teachers)
     } catch (error) {
