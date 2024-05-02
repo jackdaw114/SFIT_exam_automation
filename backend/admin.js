@@ -7,6 +7,10 @@ const ExcelJS = require('exceljs');
 const xlsx = require('xlsx');
 const TeacherSubjectSchema = require('./schemas_revamp/TeacherSubjectSchema');
 const StudentsSchema = require('./schemas/StudentsSchema');
+const SubjectsSchema = require('./schemas_revamp/SubjectsSchema');
+const SubjectListSchema = require('./schemas_revamp/SubjectListSchema');
+
+
 
 // router.post('/login', async (req, res) => {
 //     try {

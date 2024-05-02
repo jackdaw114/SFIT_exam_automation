@@ -37,7 +37,7 @@ export default function UpdateTeacher() {
     // console.log('this is create teacher')
     return (
         <>
-            <div className=' flex justify-center items-center  px-10 '>
+            <div className=' mt-10 flex justify-center items-center  px-10 '>
                 <div className=' bg-white rounded-xl p-5'>
                     <Box padding={2} display={'flex'} alignItems={'center'} flexDirection={'column'}>
                         <Typography variant='h4' fontFamily='Ubuntu'>Update Teacher Details</Typography>
