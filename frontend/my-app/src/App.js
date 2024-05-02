@@ -64,6 +64,7 @@ function App() {
                 <Route path='profile' element={<><TeacherProfile /></>} />
 
                 {/* admin routes */}
+
                 <Route path='adminhome' element={<><TeacherNavbar list_items={admin_list_items} type="Admin" buttons={button_list} /></>} >
                   <Route path='create_teacher' element={<CreateTeacher />} />
                   <Route path='delete_teacher' element={<DeleteTeacher />} />

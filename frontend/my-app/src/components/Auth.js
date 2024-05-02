@@ -16,7 +16,7 @@ const Auth = () => {
 
     useEffect(() => {
         const url = ''
-        if (localStorage.getItem('isLoggedIn')) {
+        if (localStorage.getItem('isLoggedIn') === true) {
             if (isAdmin) {
                 navigate('/home')
             } else {
