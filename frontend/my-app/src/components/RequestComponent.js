@@ -17,11 +17,11 @@ const RequestComponent = ({ status, idx, icons, bgColor }) => {
     return (
         <motion.div className='parent_div flex w-full justify-center hover:shadow-xl duration-300 ease-in-out cursor-pointer'
             initial={{ x: 0 }}
-            whileHover={{ x: 5 }}
+            whileHover={{ x: 0 }}
             onHoverStart={handleHoverStart}
             onHoverEnd={handleHoverEnd}
         >
-            <div className={`w-full ${bgColor} border rounded flex flex-col justify-center items-center relative`}>
+            <div className={`w-full ${bgColor} border rounded flex flex-col justify-center items-center relative text-black`}>
                 {/* <FcAcceptDatabase size={72} className="pb-8" /> */}
                 {icons[idx]}
                 <div>
@@ -34,7 +34,7 @@ const RequestComponent = ({ status, idx, icons, bgColor }) => {
                     className="child_div absolute bottom-0 right-0 mr-2 mb-2"
                     initial={{ opacity: 0, x: 4 }}
                     animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : 7 }}
-                    transition={{ delay: 0.5 }}
+                    transition={{ delay: 0.1 }}
                 >
                     <FaArrowRight className='text-slate-200' />
                 </motion.div>
