@@ -45,6 +45,11 @@ app.use('/revamp', require('./dbmsrevamp'))
 // }
 
 //post();
+app.get('/logout', (req, res) => {
+    res.clearCookie('jwtToken'); // Clear the cookie named 'authToken'
+    res.send('Successfully logged out!');
+});
+
 
 app.listen(8000, () => {
     console.log('server is running on port 8000');
