@@ -15,9 +15,9 @@ const RequestComponent = ({ status, idx, icons, bgColor }) => {
         setIsHovered(false);
     };
     return (
-        <motion.div className='parent_div flex w-full justify-center hover:shadow-xl duration-300 ease-in-out'
+        <motion.div className='parent_div flex w-full justify-center hover:shadow-xl duration-300 ease-in-out cursor-pointer'
             initial={{ x: 0 }}
-            whileHover={{ x: 10 }}
+            whileHover={{ x: 5 }}
             onHoverStart={handleHoverStart}
             onHoverEnd={handleHoverEnd}
         >
@@ -32,11 +32,13 @@ const RequestComponent = ({ status, idx, icons, bgColor }) => {
                 </div>
                 <motion.div
                     className="child_div absolute bottom-0 right-0 mr-2 mb-2"
-                    initial={{ opacity: 0, x: 10 }}
+                    initial={{ opacity: 0, x: 4 }}
                     animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : 7 }}
+                    transition={{ delay: 0.5 }}
                 >
-                    <FaArrowRight className=' text-slate-200' />
+                    <FaArrowRight className='text-slate-200' />
                 </motion.div>
+
             </div>
         </motion.div>
     )
