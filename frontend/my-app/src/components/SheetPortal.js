@@ -2,7 +2,7 @@ import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select } from "@m
 import Header from "./Header";
 import { toExcel } from "./Excel";
 import { Fragment, useCallback, useContext, useEffect, useState } from "react";
-import axios from "axios";
+
 import { read, utils, write, writeFile } from "xlsx";
 import { saveAs } from "file-saver";
 import ExcelCard from "./ExcelCard";
@@ -18,6 +18,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import SheetView from "./SheetView";
 import { BackgroundContext } from "./BackgroundContext";
+import axiosInstance from "./axiosInstance";
 
 
 
@@ -62,7 +63,7 @@ export default function TeacherNav() {
 
     useEffect(() => {
         setCustomBackgroundColor('#e7f1ef')
-        axios.post('/jason/get_exams', { teacher_id: localStorage.getItem('username') }, {
+        axiosInstance.post('/teacher/get_exams', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
@@ -71,7 +72,7 @@ export default function TeacherNav() {
             console.log(res.data)
             setCardData(res.data)
         })
-        axios.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
+        axiosInstance.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -90,7 +91,7 @@ export default function TeacherNav() {
         //  let jsonData = []
         const theJsonData = []
         console.log(subject.charAt(3))
-        axios.post('/jason/create_student_marks', {
+        axiosInstance.post('/teacher/create_student_marks', {
             semester: parseInt(subject.charAt(3)),
             marks_type: type,
             subject: subject,

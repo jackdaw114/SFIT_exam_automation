@@ -392,7 +392,7 @@ router.post('/update_data', async (req, res) => {
         for (const data of updatedData) {
             console.log({ student_pid: data.pid, marks_type: marksType, subject_code: subjectId });
             // Update document using the Mongoose model
-            let test = await StudentSchema.findOneAndUpdate({ pid: data.pid }, {
+            let test = await StudentsSchema.findOneAndUpdate({ pid: data.pid }, {
                 $set:
                 {
                     [`${marksType}.${subjectId}`]: Number(data.marks)
@@ -609,7 +609,7 @@ router.post('/get_aggregate', async (req, res) => {
         let labels = [];
         for (const item of dataList) {
             console.log(item);
-            const students = await StudentSchema.aggregate([
+            const students = await StudentsSchema.aggregate([
                 {
                     $match: {
                         subject_ids: { $in: [item.subject] },

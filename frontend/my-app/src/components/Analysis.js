@@ -72,7 +72,7 @@ export default function Analysis() {
     const [subjectList, setSubjectList] = useState([])
     const [data, setData] = useState()
     useEffect(() => {
-        axios.post('/jason/get_exams', { teacher_id: localStorage.getItem('username') }, {
+        axios.post('/teacher/get_exams', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
@@ -110,7 +110,7 @@ export default function Analysis() {
         setData(tempJSON)
     }
     const handleClick = () => {
-        axios.post('/jason/get_aggregate', { data_list: subjectList }, {
+        axios.post('/teacher/get_aggregate', { data_list: subjectList }, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
