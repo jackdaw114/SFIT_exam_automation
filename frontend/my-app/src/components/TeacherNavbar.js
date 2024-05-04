@@ -1,14 +1,25 @@
 import { Box, Button, Typography } from "@mui/material";
 import { getScrollbarWidth, useBodyScrollable } from "./hooks/useBodyScrollable";
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { NotifButton } from "./NotifButton";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 
 
 
 export function TeacherNavbar({ list_items, type = null, buttons = null }) {
     const ct = 0
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        //TODO: Added this as a workaround for session verification. Need a solid fix.
+
+        if (localStorage.getItem('isLoggedIn') === 'false') {
+            navigate('/')
+        }
+
+    }, [])
+
     return (
         <>
             <div className="fixed h-full  flex flex-col bg-zinc-800 items-center  w-1/5 font-['ubuntu'] " >

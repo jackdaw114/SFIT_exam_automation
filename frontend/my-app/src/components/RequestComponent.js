@@ -1,11 +1,13 @@
-import React from 'react'
+import React from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { FcAcceptDatabase } from 'react-icons/fc';
+import { useNavigate } from 'react-router-dom';
 
 const RequestComponent = ({ status, idx, icons, bgColor }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const navigate = useNavigate();
 
     const handleHoverStart = () => {
         setIsHovered(true);
@@ -14,14 +16,19 @@ const RequestComponent = ({ status, idx, icons, bgColor }) => {
     const handleHoverEnd = () => {
         setIsHovered(false);
     };
+
+    const handleClick = () => {
+        navigate(`/adminhome/notifications/${status.toLowerCase()}_requests`);
+    };
+
     return (
-        <motion.div className='parent_div flex w-full justify-center hover:shadow-xl duration-300 ease-in-out cursor-pointer'
-            initial={{ x: 0 }}
-            whileHover={{ x: 0 }}
+        <motion.div className='parent_div flex w-full rounded-lg bg-sky-50 justify-center hover:shadow-xl duration-300 ease-in-out cursor-pointer p-1'
+
+            onClick={handleClick}
             onHoverStart={handleHoverStart}
             onHoverEnd={handleHoverEnd}
         >
-            <div className={`w-full ${bgColor} border rounded flex flex-col justify-center items-center relative text-black`}>
+            <div className={`w-full ${bgColor}  border rounded flex flex-col justify-center items-center relative text-black`}>
                 {/* <FcAcceptDatabase size={72} className="pb-8" /> */}
                 {icons[idx]}
                 <div>
@@ -44,4 +51,4 @@ const RequestComponent = ({ status, idx, icons, bgColor }) => {
     )
 }
 
-export default RequestComponent
+export default RequestComponent;

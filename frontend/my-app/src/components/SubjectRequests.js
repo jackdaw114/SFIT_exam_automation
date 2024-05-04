@@ -8,7 +8,7 @@ export const SubjectRequests = () => {
     const [data, setData] = useState();
     const { setCustomBackgroundColor } = useContext(BackgroundContext)
     useEffect(() => {
-        setCustomBackgroundColor(' #F7F9F9')
+        setCustomBackgroundColor(' #e7f1ef')
         axios.post('/admin/get_unverified_teacher_subject', {},
             {
                 headers: {

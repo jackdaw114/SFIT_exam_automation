@@ -27,8 +27,6 @@ const Separator = () => <div className='mt-24'></div>
 
 function App() {
 
-
-
   const teacher_list_items = [
     ['Grading & Assessments', ""], ['Settings', "settings"], ['Analysis', "analysis"]
   ];
@@ -36,7 +34,6 @@ function App() {
   const admin_list_items = [
     ['Create Teacher', "create_teacher"],
     ['Delete Teacher', "delete_teacher"],
-    ['Update Teacher', "update_teacher"],
     ['Generate Gazette', "creategazette"],
     ['Generate Reports', "report"],
   ];
@@ -50,7 +47,6 @@ function App() {
           <BrowserRouter>
             <Header />
             <Separator />
-            {/* <TeacherNavbar list_items={list_items} /> */}
             <Routes>
               <Route path='/'>
                 <Route index element={<><Auth /></>}></Route>
@@ -59,7 +55,8 @@ function App() {
                     <Route index element={<TeacherNav />} />
                     <Route path='viewexam' element={<><ViewExam /></>} />
                   </Route>
-                  <Route path='analysis' element={<><SubjectRequests /></>} />
+                  {/* <Route path='analysis' element={<><SubjectRequests /></>} /> */}
+                  <Route path='analysis' element={<><Analysis /></>} />
                   <Route path='settings' element={<><Settings /></>} />
                 </Route>
                 <Route path='profile' element={<><TeacherProfile /></>} />
@@ -69,10 +66,12 @@ function App() {
                 <Route path='adminhome' element={<><TeacherNavbar list_items={admin_list_items} type="Admin" buttons={button_list} /></>} >
                   <Route path='create_teacher' element={<CreateTeacher />} />
                   <Route path='delete_teacher' element={<DeleteTeacher />} />
-                  <Route path='update_teacher' element={<UpdateTeacher />} />
                   <Route path='creategazette' element={<><Gazette /></>} />
                   <Route path='report' element={<><Report /></>} />
-                  <Route path='notifications' element={<SubscriptionRequests />} />
+                  <Route path='notifications' >
+                    <Route index element={<SubscriptionRequests />} />
+                    <Route path='pending_requests' element={<SubjectRequests />} />
+                  </Route>
                 </Route>
               </Route>
             </Routes>

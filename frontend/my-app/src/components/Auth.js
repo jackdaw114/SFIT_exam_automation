@@ -15,16 +15,17 @@ const Auth = () => {
     const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
-        const url = ''
-        if (localStorage.getItem('isLoggedIn') === true) {
-            if (isAdmin) {
-                navigate('/home')
-            } else {
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            if (localStorage.getItem('isAdmin') === 'true') {
+                console.log("Admin already logged in!")
                 navigate('/adminhome')
+            } else {
+                navigate('/home')
             }
-
+        } else {
+            console.log("not logged in! : ", localStorage.getItem('isLoggedIn'))
         }
-    })
+    }, [])
 
     // const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [inputs, setInputs] = useState({
@@ -52,7 +53,6 @@ const Auth = () => {
         e.preventDefault();
         console.log(inputs);
         let url = ''
-        // const url = '/teacher/login'
         if (isAdmin) {
             url = '/admin/login'
         } else {
@@ -65,7 +65,6 @@ const Auth = () => {
             }
         }).then(res => {
             localStorage.setItem('username', res.data.username)
-            // localStorage.setItem('subjects', JSON.stringify(res.data.subjects))
             localStorage.setItem('isLoggedIn', true)
 
             console.log(res.data)
