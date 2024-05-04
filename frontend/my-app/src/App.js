@@ -18,6 +18,7 @@ import CreateTeacher from './components/CreateTeacher';
 import DeleteTeacher from './components/DeleteTeacher';
 import UpdateTeacher from './components/UpdateTeacher';
 import SubscriptionRequests from './components/SubscriptionRequests';
+import { SubjectRequests } from './components/SubjectRequests';
 
 
 
@@ -58,7 +59,7 @@ function App() {
                     <Route index element={<TeacherNav />} />
                     <Route path='viewexam' element={<><ViewExam /></>} />
                   </Route>
-                  <Route path='analysis' element={<><Analysis /></>} />
+                  <Route path='analysis' element={<><SubjectRequests /></>} />
                   <Route path='settings' element={<><Settings /></>} />
                 </Route>
                 <Route path='profile' element={<><TeacherProfile /></>} />

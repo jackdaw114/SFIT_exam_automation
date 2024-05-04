@@ -352,7 +352,7 @@ router.post('/get_unverified_teacher_subject', async (req, res) => {
     try {
         const teachers = await TeacherSubjectSchema.aggregate([{
             $match:
-                { verified: false }
+                { verified: 0 }
         },
 
         {
