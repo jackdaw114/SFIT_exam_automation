@@ -90,7 +90,7 @@ const Auth = () => {
 
 
     return (
-        <div>
+        <div className=''>
             <form onSubmit={handleSubmit}>
                 <Box display="flex"
                     flexDirection={"column"}
