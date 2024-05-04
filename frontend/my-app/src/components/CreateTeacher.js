@@ -14,16 +14,10 @@ export default function CreateTeacher() {
     const [inputs, setInputs] = useState({
         username: "",
         password: "",
-        email: "",
-        phoneNo: "",
-        subject: ""
     })
     const labels = {
         username: "username",
         password: "password",
-        email: "email",
-        phoneNo: "phone number",
-        subject: "subject"
     }
     const handleChange = (e) => {
         setInputs((prevState) => ({

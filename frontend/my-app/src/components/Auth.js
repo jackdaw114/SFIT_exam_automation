@@ -32,6 +32,10 @@ const Auth = () => {
         password: "",
     })
 
+    const handleClick = (isAdmin) => {
+        setIsAdmin(isAdmin);
+    };
+
     const labels = {
         username: "username",
         password: "password"
@@ -79,33 +83,25 @@ const Auth = () => {
     }
 
 
-
-
-
-
-
-
-
-
-
-
     return (
         <div className=''>
             <form onSubmit={handleSubmit}>
-                <Box display="flex"
+                <Box
+                    className=" bg-primary"
+                    display="flex"
                     flexDirection={"column"}
-                    maxWidth={400}
+                    maxWidth={500}
                     alignItems="center"
                     justifyContent={"center"}
                     margin="auto"
-                    marginTop={4.9}
+                    marginTop={20}
 
                     padding={3}
                     borderRadius={4}
                     boxShadow={"0px 0px 10px #00000A"}
 
                     sx={{
-                        backgroundColor: '#292F36',
+                        // backgroundColor: '#292F36',
                         ":hover": {
                             boxShadow: "0px 0px 20px #000",
                         },
@@ -116,26 +112,27 @@ const Auth = () => {
                         backgroundColor: '#333333', fontFamily: 'ubuntu', padding: 1
                     }}>Login</Typography>
 
-                    <Box
-                        display="flex"
-                    // paddingLeft={3}
-                    >
+                    <Box className="justify-around w-2/3 mt-2" display="flex" position="relative">
+                        <div
+                            className="slider transition-all duration-300"
+                            style={{ left: isAdmin ? '60%' : '7%', width: isAdmin ? '35%' : "39%" }}
+                        ></div>
                         <Button
-                            className='category-button'
-                            onClick={() => {
-                                setIsAdmin(false)
-                            }}
+                            className="category-button"
+                            onClick={() => handleClick(false)}
                             endIcon={<GroupsIcon />}
-                            sx={{ padding: "20px", width: "auto", color: 'white' }} >Teacher</Button>
+                            sx={{ padding: '20px', width: 'auto', color: 'white' }}
+                        >
+                            Teacher
+                        </Button>
                         <Button
-                            className='category-button'
-                            onClick={() => {
-                                setIsAdmin(true)
-                            }}
+                            className="category-button"
+                            onClick={() => handleClick(true)}
                             endIcon={<AccountBoxIcon />}
-                            sx={{ padding: "20px", width: "auto", color: 'white' }}>Admin</Button>
-
-
+                            sx={{ padding: '20px', width: 'auto', color: 'white' }}
+                        >
+                            Admin
+                        </Button>
                     </Box>
 
                     <LoginForm func={handleChange} inputs={inputs} font="white" labels={labels} />

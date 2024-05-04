@@ -13,7 +13,7 @@ export default function LoginForm(props) {
 
     return (
 
-        <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }
+        <Box className=" w-full items-center" sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }
         }>
             {list_keys.map((item) => {
                 return (
@@ -21,7 +21,7 @@ export default function LoginForm(props) {
                     <TextField
                         onChange={props.func}
                         sx={{
-                            width: "300px",
+                            width: "80%",
                             input: { color: props.font }
                         }}
                         // value={props.inputs.username|| ''}
