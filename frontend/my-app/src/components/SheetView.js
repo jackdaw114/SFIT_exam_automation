@@ -207,7 +207,10 @@ const SheetView = () => {
                     <Button color="info" sx={{ margin: '30px 5px' }} variant="contained" endIcon={isEdit ? <CancelIcon /> : <EditIcon />} onClick={() => { setIsEdit(!isEdit) }}>
                         {isEdit ? "Cancel" : "Edit"}
                     </Button>
-                    <input type="file" className="fileSelect" onChange={(e) => handleInput(e)} />
+                    <label>
+                        Put file
+                        <input type="file" className="fileSelect" style={{ display: 'none' }} onChange={(e) => handleInput(e)} />
+                    </label>
                     <Button variant="contained" onClick={handleDownload} >Download File <DownloadIcon fontSize="small" className="pl-2" /> </Button>
                 </div>
             </div>
