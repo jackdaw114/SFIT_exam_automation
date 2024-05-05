@@ -26,7 +26,7 @@ const SubscriptionRequests = () => {
             console.log(res.data);
             setData(res.data);
         });
-    })
+    }, [])
 
     const accepted_icon = <HiCheck size={72} className="pb-8 text-secondary" />;
     const rejected_icon = <ImCancelCircle size={72} className="pb-8 text-orange-950" />;
