@@ -85,7 +85,7 @@ const Auth = () => {
             }
         }).catch((error) => {
             if (error.response.status === 400) {
-                alert('Incorrect username or password');
+                alert(error.response.data);
             } else {
                 alert(error);
             }
