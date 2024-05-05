@@ -9,6 +9,7 @@ const StudentsSchema = mongoose.Schema(
         pid: {
             type: Number,
             required: true,
+            unique: true
         },
         branch: {
             type: String,

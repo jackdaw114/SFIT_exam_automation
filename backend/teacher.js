@@ -430,7 +430,7 @@ router.post('/create_student_marks', async (req, res) => {
                 $set: {
                     [`created.${req.body.marks_type}`]: true
                 }
-            })
+            }, { new: true },)
             console.log(test)
         }
 
@@ -444,6 +444,7 @@ router.post('/create_student_marks', async (req, res) => {
                 const updateObj = {};
                 updateObj[marksType] = { ...student[marksType] }
                 updateObj[marksType][subject] = -8;
+                // updateObj.created[marksType] = true;
                 console.log(updateObj)
                 StudentsSchema.findOneAndUpdate(
                     { _id: student._id },
@@ -633,7 +634,7 @@ router.post('/get_aggregate', async (req, res) => {
                 const avg = (students[0].total / students[0].count) / max_marks[item.marks_type] * 100
 
                 data.push(avg)
-                labels.push(item.subject)
+                labels.push(item.subject + ' ' + item.marks_type)
                 console.log(`Total for subject: ${item.subject}, class: ${item.class} is: ${students[0].total} in ${students[0].total_entries} entries`);
                 console.log(JSON.stringify(students[0], null, 2))
                 console.log(data)
