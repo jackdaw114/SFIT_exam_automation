@@ -20,6 +20,7 @@ import UpdateTeacher from './components/UpdateTeacher';
 import SubscriptionRequests from './components/SubscriptionRequests';
 import { SubjectRequests } from './components/SubjectRequests';
 import { SubjectListEndpoint } from './components/SubjectListEndpoint';
+import ViewTeachers from './components/ViewTeachers';
 
 
 
@@ -37,6 +38,7 @@ function App() {
     ['Delete Teacher', "delete_teacher"],
     ['Generate Gazette', "creategazette"],
     ['Generate Reports', "report"],
+    ['Teacher List', "teachers"],
     ['Manage Subjects', "subject_management"]
   ];
 
@@ -71,6 +73,7 @@ function App() {
                   <Route path='creategazette' element={<><Gazette /></>} />
                   <Route path='report' element={<><Report /></>} />
                   <Route path='subject_management' element={<><SubjectListEndpoint /></>} />
+                  {/* <Route path='teachers' element={<><ViewTeachers /></>} /> */}
                   <Route path='notifications' >
                     <Route index element={<SubscriptionRequests />} />
                     <Route path='pending_requests' element={<SubjectRequests />} />
