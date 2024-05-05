@@ -35,6 +35,10 @@ const SubjectListSchema = require('./schemas_revamp/SubjectListSchema');
 //     }
 // })
 
+const generateRandomPassword = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
 router.post('/addteacher', async (req, res) => {
     try {
         await Teacher.create({
