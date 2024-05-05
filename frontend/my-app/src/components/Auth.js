@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
@@ -8,11 +8,16 @@ import { Route, Router, Routes, useLocation, useNavigate } from 'react-router';
 import LoginForm from './LoginForm'
 import axios from 'axios';
 import './Auth.css';
+import { BackgroundContext } from './BackgroundContext';
 
 
 const Auth = () => {
     const navigate = useNavigate()
     const [isAdmin, setIsAdmin] = useState(false)
+    const { setCustomBackgroundColor } = useContext(BackgroundContext)
+    useEffect(() => {
+        setCustomBackgroundColor('#e7f1ef')
+    })
 
     useEffect(() => {
         if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -86,7 +91,7 @@ const Auth = () => {
         <div className=''>
             <form onSubmit={handleSubmit}>
                 <Box
-                    className=" bg-primary"
+                    className=" bg-primary transition-all duration-300 shadow-md hover:shadow-2xl"
                     display="flex"
                     flexDirection={"column"}
                     maxWidth={500}
@@ -97,21 +102,15 @@ const Auth = () => {
 
                     padding={3}
                     borderRadius={4}
-                    boxShadow={"0px 0px 10px #00000A"}
 
-                    sx={{
-                        // backgroundColor: '#292F36',
-                        ":hover": {
-                            boxShadow: "0px 0px 20px #000",
-                        },
-                        //   fontFamily: 'Ubuntu',
-                    }}>
+
+                >
                     <Typography variant="h2" sx={{
                         textShadow: '1px 1px 1px rgba(255,255,255,0.9)', color: 'transparent', backgroundClip: 'text',
                         backgroundColor: '#333333', fontFamily: 'ubuntu', padding: 1
                     }}>Login</Typography>
 
-                    <Box className="justify-around w-2/3 mt-2" display="flex" position="relative">
+                    <Box className="justify-around w-2/3 my-3" display="flex" position="relative">
                         <div
                             className="slider transition-all duration-300"
                             style={{ left: isAdmin ? '60%' : '7%', width: isAdmin ? '35%' : "39%" }}

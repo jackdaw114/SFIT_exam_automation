@@ -1,15 +1,19 @@
 import { Box, Button, Typography } from "@mui/material";
 import { getScrollbarWidth, useBodyScrollable } from "./hooks/useBodyScrollable";
-import { useEffect, useLayoutEffect } from "react";
+import { useContext, useEffect, useLayoutEffect } from "react";
 import { NotifButton } from "./NotifButton";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { BackgroundContext } from "./BackgroundContext";
 
 
 
 
 export function TeacherNavbar({ list_items, type = null, buttons = null }) {
-    const ct = 0
     const navigate = useNavigate();
+    const { setCustomBackgroundColor } = useContext(BackgroundContext)
+    useEffect(() => {
+        setCustomBackgroundColor('#e7f1ef')
+    })
 
     useEffect(() => {
         if (localStorage.getItem('isLoggedIn') === 'false') {
