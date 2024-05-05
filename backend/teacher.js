@@ -333,7 +333,7 @@ router.post('/teachersubjects', async (req, res) => { //i assume this is done
     try {
         // console.log(req.body)
         const teachersubjects = await TeacherSubjectsSchema.find(
-            { teacher_id: req.body.teacher_id }
+            { teacher_id: req.body.teacher_id, verified: 0 }
         ).populate('subject_id');
         // console.log(teachersubjects)
         const subject_list = teachersubjects.map(doc => {
