@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { BackgroundContext } from './BackgroundContext';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Divider, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
 import axiosInstance from './axiosInstance'
+import './SubjectListEndpoint.css'
 
+import DeleteIcon from '@mui/icons-material/Delete';
 export const SubjectListEndpoint = () => {
     const { setCustomBackgroundColor } = useContext(BackgroundContext);
 
@@ -26,6 +28,7 @@ export const SubjectListEndpoint = () => {
     return (
         <div>
             <NavigationPane tabs={tabs} selectedTab={selectedTab} onSelectTab={handleSelectTab} />
+            <Divider />
             {/* Render content for the selected tab */}
             {selectedTab === 'UpdateSubjectList' && <UpdateSubjectList />}
             {selectedTab === 'UpdateStudentSubjects' && <UpdateStudentSubjects />}
@@ -38,8 +41,9 @@ export const SubjectListEndpoint = () => {
 const UpdateSubjectList = () => {
     const [semester, setSemester] = useState('');
     const [branch, setBranch] = useState('');
-    const [subjectList, setSubjectList] = useState([]);
+    const [subjectList, setSubjectList] = useState(['']);
     const semester_list = [1, 2, 3, 4, 5, 6, 7, 8]
+    const branch_list = ["CMPN", "EXTC",]
     const handleSemesterChange = (e) => {
         setSemester(e.target.value);
     };
@@ -80,51 +84,72 @@ const UpdateSubjectList = () => {
         })
     }
     return (
-        <>
-            <Typography style={{ marginBottom: '20px' }}>
+        <div style={{ margin: '3rem', marginTop: '2rem' }}>
+            <Typography variant='h6' style={{ marginBottom: '20px', fontFamily: 'ubuntu' }}>
                 The Subject List is a database record that stores the subject codes that belong to a certian semester making updating student records easier
                 <br />
                 <br />
-                Please input subject codes only
+                - Please input subject codes only
                 <br />
-                ensure the subjects belong to the given semester and branch</Typography>
+                - ensure the subjects belong to the given semester and branch</Typography>
             <form>
                 <label>Semester:</label>
-                <select value={semester} onChange={handleSemesterChange}>
+
+                <Select variant='standard' sx={{
+                    '& .MuiSelect-select': {
+                        paddingLeft: 1,
+
+                    },
+                }} value={semester} className='custom-select' color='secondary' onChange={handleSemesterChange}>
                     {semester_list.map((option) => (
-                        <option key={option} value={option}>
+                        <MenuItem key={option} value={option}>
                             {option}
-                        </option>
+                        </MenuItem>
                     ))}
-                </select>
-
-                <br />
+                </Select>
+                <Divider variant='middle' sx={{ paddingTop: 2, marginBottom: 1 }} />
                 <label>Branch:</label>
-                <input type="text" value={branch} onChange={handleBranchChange} />
-                <br />
+
+                <Select variant='standard' sx={{
+                    '& .MuiSelect-select': {
+                        paddingLeft: 1,
+                    },
+                }} value={branch} className='custom-select-branch' color='secondary' onChange={handleBranchChange}>
+                    {branch_list.map((option) => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Select>
+
+                <Divider variant='middle' sx={{ paddingTop: 2, marginBottom: 1 }} />
                 <label>Subject List:</label>
-                {subjectList.map((subject, index) => (
-                    <div key={index}>
-                        <input
-                            type="text"
-                            value={subject.subject}
-                            onChange={(e) => handleSubjectChange(e, index)}
-                        />
+                {
+                    subjectList.map((subject, index) => (
+                        <div key={index}>
+                            <TextField
+                                variant='standard'
+                                sx={{ padding: 1 }}
+                                type="text"
+                                value={subject.subject}
+                                onChange={(e) => handleSubjectChange(e, index)}
+                            />
 
-                        <button type="button" onClick={() => removeSubjectField(index)}>
-                            Remove
-                        </button>
-                    </div>
+                            <IconButton type="button" onClick={() => removeSubjectField(index)}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </div>
 
-                ))}
-                <button type="button" onClick={addSubjectField}>
+                    ))
+                }
+                <Button variant='contained' sx={{ backgroundColor: '#F97068' }} onClick={addSubjectField}>
                     Add Subject
-                </button>
-                <button type="button" onClick={handleSubmit}>
+                </Button>
+                <Button variant='contained' sx={{ margin: 1, marginLeft: 3, backgroundColor: ' #136F63' }} onClick={handleSubmit}>
                     Submit
-                </button>
-            </form>
-        </>
+                </Button>
+            </form >
+        </div >
     );
 }
 
@@ -173,8 +198,8 @@ const UpdateStudentSubjects = () => {
         })
     }
     return (
-        <>
-            <Typography style={{ marginBottom: '20px' }}>
+        <div style={{ margin: '3rem', marginTop: '2rem' }}>
+            <Typography variant='h6' style={{ marginBottom: '20px', fontFamily: 'ubuntu' }}>
                 Updating Student Subjects will allocate the desired Subject List to the corresponding Students
                 <br />
                 <br />
@@ -217,18 +242,18 @@ const UpdateStudentSubjects = () => {
                     Submit
                 </button>
             </form>
-        </>
+        </div>
     );
 }
 const NavigationPane = ({ tabs, selectedTab, onSelectTab }) => {
     return (
-        <Box className="navigation-pane" sx={{ margin: 2, display: 'flex' }}
+        <Box className="navigation-pane" sx={{ padding: 3, paddingLeft: 9, paddingBottom: 0, display: 'flex', boxShadow: 'inset 0px -4px 3px -1px rgba(0,0,0,0.2)' }}
         >
             {tabs.map(tab => (
                 <Box
                     sx={{ padding: 1, backgroundColor: `${tab.id === selectedTab ? '#A63446' : ''}` }}
                     key={tab.id}
-                    className={`tab cursor-pointer border rounded ${tab.id === selectedTab ? 'text-white' : 'text-black'}`}
+                    className={`tab cursor-pointer ${tab.id === selectedTab ? 'text-white shadow-custom' : 'text-black'}`}
                     onClick={() => onSelectTab(tab.id)}
                 >
                     {tab.title}
