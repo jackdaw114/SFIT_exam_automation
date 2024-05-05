@@ -83,7 +83,13 @@ const Auth = () => {
                 localStorage.setItem('password', res.data.password)
                 navigate('/home')
             }
-        })
+        }).catch((error) => {
+            if (error.response.status === 400) {
+                alert('Incorrect username or password');
+            } else {
+                alert(error);
+            }
+        });
     }
 
 

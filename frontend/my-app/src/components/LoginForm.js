@@ -24,7 +24,7 @@ export default function LoginForm(props) {
                             width: "80%",
                             input: { color: props.font }
                         }}
-                        // value={props.inputs.username|| ''}
+
                         value={props.inputs[item] || ''}
                         name={item}
                         variant="outlined"
