@@ -3,7 +3,7 @@
 
 const mongoose = require('mongoose');
 
-const SubjectListschema = mongoose.Schema( //TODO: implement schema 
+const SubjectListschema = mongoose.Schema(
     {
         subject_ids: [{
             type: String,

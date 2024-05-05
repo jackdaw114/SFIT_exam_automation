@@ -69,6 +69,7 @@ router.post('/deleteteacher', async (req, res) => {
 })
 router.post('/update_subject_list', async (req, res) => {
     try {
+        console.log(req.body)
         let existingSubjectList = await SubjectListSchema.findOne({ semester: req.body.semester, branch: req.body.branch })
         if (existingSubjectList) {
             existingSubjectList.subject_ids = req.body.subject_ids;

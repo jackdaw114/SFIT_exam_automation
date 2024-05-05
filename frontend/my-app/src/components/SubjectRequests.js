@@ -67,7 +67,7 @@ export const SubjectRequests = () => {
                                             &nbsp;  &nbsp;
                                             Class: {detail.class}
                                             <br />
-                                            Date of Request: {`${day}-${month}-${year} ${hours}:${minutes}:${seconds}`}
+                                            Date of Request: &nbsp; {`${day}-${month}-${year} ${hours}:${minutes}`}
                                         </div>
                                     </>
                                 }) : <></>}
@@ -80,3 +80,5 @@ export const SubjectRequests = () => {
         </div >
     )
 }
+
+//TODO: accept and deny requests

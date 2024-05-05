@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Input } from '@mui/material';
 
 // Font.register({ family: 'Roboto', src: source });
-
+// TODO: add more padding inbetween the subjects (make look bigger) & select student styling
 const styles = StyleSheet.create({
     page: {
         flexDirection: 'column',
