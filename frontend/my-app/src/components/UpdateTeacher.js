@@ -3,6 +3,7 @@ import { useState } from 'react';
 import LoginForm from './LoginForm';
 import { Box, Button, Typography } from '@mui/material';
 import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 export default function UpdateTeacher() {
     const [inputs, setInputs] = useState({
@@ -22,7 +23,7 @@ export default function UpdateTeacher() {
     }
 
     const handleSubmit = () => {
-        axios.post('/admin/updateteacher', inputs, {
+        axiosInstance.post('/admin/updateteacher', inputs, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",

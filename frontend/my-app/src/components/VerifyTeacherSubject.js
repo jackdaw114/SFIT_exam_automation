@@ -1,10 +1,11 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import axiosInstance from './axiosInstance'
 
 const VerifyTeacherSubject = () => {
     const [unverifiedList, setUnverifiedList] = useState()
     useEffect(() => {
-        axios.post('/get_unverified_teacher_subject', {}, {
+        axiosInstance.post('/get_unverified_teacher_subject', {}, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",

@@ -6,6 +6,7 @@ import './Header.css'
 import { motion } from 'framer-motion';
 import { Cookies } from 'react-cookie';
 import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 
 // TODO: add a navigate to home we dont have a way of going back to the previous page
@@ -15,7 +16,7 @@ export default function Header() {
 
     const logout = () => {
         localStorage.clear()
-        axios.get('/logout').then(() => {
+        axiosInstance.get('/logout').then(() => {
             navigate('/')
         })
         localStorage.setItem('isLoggedIn', false)

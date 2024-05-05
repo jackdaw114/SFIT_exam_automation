@@ -18,6 +18,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import CircleIcon from '@mui/icons-material/Circle';
 import ChangePass from './ProfileComponents/ChangePass';
+import axiosInstance from './axiosInstance';
 
 
 // TODO: use a variable to control font size(font size is 22) 
@@ -196,7 +197,7 @@ const DynamicTextFields = () => {
         setFields(updatedFields);
     };
     React.useEffect(() => {
-        axios.get('/teacher/subjectlist').then(res => {
+        axiosInstance.get('/teacher/subjectlist').then(res => {
             setSubjectList(res.data)
             console.log(res.data)
         })
@@ -205,7 +206,7 @@ const DynamicTextFields = () => {
         fields.map((subject, index) => {
             if (subject.value) {
                 console.log(subject)
-                axios.post('/teacher/updateteachersubject', { subject_id: subject.value, teacher_id: localStorage.getItem('username'), ...checkboxes[index], class: classCheckboxes[index]['selectedValue'] }, {
+                axiosInstance.post('/teacher/updateteachersubject', { subject_id: subject.value, teacher_id: localStorage.getItem('username'), ...checkboxes[index], class: classCheckboxes[index]['selectedValue'] }, {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",
@@ -386,7 +387,7 @@ export default function Settings(props) {
 
 
     React.useEffect(() => {
-        axios.post('/teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
+        axiosInstance.post('/teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",

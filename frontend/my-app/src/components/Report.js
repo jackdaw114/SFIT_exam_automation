@@ -4,6 +4,7 @@ import zIndex from '@mui/material/styles/zIndex';
 import img from '../imgtest/favicon.png';
 import axios from 'axios';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Input } from '@mui/material';
+import axiosInstance from './axiosInstance';
 
 // Font.register({ family: 'Roboto', src: source });
 // TODO: add more padding inbetween the subjects (make look bigger) & select student styling
@@ -282,7 +283,7 @@ export default function Report() {
     };
     const handleSend = () => {
         setOpen(false)
-        axios.post('/admin/get_student', { pid: pid }, {
+        axiosInstance.post('/admin/get_student', { pid: pid }, {
             headers: {
 
                 "Content-Type": "application/json",

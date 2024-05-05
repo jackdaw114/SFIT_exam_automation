@@ -5,6 +5,7 @@ import { saveAs } from 'file-saver'
 
 import { useCallback } from 'react';
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 /* get state data and export to XLSX */
 
 
@@ -18,7 +19,7 @@ export function ExcelSend(jsonData, teacher_name, marks_type, url) {
         bookSST: false,
         type: 'binary',
     });
-    axios.post(url, {
+    axiosInstance.post(url, {
         sheet: binaryString,
         marks_type: marks_type,
         teacher_name: teacher_name,

@@ -3,6 +3,7 @@ import LoginForm from "../LoginForm"
 import { useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router"
+import axiosInstance from "../axiosInstance"
 
 export default function UpdateNumber() {
     const [inputs, setInputs] = useState({
@@ -22,15 +23,15 @@ export default function UpdateNumber() {
         }))
     }
     const handleSubmit = () => {
-        localStorage.setItem("phoneNo",inputs.new_number)
-        axios.post('/teacher/updatenumber', { phoneNo: number, new_phoneNo: inputs.new_number }, {
+        localStorage.setItem("phoneNo", inputs.new_number)
+        axiosInstance.post('/teacher/updatenumber', { phoneNo: number, new_phoneNo: inputs.new_number }, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             }
         }).then((res) => {
             setNumber(inputs.new_number)
-            console.log("This is the new no.: ",number)
+            console.log("This is the new no.: ", number)
             if (res.status == 201)
                 alert('Name entered is the same!')
             else if (res.status == 200) {

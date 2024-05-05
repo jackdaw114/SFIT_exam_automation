@@ -9,6 +9,7 @@ import LoginForm from './LoginForm'
 import axios from 'axios';
 import './Auth.css';
 import { BackgroundContext } from './BackgroundContext';
+import axiosInstance from './axiosInstance';
 
 
 const Auth = () => {

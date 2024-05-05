@@ -9,6 +9,7 @@ import { TiTick } from "react-icons/ti";
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
 import IndividualRequest from './IndividualRequest';
+import axiosInstance from './axiosInstance';
 
 export const SubjectRequests = () => {
     const [data, setData] = useState();
@@ -37,7 +38,7 @@ export const SubjectRequests = () => {
     useEffect(() => {
         setCustomBackgroundColor('#e7f1ef');
 
-        axios.post(postUrl, {},
+        axiosInstance.post(postUrl, {},
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -51,7 +52,7 @@ export const SubjectRequests = () => {
 
     const handleAccept = async (id) => {
         try {
-            const response = await axios.post('/admin/accept_teacher_subject', { _id: id });
+            const response = await axiosInstance.post('/admin/accept_teacher_subject', { _id: id });
             console.log(response.data);
 
 
@@ -64,7 +65,7 @@ export const SubjectRequests = () => {
 
     const handleDeny = async (id) => {
         try {
-            const response = await axios.post('/admin/deny_teacher_subject', { _id: id });
+            const response = await axiosInstance.post('/admin/deny_teacher_subject', { _id: id });
             console.log(response.data);
 
 

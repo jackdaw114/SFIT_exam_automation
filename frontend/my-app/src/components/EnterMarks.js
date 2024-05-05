@@ -8,6 +8,7 @@ import { saveAs } from "file-saver";
 import ExcelCard from "./ExcelCard";
 import './Sheets.css'
 import { useNavigate } from "react-router";
+import axiosInstance from "./axiosInstance";
 
 
 
@@ -57,7 +58,7 @@ export default function EnterMarks() {
     const handleSubmit = async (e) => {
         //  let jsonData = []
         const theJsonData = []
-        axios.get('/teacher/getstudents').then((res) => {
+        axiosInstance.get('/teacher/getstudents').then((res) => {
             res.data.map((value, index) => {
                 const { _id, ...filtered } = value
                 theJsonData.push({ ...filtered, marks: -8 })
@@ -66,7 +67,7 @@ export default function EnterMarks() {
             // console.log("This is Json  \n",jsonData)
             // console.log("This is student details: \n",studentDetails)
 
-            axios.post('/teacher/uploadexcel', {
+            axiosInstance.post('/teacher/uploadexcel', {
                 marks_type: type,
                 teacher_name: localStorage.getItem('username'),
                 sheet: toExcel(theJsonData),
@@ -92,7 +93,7 @@ export default function EnterMarks() {
     const [subjects, setSubjects] = useState([])
 
     useEffect(() => {
-        axios.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
+        axiosInstance.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",

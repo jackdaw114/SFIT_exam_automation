@@ -3,6 +3,7 @@ import LoginForm from "../LoginForm"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router"
+import axiosInstance from "../axiosInstance"
 
 export default function ChangePass({ handleClick }) {
     const navigate = useNavigate()
@@ -27,7 +28,7 @@ export default function ChangePass({ handleClick }) {
 
     const handleSubmit = () => {
         localStorage.setItem("password", inputs.password)
-        axios.post('/teacher/changepassword', { password: inputs.password, new_password: inputs.new_password }, {
+        axiosInstance.post('/teacher/changepassword', { password: inputs.password, new_password: inputs.new_password }, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",

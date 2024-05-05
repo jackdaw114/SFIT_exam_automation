@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { RxCross2 } from 'react-icons/rx';
 import { TiTick } from 'react-icons/ti';
 import { useLocation } from 'react-router';
+import axiosInstance from './axiosInstance';
 
 const IndividualRequest = ({ detail }) => {
     const currentDate = new Date(detail?.time);
@@ -21,7 +22,7 @@ const IndividualRequest = ({ detail }) => {
 
     const handleAccept = async (id) => {
         try {
-            const response = await axios.post('/admin/accept_teacher_subject', { _id: id });
+            const response = await axiosInstance.post('/admin/accept_teacher_subject', { _id: id });
             console.log(response.data);
             setIsClicked(true)
             setResult('Accepted')
@@ -35,7 +36,7 @@ const IndividualRequest = ({ detail }) => {
 
     const handleDeny = async (id) => {
         try {
-            const response = await axios.post('/admin/deny_teacher_subject', { _id: id });
+            const response = await axiosInstance.post('/admin/deny_teacher_subject', { _id: id });
             console.log(response.data);
             setIsClicked(true)
             setResult('Rejected')

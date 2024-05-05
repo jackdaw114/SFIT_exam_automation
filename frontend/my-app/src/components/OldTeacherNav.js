@@ -9,6 +9,7 @@ import ExcelCard from "./ExcelCard";
 import './TeacherNav.css'
 import { useNavigate } from "react-router";
 import * as Romanice from 'romanice';
+import axiosInstance from "./axiosInstance";
 
 
 
@@ -46,7 +47,7 @@ export default function OldTeacherNav() {
     }
 
     useEffect(() => {
-        axios.post('/teacher/fetchexcel', { teacher_name: localStorage.getItem('username') }, {
+        axiosInstance.post('/teacher/fetchexcel', { teacher_name: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
@@ -54,7 +55,7 @@ export default function OldTeacherNav() {
         }).then((res) => {
             setCardData(res.data)
         })
-        axios.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
+        axiosInstance.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -72,7 +73,7 @@ export default function OldTeacherNav() {
     const handleSubmit = async (e) => {
         //  let jsonData = []
         const theJsonData = []
-        axios.get('/teacher/getstudents').then((res) => {
+        axiosInstance.get('/teacher/getstudents').then((res) => {
             res.data.map((value, index) => {
                 const { _id, ...filtered } = value
                 console.log(filtered)
@@ -82,7 +83,7 @@ export default function OldTeacherNav() {
             // console.log("This is Json  \n",jsonData)
             // console.log("This is student details: \n",studentDetails)
 
-            axios.post('/teacher/uploadexcel', {
+            axiosInstance.post('/teacher/uploadexcel', {
                 marks_type: type,
                 teacher_name: localStorage.getItem('username'),
                 sheet: toExcel(theJsonData),

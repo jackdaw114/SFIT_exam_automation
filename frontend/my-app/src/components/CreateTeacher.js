@@ -4,6 +4,7 @@ import LoginForm from './LoginForm';
 import { Box, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import { BackgroundContext } from './BackgroundContext';
+import axiosInstance from './axiosInstance';
 
 export default function CreateTeacher() {
     const { setCustomBackgroundColor } = useContext(BackgroundContext)
@@ -28,7 +29,7 @@ export default function CreateTeacher() {
     }
 
     const handleSubmit = () => {
-        axios.post('/admin/addteacher', inputs, {
+        axiosInstance.post('/admin/addteacher', inputs, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",

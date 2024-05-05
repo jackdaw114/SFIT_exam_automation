@@ -7,6 +7,7 @@ import { read, utils, write, writeFile } from "xlsx";
 import { Box, Button } from "@mui/material";
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import DownloadIcon from '@mui/icons-material/Download';
+import axiosInstance from "./axiosInstance";
 
 export default function ViewExam(props) {
 
@@ -23,7 +24,7 @@ export default function ViewExam(props) {
     }
 
     useEffect(() => {
-        axios.post('/teacher/excelbyid', { _id: location.state._id }, {// TODO: different query here for getting 3 things subject code , year , class
+        axiosInstance.post('/teacher/excelbyid', { _id: location.state._id }, {// TODO: different query here for getting 3 things subject code , year , class
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
@@ -57,7 +58,7 @@ export default function ViewExam(props) {
             bookSST: false,
             type: 'binary',
         });
-        axios.post('/teacher/updateexcel', {
+        axiosInstance.post('/teacher/updateexcel', {
             _id: location.state._id,
             sheet: binaryString,
         }, {
@@ -92,7 +93,7 @@ export default function ViewExam(props) {
             type: 'binary'
         })
         // console.log(binary)
-        axios.post('/teacher/updateexcel', {
+        axiosInstance.post('/teacher/updateexcel', {
             _id: location.state._id,
             sheet: binaryString,
         }, {

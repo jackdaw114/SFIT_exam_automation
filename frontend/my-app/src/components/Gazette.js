@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router"
 import axios from "axios"
 import { writeFile } from "xlsx"
+import axiosInstance from "./axiosInstance"
 
 export default function Gazette(props) {
     const [semester, setSemester] = useState('')
@@ -31,7 +32,7 @@ export default function Gazette(props) {
         // console.log(e.target.value)
     };
     const handlesubmit = (e) => {
-        axios.post('/admin/create_gazette',
+        axiosInstance.post('/admin/create_gazette',
             { semester: semester, branch: department, year: year },
             {
                 headers: {

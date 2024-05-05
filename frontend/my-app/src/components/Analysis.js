@@ -14,6 +14,7 @@ import {
 import { Radar, Bar } from 'react-chartjs-2';
 import axios from 'axios'
 import { Box, Button } from '@mui/material';
+import axiosInstance from './axiosInstance';
 
 
 ChartJS.register(
@@ -72,7 +73,7 @@ export default function Analysis() {
     const [subjectList, setSubjectList] = useState([])
     const [data, setData] = useState()
     useEffect(() => {
-        axios.post('/teacher/get_exams', { teacher_id: localStorage.getItem('username') }, {
+        axiosInstance.post('/teacher/get_exams', { teacher_id: localStorage.getItem('username') }, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
@@ -110,7 +111,7 @@ export default function Analysis() {
         setData(tempJSON)
     }
     const handleClick = () => {
-        axios.post('/teacher/get_aggregate', { data_list: subjectList }, {
+        axiosInstance.post('/teacher/get_aggregate', { data_list: subjectList }, {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
