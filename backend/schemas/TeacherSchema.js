@@ -13,7 +13,6 @@ const TeacherSchema = mongoose.Schema(
         },
         email: {
             type: String,
-            required: true
         },
         phoneNo: {
             type: Number,

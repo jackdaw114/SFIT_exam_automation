@@ -3,7 +3,8 @@ import axios from 'axios';
 
 
 const axiosInstance = axios.create({
-    withCredentials: true // Enable sending cookies with every request
+    withCredentials: true,
+    errorOverlay: false,
 });
 
 axiosInstance.interceptors.request.use(
@@ -25,11 +26,18 @@ axiosInstance.interceptors.response.use(
             if (error.response.status === 401 || error.response.status === 403) {
                 console.log("Not allowed bruh")
                 window.location.replace('/')
-            } else {
-                // TODO: switch to switch for handling errors 403 - wrong resource
+            } else if (error.response.status === 500) {
+                alert("internal Server Error")
+
             }
+            else {
+                alert("error")
+            }
+
         } else if (error.request) {
+            console.log(error.request);
         } else {
+            console.log('Error', error.message);
         }
         return Promise.reject(error);
     }

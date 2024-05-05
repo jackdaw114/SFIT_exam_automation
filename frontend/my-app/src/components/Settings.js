@@ -255,8 +255,6 @@ const DynamicTextFields = () => {
                             <></>
                         )}
                         </TextField>
-                        {/* TODO: u might want to make it a component do this last also change the styling here if u desire */}
-
                         <FormControlLabel sx={{ marginLeft: 10 }}
                             control={<Checkbox
                                 checked={checkboxes[index].term}

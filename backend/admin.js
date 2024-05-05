@@ -44,15 +44,11 @@ router.post('/addteacher', async (req, res) => {
         await Teacher.create({
             username: req.body.username,
             password: req.body.password,
-            email: req.body.email,
-            phoneNo: req.body.phoneNo,
-            subject: req.body.subject,
         }).then(() => {
             res.status(200).send('Ok')
         })
     } catch (err) {
         res.status(500).send(err);
-        console.log("Duplicate found!");
     }
 })
 

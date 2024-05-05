@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from 'react';
 import LoginForm from './LoginForm';
 import { Box, Button, Typography } from '@mui/material';
-import axios from 'axios';
+
 import { BackgroundContext } from './BackgroundContext';
 import axiosInstance from './axiosInstance';
 
@@ -35,10 +35,9 @@ export default function CreateTeacher() {
                 Accept: "application/json",
             }
         }).then((res) => {
-            if (res.status == 500)
-                alert('Duplicate Record found. Please enter a unique userid')
-            else
-                alert('Teacher added to database!')
+            alert('Teacher added to database!')
+        }).catch(err => {
+            console.log(err)
         })
     }
     // console.log('this is create teacher')
