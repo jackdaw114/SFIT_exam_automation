@@ -37,7 +37,7 @@ function App() {
     ['Delete Teacher', "delete_teacher"],
     ['Generate Gazette', "creategazette"],
     ['Generate Reports', "report"],
-    ['manage subjects', "subject_management"]
+    ['Manage Subjects', "subject_management"]
   ];
 
   const button_list = ["Notifications"];
