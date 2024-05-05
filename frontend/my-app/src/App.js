@@ -38,7 +38,7 @@ function App() {
     ['Delete Teacher', "delete_teacher"],
     ['Generate Gazette', "creategazette"],
     ['Generate Reports', "report"],
-    ['Teacher List', "teachers"],
+    // ['Teacher List', "teachers"],
     ['Manage Subjects', "subject_management"]
   ];
 

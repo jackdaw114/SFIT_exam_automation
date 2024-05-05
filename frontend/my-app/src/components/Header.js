@@ -48,7 +48,7 @@ export default function Header() {
                             outline: 'solid 3px #a63446'
                         }}>
 
-                        <Avatar onClick={navigatetoprofile} />
+                        {/* <Avatar onClick={navigatetoprofile} /> */}
 
                     </motion.div>
                 }

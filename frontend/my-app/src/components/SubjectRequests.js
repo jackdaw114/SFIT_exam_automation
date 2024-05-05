@@ -50,31 +50,7 @@ export const SubjectRequests = () => {
             });
     }, [status]);
 
-    const handleAccept = async (id) => {
-        try {
-            const response = await axiosInstance.post('/admin/accept_teacher_subject', { _id: id });
-            console.log(response.data);
 
-
-
-        } catch (error) {
-            console.error(error);
-
-        }
-    };
-
-    const handleDeny = async (id) => {
-        try {
-            const response = await axiosInstance.post('/admin/deny_teacher_subject', { _id: id });
-            console.log(response.data);
-
-
-
-        } catch (error) {
-            console.error(error);
-
-        }
-    };
 
     return (
         <div style={{ marginTop: 20 }}>

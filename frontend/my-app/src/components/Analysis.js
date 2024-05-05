@@ -123,12 +123,12 @@ export default function Analysis() {
     }
     return (
         <>
-            <div className=''>
-
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 70, flexWrap: 'wrap' }} >
+            <div className='p-4'>
+                <h1>Analysis (Select upto 5 exams)</h1>
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginTop: 20, flexWrap: 'wrap' }} >
 
                     {teacherSubjects ? teacherSubjects.map((teacherSubject, index) => (
-                        <div key={index}>
+                        <div key={index} className='my-1'>
                             <label>
                                 <input
                                     onChange={(event) => handleCheckboxChange(event, teacherSubject)}
@@ -139,7 +139,7 @@ export default function Analysis() {
                         </div>
                     )) : <></>}
                 </div>
-                <Button variant='contained' onClick={handleClick}>
+                <Button variant='contained' onClick={handleClick} className='my-5'>
                     update Graph
                     <br />
                 </Button >
