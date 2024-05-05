@@ -18,8 +18,9 @@ const RequestComponent = ({ status, idx, icons, bgColor }) => {
     };
 
     const handleClick = () => {
-        navigate(`/adminhome/notifications/${status.toLowerCase()}_requests`);
+        navigate(`/adminhome/notifications/${status.toLowerCase()}_requests?status=${status}`);
     };
+
 
     return (
         <motion.div className='parent_div flex w-full rounded-lg bg-sky-50 justify-center hover:shadow-xl duration-300 ease-in-out cursor-pointer p-1'

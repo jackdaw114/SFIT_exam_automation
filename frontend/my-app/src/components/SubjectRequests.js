@@ -3,12 +3,19 @@ import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { BackgroundContext } from './BackgroundContext';
+import { useLocation } from 'react-router';
 
 export const SubjectRequests = () => {
     const [data, setData] = useState();
     const { setCustomBackgroundColor } = useContext(BackgroundContext)
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const status = queryParams.get('status');
+
     useEffect(() => {
         setCustomBackgroundColor(' #e7f1ef')
+
         axios.post('/admin/get_unverified_teacher_subject', {},
             {
                 headers: {
@@ -22,6 +29,7 @@ export const SubjectRequests = () => {
     }, [])
     return (
         <div style={{ marginTop: 20 }}>
+            <h1 className='text-5xl text-center font-mont text-secondary'>{status} Requests</h1>
             {data ?
                 data.map((item, index) => {
                     return (
@@ -64,7 +72,9 @@ export const SubjectRequests = () => {
                                     </>
                                 }) : <></>}
                             </AccordionDetails>
-                        </Accordion>)
+                        </Accordion>
+
+                    )
                 }) : <></>
             }
         </div >

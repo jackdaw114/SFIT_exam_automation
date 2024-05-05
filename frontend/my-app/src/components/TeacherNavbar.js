@@ -12,8 +12,6 @@ export function TeacherNavbar({ list_items, type = null, buttons = null }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        //TODO: Added this as a workaround for session verification. Need a solid fix.
-
         if (localStorage.getItem('isLoggedIn') === 'false') {
             navigate('/')
         }
