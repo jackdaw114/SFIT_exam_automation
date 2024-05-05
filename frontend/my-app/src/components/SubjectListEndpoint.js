@@ -86,7 +86,7 @@ const UpdateSubjectList = () => {
     return (
         <div style={{ margin: '3rem', marginTop: '2rem' }}>
             <Typography variant='h6' style={{ marginBottom: '20px', fontFamily: 'ubuntu' }}>
-                The Subject List is a database record that stores the subject codes that belong to a certian semester making updating student records easier
+                The Subject List is a database record that stores the subject codes that belong to a certain semester making updating student records easier
                 <br />
                 <br />
                 - Please input subject codes only
