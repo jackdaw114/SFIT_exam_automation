@@ -226,30 +226,7 @@ router.post('/updateteacher', async (req, res) => {
     }
 })
 
-router.post('/accept_teacher_subject', async (req, res) => {
-    try {
-        const updated_obj = await TeacherSubjectSchema.findOneAndUpdate({ _id: req.body._id },
-            { $set: { verified: 1 } },
-            { new: true })
-        res.send(updated_obj)
-    } catch (error) {
-        console.log(error);
-        res.status(500).send(error);
 
-    }
-})
-router.post('/deny_teacher_subject', async (req, res) => {
-    try {
-        const updated_obj = await TeacherSubjectSchema.findOneAndUpdate({ _id: req.body._id },
-            { $set: { verified: 2 } },
-            { new: true })
-        res.send(updated_obj)
-    } catch (error) {
-        console.log(error);
-        res.status(500).send(error);
-
-    }
-})
 router.post('/creategazette', async (req, res) => {
     try {
         let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
@@ -429,17 +406,104 @@ router.post('/get_unverified_teacher_subject', async (req, res) => {
         res.status(500).send('error')
     }
 })
-
-
-
-router.post('/verify_teacher_subject', async (req, res) => {
+router.post('/get_accepted_teacher_subject', async (req, res) => {
     try {
-        const updateTeacher = await TeacherSubjectSchema.findOneAndUpdate({ _id: req.body._id }, { $set: { verified: true } })
-        res.status(200).send(updateTeacher)
+        const teachers = await TeacherSubjectSchema.aggregate([{
+            $match:
+                { verified: 1 }
+        },
+
+        {
+            $lookup: {
+                from: "subjects",
+                localField: "subject_id",
+                foreignField: "_id",
+                as: "subjectDetails"
+            }
+        },
+        {
+            $group: {
+                _id: "$teacher_id",
+                details: {
+                    $push: {
+                        subject_details: "$subjectDetails",
+                        class: "$class",
+                        time: "$time",
+                        _id: "$_id",
+                    }
+                },
+
+            }
+        },])
+        console.log(teachers)
+        res.send(teachers)
     } catch (error) {
         console.log(error)
         res.status(500).send('error')
     }
 })
+
+router.post('/get_rejected_teacher_subject', async (req, res) => {
+    try {
+        const teachers = await TeacherSubjectSchema.aggregate([{
+            $match:
+                { verified: 2 }
+        },
+
+        {
+            $lookup: {
+                from: "subjects",
+                localField: "subject_id",
+                foreignField: "_id",
+                as: "subjectDetails"
+            }
+        },
+        {
+            $group: {
+                _id: "$teacher_id",
+                details: {
+                    $push: {
+                        subject_details: "$subjectDetails",
+                        class: "$class",
+                        time: "$time",
+                        _id: "$_id",
+                    }
+                },
+
+            }
+        },])
+        console.log(teachers)
+        res.send(teachers)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('error')
+    }
+})
+
+router.post('/accept_teacher_subject', async (req, res) => {
+    try {
+        const updated_obj = await TeacherSubjectSchema.findOneAndUpdate({ _id: req.body._id },
+            { $set: { verified: 1 } },
+            { new: true })
+        res.send(updated_obj)
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+
+    }
+})
+router.post('/deny_teacher_subject', async (req, res) => {
+    try {
+        const updated_obj = await TeacherSubjectSchema.findOneAndUpdate({ _id: req.body._id },
+            { $set: { verified: 2 } },
+            { new: true })
+        res.send(updated_obj)
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+
+    }
+})
+
 
 module.exports = router;   

@@ -23,7 +23,7 @@ const RequestComponent = ({ status, idx, icons, bgColor }) => {
 
 
     return (
-        <motion.div className='parent_div flex w-full rounded-lg bg-sky-50 justify-center hover:shadow-xl duration-300 ease-in-out cursor-pointer p-1'
+        <motion.div className='parent_div flex w-full rounded-lg bg-sky-50 hover:bg-sky-100 justify-center hover:shadow-xl duration-300 ease-in-out cursor-pointer p-1'
 
             onClick={handleClick}
             onHoverStart={handleHoverStart}

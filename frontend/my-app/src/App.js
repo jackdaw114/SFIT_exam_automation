@@ -74,6 +74,8 @@ function App() {
                   <Route path='notifications' >
                     <Route index element={<SubscriptionRequests />} />
                     <Route path='pending_requests' element={<SubjectRequests />} />
+                    <Route path='accepted_requests' element={<SubjectRequests />} />
+                    <Route path='rejected_requests' element={<SubjectRequests />} />
                   </Route>
                 </Route>
               </Route>

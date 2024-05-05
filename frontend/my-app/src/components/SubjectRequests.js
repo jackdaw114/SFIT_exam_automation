@@ -1,39 +1,87 @@
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
-import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import { Accordion, AccordionDetails, AccordionSummary, Button } from '@mui/material';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { BackgroundContext } from './BackgroundContext';
 import { useLocation } from 'react-router';
+import { RxCross2 } from "react-icons/rx";
+import { TiTick } from "react-icons/ti";
+import { AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import IndividualRequest from './IndividualRequest';
 
 export const SubjectRequests = () => {
     const [data, setData] = useState();
-    const { setCustomBackgroundColor } = useContext(BackgroundContext)
-
+    const { setCustomBackgroundColor } = useContext(BackgroundContext);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const status = queryParams.get('status');
 
-    useEffect(() => {
-        setCustomBackgroundColor(' #e7f1ef')
 
-        axios.post('/admin/get_unverified_teacher_subject', {},
+    let postUrl = '';
+
+    switch (status) {
+        case 'Pending':
+            postUrl = '/admin/get_unverified_teacher_subject';
+            break;
+        case 'Accepted':
+            postUrl = '/admin/get_accepted_teacher_subject';
+            break;
+        case 'Rejected':
+            postUrl = '/admin/get_rejected_teacher_subject';
+            break;
+        default:
+        // Default case, handle if needed
+    }
+
+    useEffect(() => {
+        setCustomBackgroundColor('#e7f1ef');
+
+        axios.post(postUrl, {},
             {
                 headers: {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 }
             }).then(res => {
-                console.log(res.data)
-                setData(res.data)
-            })
-    }, [])
+                console.log(res.data);
+                setData(res.data);
+            });
+    }, [status]);
+
+    const handleAccept = async (id) => {
+        try {
+            const response = await axios.post('/admin/accept_teacher_subject', { _id: id });
+            console.log(response.data);
+
+
+
+        } catch (error) {
+            console.error(error);
+
+        }
+    };
+
+    const handleDeny = async (id) => {
+        try {
+            const response = await axios.post('/admin/deny_teacher_subject', { _id: id });
+            console.log(response.data);
+
+
+
+        } catch (error) {
+            console.error(error);
+
+        }
+    };
+
     return (
         <div style={{ marginTop: 20 }}>
             <h1 className='text-5xl text-center font-mont text-secondary'>{status} Requests</h1>
             {data ?
                 data.map((item, index) => {
                     return (
-                        <Accordion sx={{
+                        <Accordion key={index} sx={{
                             marginLeft: 2,
                             marginRight: 2,
                             backgroundColor: '#D3D4D9',
@@ -53,32 +101,16 @@ export const SubjectRequests = () => {
                             </AccordionSummary>
                             <AccordionDetails >
                                 {item.details ? item.details.map(detail => {
-                                    const currentDate = new Date(detail?.time);
-                                    const year = currentDate.getFullYear();
-                                    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Month starts from 0
-                                    const day = currentDate.getDate().toString().padStart(2, '0');
-                                    const hours = currentDate.getHours().toString().padStart(2, '0');
-                                    const minutes = currentDate.getMinutes().toString().padStart(2, '0');
-                                    const seconds = currentDate.getSeconds().toString().padStart(2, '0');
-
-                                    return <>
-                                        <div>
-                                            {detail.subject_details[0]?.subject_id} - {detail.subject_details[0]?.subject_name}
-                                            &nbsp;  &nbsp;
-                                            Class: {detail.class}
-                                            <br />
-                                            Date of Request: &nbsp; {`${day}-${month}-${year} ${hours}:${minutes}`}
-                                        </div>
-                                    </>
+                                    return (
+                                        <IndividualRequest detail={detail} />
+                                    )
                                 }) : <></>}
                             </AccordionDetails>
                         </Accordion>
-
-                    )
-                }) : <></>
-            }
+                    );
+                }) : <></>}
         </div >
-    )
-}
+    );
+};
 
-//TODO: accept and deny requests
+export default SubjectRequests;
