@@ -198,8 +198,16 @@ const DynamicTextFields = () => {
     };
     React.useEffect(() => {
         axiosInstance.get('/teacher/subjectlist').then(res => {
-            setSubjectList(res.data)
-            console.log(res.data)
+            setSubjectList(res.data.sort((a, b) => {
+                if (a.subject_id < b.subject_id) {
+                    return -1;
+                } else if (a.subject_id > b.subject_id) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }))
+            console.log(res.data.sort((a, b) => a - b))
         })
     }, [update])
     const updateTeacherSubject = () => {
