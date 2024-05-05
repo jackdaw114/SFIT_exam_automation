@@ -84,6 +84,24 @@ router.post('/update_subject_list', async (req, res) => {
         res.status(400).send(err.keyValue)
     }
 })
+router.post('/set_subject_list', async (req, res) => {
+    try {
+        let subjectList = await SubjectListSchema.findOne({ semester: req.body.semester, branch: req.body.branch });
+        if (subjectList) {
+            const filter = { semester: req.body.semester, branch: req.body.branch };
+            const update = { $set: { subject_list: subjectList.subject_list } };
+            StudentsSchema.updateMany(filter, update)
+            res.send('updated');
+        }
+        else {
+            res.status(400).send('failed to find subject llist')
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error.keyValue)
+
+    }
+})
 
 router.post('/create_gazette', async (req, res) => {
     try {
@@ -189,6 +207,8 @@ router.post('/create_gazette', async (req, res) => {
 
     }
 })
+
+
 router.post('/updateteacher', async (req, res) => {
     let filter = { username: req.body.username }
     let update = { subject: req.body.subject }
@@ -200,11 +220,35 @@ router.post('/updateteacher', async (req, res) => {
         else
             res.status(201).send('Record not found')
     } catch (error) {
-        res.status(500).send(err);
-        console.log(err);
+        res.status(500).send(error);
+        console.log(error);
     }
 })
 
+router.post('/accept_teacher_subject', async (req, res) => {
+    try {
+        const updated_obj = await TeacherSubjectSchema.findOneAndUpdate({ _id: req.body._id },
+            { $set: { verified: 1 } },
+            { new: true })
+        res.send(updated_obj)
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+
+    }
+})
+router.post('/deny_teacher_subject', async (req, res) => {
+    try {
+        const updated_obj = await TeacherSubjectSchema.findOneAndUpdate({ _id: req.body._id },
+            { $set: { verified: 2 } },
+            { new: true })
+        res.send(updated_obj)
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+
+    }
+})
 router.post('/creategazette', async (req, res) => {
     try {
         let data = await MarksSchema.find({ department: req.body.department, semester: req.body.semester, year: req.body.year })
@@ -384,6 +428,8 @@ router.post('/get_unverified_teacher_subject', async (req, res) => {
         res.status(500).send('error')
     }
 })
+
+
 
 router.post('/verify_teacher_subject', async (req, res) => {
     try {
