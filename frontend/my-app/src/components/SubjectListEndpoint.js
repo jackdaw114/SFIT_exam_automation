@@ -17,7 +17,7 @@ export const SubjectListEndpoint = () => {
     const tabs = [
         { id: 'UpdateSubjectList', title: 'Update Subject List' },
         { id: 'UpdateStudentSubjects', title: 'Student Subjects' },
-        { id: 'tab3', title: 'Tab 3' },
+        { id: 'AddSubject', title: 'Add Subject' },
         // Add more tabs as needed
     ];
 
@@ -32,8 +32,8 @@ export const SubjectListEndpoint = () => {
             {/* Render content for the selected tab */}
             {selectedTab === 'UpdateSubjectList' && <UpdateSubjectList />}
             {selectedTab === 'UpdateStudentSubjects' && <UpdateStudentSubjects />}
-            {selectedTab === 'tab3' && <div>Content for Tab 3</div>}
-            {/* Add content for more tabs as needed */}
+            {selectedTab === 'AddSubject' && <AddSubject />
+            }            {/* Add content for more tabs as needed */}
         </div>
     );
 };
@@ -43,7 +43,7 @@ const UpdateSubjectList = () => {
     const [branch, setBranch] = useState('');
     const [subjectList, setSubjectList] = useState(['']);
     const semester_list = [1, 2, 3, 4, 5, 6, 7, 8]
-    const branch_list = ["CMPN", "EXTC",]
+    const branch_list = ["CMPN", "EXTC", "INFT", "MECH"]
     const handleSemesterChange = (e) => {
         setSemester(e.target.value);
     };
@@ -157,8 +157,8 @@ const UpdateSubjectList = () => {
 const UpdateStudentSubjects = () => {
     const [semester, setSemester] = useState('');
     const [branch, setBranch] = useState('');
-    const [subjectList, setSubjectList] = useState([{ subject: '' }]);
     const semester_list = [1, 2, 3, 4, 5, 6, 7, 8]
+    const branch_list = ["CMPN", "EXTC", "INFT", "MECH"]
     const handleSemesterChange = (e) => {
         setSemester(e.target.value);
     };
@@ -169,29 +169,14 @@ const UpdateStudentSubjects = () => {
     };
 
 
-    const handleSubjectChange = (e, index) => {
-        const newSubjectList = [...subjectList];
-        newSubjectList[index].subject = e.target.value;
-        setSubjectList(newSubjectList);
-    };
 
 
-    const addSubjectField = () => {
-        setSubjectList([...subjectList, { subject: '' }]);
-    };
 
-
-    const removeSubjectField = (index) => {
-        const newSubjectList = [...subjectList];
-        newSubjectList.splice(index, 1);
-        setSubjectList(newSubjectList);
-    };
 
     const handleSubmit = () => {
-        axiosInstance.post('/admin/update_subject_list', {
+        axiosInstance.post('/admin/set_subject_list', {
             branch: branch,
             semester: semester,
-            subject_ids: subjectList
         }).then(res => {
             console.log(res)
             alert('updated subject list successfull')
@@ -200,50 +185,120 @@ const UpdateStudentSubjects = () => {
     return (
         <div style={{ margin: '3rem', marginTop: '2rem' }}>
             <Typography variant='h6' style={{ marginBottom: '20px', fontFamily: 'ubuntu' }}>
-                Updating Student Subjects will allocate the desired Subject List to the corresponding Students
+                Automatically updates all subjects of students in a batch
                 <br />
                 <br />
-                Please input subject codes only
-                <br />
-                ensure the subjects belong to the given semester and branch</Typography>
+                - please select the branch and semester to be updated
+            </Typography>
             <form>
                 <label>Semester:</label>
-                <select value={semester} onChange={handleSemesterChange}>
+
+                <Select variant='standard' sx={{
+                    '& .MuiSelect-select': {
+                        paddingLeft: 1,
+
+                    },
+                }} value={semester} className='custom-select' color='secondary' onChange={handleSemesterChange}>
                     {semester_list.map((option) => (
-                        <option key={option} value={option}>
+                        <MenuItem key={option} value={option}>
                             {option}
-                        </option>
+                        </MenuItem>
                     ))}
-                </select>
-
-                <br />
+                </Select>
+                <Divider variant='middle' sx={{ paddingTop: 2, marginBottom: 1 }} />
                 <label>Branch:</label>
-                <input type="text" value={branch} onChange={handleBranchChange} />
+
+                <Select variant='standard' sx={{
+                    '& .MuiSelect-select': {
+                        paddingLeft: 1,
+                    },
+                }} value={branch} className='custom-select-branch' color='secondary' onChange={handleBranchChange}>
+                    {branch_list.map((option) => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Select>
                 <br />
-                <label>Subject List:</label>
-                {subjectList.map((subject, index) => (
-                    <div key={index}>
-                        <input
-                            type="text"
-                            value={subject.subject}
-                            onChange={(e) => handleSubjectChange(e, index)}
-                        />
-
-                        <button type="button" onClick={() => removeSubjectField(index)}>
-                            Remove
-                        </button>
-                    </div>
-
-                ))}
-                <button type="button" onClick={addSubjectField}>
-                    Add Subject
-                </button>
-                <button type="button" onClick={handleSubmit}>
+                <Button variant='contained' sx={{ marginTop: 4, backgroundColor: ' #136F63' }} onClick={handleSubmit}>
                     Submit
-                </button>
+                </Button>
             </form>
-        </div>
+        </div >
     );
+}
+
+const AddSubject = () => {
+    const [subjectCode, setSubjectCode] = useState('')
+    const [subjectName, setSubjectName] = useState('')
+    const [branch, setBranch] = useState('')
+    const branch_list = ["CMPN", "EXTC", "INFT", "MECH"]
+    const handleSubjectCodeChange = (e) => {
+        setSubjectCode(e.target.value)
+    }
+    const handleSubjectNameChange = (e) => {
+        setSubjectName(e.target.value)
+    }
+    const handleBranchChange = (e) => {
+        setBranch(e.target.value)
+    }
+    const handleSubmit = (e) => {
+        axiosInstance.post('/admin/add_subject', {
+            subject_id: subjectCode,
+            subject_name: subjectName,
+            branch: branch
+        }).then(res => {
+            console.log(res)
+            alert('updated subject list successfull')
+        })
+    }
+    return (
+        <div style={{ margin: '3rem', marginTop: '2rem' }}>
+            <Typography variant='h6' style={{ marginBottom: '20px', fontFamily: 'ubuntu' }}>
+                Updates the Subjects in the database
+                <br />
+                <br />
+                - For adding or changing subjects and their names
+            </Typography>
+            <label>Enter Subject Code:</label>
+            <TextField
+                variant='standard'
+                sx={{ paddingLeft: 2.5 }}
+                type="text"
+                value={subjectCode}
+                onChange={handleSubjectCodeChange}
+            />
+
+            <Divider variant='middle' sx={{ paddingTop: 2, marginBottom: 2 }} />
+            <label>Enter Subject Name:</label>
+            <TextField
+                variant='standard'
+                sx={{ paddingLeft: 2 }}
+                type="text"
+                value={subjectName}
+                onChange={handleSubjectNameChange}
+            />
+
+            <Divider variant='middle' sx={{ paddingTop: 2, marginBottom: 2 }} />
+            <label>Select Branch:</label>
+            <Select variant='standard' sx={{
+                '& .MuiSelect-select': {
+                    paddingLeft: 1,
+                },
+            }} value={branch} className='custom-select-branch' color='secondary' onChange={handleBranchChange}>
+                {branch_list.map((option) => (
+                    <MenuItem key={option} value={option}>
+                        {option}
+                    </MenuItem>
+                ))}
+            </Select>
+            <br />
+            <Button variant='contained' sx={{ marginTop: 4, backgroundColor: ' #136F63' }} onClick={handleSubmit}>
+                Submit
+            </Button>
+
+        </div>
+    )
 }
 const NavigationPane = ({ tabs, selectedTab, onSelectTab }) => {
     return (

@@ -373,7 +373,27 @@ router.post('/get_student', async (req, res) => {
         res.status(500).send('Internal Server Error')
     }
 })
+router.post('/add_subject', async (req, res) => {
+    try {
+        let subject;
 
+        const existingSubject = await SubjectsSchema.findOne({ subject_id: req.body.subject_id });
+
+        if (existingSubject) {
+            existingSubject.subject_name = req.body.subject_name;
+            existingSubject.branch = req.body.branch;
+            subject = await existingSubject.save();
+        } else {
+            subject = new SubjectsSchema(req.body);
+            await subject.save();
+        }
+        res.send('updated')
+
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err.keyValue)
+    }
+})
 router.post('/get_unverified_teacher_subject', async (req, res) => {
     try {
         const teachers = await TeacherSubjectSchema.aggregate([{
