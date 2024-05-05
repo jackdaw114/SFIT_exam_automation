@@ -370,6 +370,7 @@ router.post('/get_unverified_teacher_subject', async (req, res) => {
                     $push: {
                         subject_details: "$subjectDetails",
                         class: "$class",
+                        time: "$time",
                         _id: "$_id",
                     }
                 },
