@@ -306,7 +306,7 @@ const NavigationPane = ({ tabs, selectedTab, onSelectTab }) => {
         >
             {tabs.map(tab => (
                 <Box
-                    sx={{ padding: 1, backgroundColor: `${tab.id === selectedTab ? '#A63446' : ''}` }}
+                    sx={{ padding: 1, backgroundColor: `${tab.id === selectedTab ? '#136F63' : ''}` }}
                     key={tab.id}
                     className={`tab cursor-pointer ${tab.id === selectedTab ? 'text-white shadow-custom' : 'text-black'}`}
                     onClick={() => onSelectTab(tab.id)}

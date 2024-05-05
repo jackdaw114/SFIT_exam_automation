@@ -31,10 +31,11 @@ const StudentsSchema = mongoose.Schema(
             type: String,
 
         },
+        enrollment_year: {
+            type: Number
+        }
     }, { strict: false }
 )
-
-// TODO: implement class (A/B)
 
 
 module.exports = mongoose.model('Student', StudentsSchema);
