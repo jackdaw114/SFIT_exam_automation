@@ -314,7 +314,7 @@ export default function Report() {
                 sx={{ zIndex: 99999 }}
             >
                 <DialogTitle id="alert-dialog-title">
-                    Select Student
+                    Enter Student PID
                 </DialogTitle>
                 <DialogContent>
                     <input
@@ -324,9 +324,9 @@ export default function Report() {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleClose}>Close</Button>
                     <Button onClick={handleSend} autoFocus>
-                        Agree
+                        Submit
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -208,8 +208,8 @@ const SheetView = () => {
                     <Button color="info" sx={{ margin: '30px 5px' }} variant="contained" endIcon={isEdit ? <CancelIcon /> : <EditIcon />} onClick={() => { setIsEdit(!isEdit) }}>
                         {isEdit ? "Cancel" : "Edit"}
                     </Button>
-                    <label>
-                        Put file
+                    <label className='border rounded text-white' style={{ backgroundColor: '#454545', margin: 10, marginTop: 12, padding: 8 }} >
+                        Upload
                         <input type="file" className="fileSelect" style={{ display: 'none' }} onChange={(e) => handleInput(e)} />
                     </label>
                     <Button variant="contained" onClick={handleDownload} >Download File <DownloadIcon fontSize="small" className="pl-2" /> </Button>

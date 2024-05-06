@@ -50,7 +50,6 @@ export default function ExcelCard(props) {
 
                 <CardActions className="pr-16">
                     <Button size="small" onClick={handleSubmit} className=" px-8 transition-all hover:bg-sky-900/80  hover:text-white duration-150 ease-in-out hover:shadow-md rounded-2xl hover:border-2">Expand <ArrowOutwardIcon fontSize="small" className=" pl-1  opacity-75 -mt-0.5" /> </Button>
-                    <Button size="small" color="warning"><DeleteIcon /></Button>
                 </CardActions>
             </Card >
         </>
