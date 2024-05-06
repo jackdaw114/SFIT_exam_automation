@@ -9,6 +9,7 @@ const TeacherSubjectSchema = require('./schemas_revamp/TeacherSubjectSchema');
 const StudentsSchema = require('./schemas/StudentsSchema');
 const SubjectsSchema = require('./schemas_revamp/SubjectsSchema');
 const SubjectListSchema = require('./schemas_revamp/SubjectListSchema');
+const ReportSchema = require('./schemas/ReportSchema');
 
 
 
@@ -335,6 +336,46 @@ function StudentDictionary(pid, marks, subject, type, subj_list, json) {
         json[pid][subject][type] = marks;
     }
 }
+router.post('/save_report', async (req, res) => {
+    try {
+        console.log(req.body);
+        for (let i = req.body.start; i <= req.body.end; i++) {
+            if (!req.body.exceptions.includes(i)) {
+                let tempStudent = await StudentsSchema.findOne({ pid: i })
+                if (tempStudent) {
+                    console.log(tempStudent.term)
+                    const historic_report = await ReportSchema.updateOne({ pid: i, branch: req.body.branch, semester: req.body.semester }, {
+                        term: { ...tempStudent.term },
+                        oral: tempStudent.oral,
+                        practical: tempStudent.practical,
+                        subject_ids: tempStudent.subject_ids,
+
+                    }, {
+                        upsert: true,
+                        new: true,
+                    })
+
+                    console.log(historic_report)
+                    if (req.body.clear) {
+                        const tempSaved = await StudentsSchema.updateOne({ pid: i }, {
+                            $set: {
+                                term: {},
+                                practical: {},
+                                oral: {},
+                            }
+                        })
+                        console.log(tempSaved + "line 3")
+                    }
+                }
+
+            }
+        }
+        res.status(200).send("updated")
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Internal Server Error')
+    }
+})
 
 router.post('/get_student', async (req, res) => {
     try {

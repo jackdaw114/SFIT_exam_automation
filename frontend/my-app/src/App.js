@@ -22,6 +22,7 @@ import { SubjectRequests } from './components/SubjectRequests';
 import { SubjectListEndpoint } from './components/SubjectListEndpoint';
 import ViewTeachers from './components/ViewTeachers';
 import TeacherList from './components/TeacherList';
+import History from './components/History';
 
 
 
@@ -40,7 +41,8 @@ function App() {
     ['Generate Gazette', "creategazette"],
     ['Generate Reports', "report"],
     ['Teacher List', "teachers"],
-    ['Manage Subjects', "subject_management"]
+    ['Manage Subjects', "subject_management"],
+    ['History Management', 'history']
   ];
 
   const button_list = ["Notifications"];
@@ -71,6 +73,7 @@ function App() {
                 <Route path='adminhome' element={<><TeacherNavbar list_items={admin_list_items} type="Admin" buttons={button_list} /></>} >
                   <Route path='create_teacher' element={<CreateTeacher />} />
                   <Route path='delete_teacher' element={<DeleteTeacher />} />
+                  <Route path='history' element={<History />} />
                   <Route path='creategazette' element={<><Gazette /></>} />
                   <Route path='report' element={<><Report /></>} />
                   <Route path='subject_management' element={<><SubjectListEndpoint /></>} />
