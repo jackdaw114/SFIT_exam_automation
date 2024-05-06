@@ -18,7 +18,7 @@ const TeacherDeptComponent = ({ status, idx, icons, bgColor }) => {
     };
 
     const handleClick = () => {
-        navigate(`/adminhome/notifications/${status.toLowerCase()}_requests?status=${status}`);
+        navigate(`/adminhome/teachers/${status.toLowerCase()}?status=${status}`);
     };
 
 
@@ -35,9 +35,7 @@ const TeacherDeptComponent = ({ status, idx, icons, bgColor }) => {
                 <div>
                     {status}
                 </div>
-                <div>
-                    Requests
-                </div>
+
                 <motion.div
                     className="child_div absolute bottom-0 right-0 mr-4 mb-1"
                     initial={{ opacity: 0, x: 4 }}
