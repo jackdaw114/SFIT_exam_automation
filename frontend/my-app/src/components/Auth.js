@@ -24,9 +24,8 @@ const Auth = () => {
         if (localStorage.getItem('isLoggedIn') === 'true') {
             if (localStorage.getItem('isAdmin') === 'true') {
                 console.log("Admin already logged in!")
-                navigate('/adminhome')
+
             } else {
-                navigate('/home')
             }
         } else {
             console.log("not logged in! : ", localStorage.getItem('isLoggedIn'))
