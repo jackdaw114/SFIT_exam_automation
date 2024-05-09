@@ -1,0 +1,19 @@
+.history-label {
+    margin: 10px;
+}
+
+
+.history-form {
+    display: flex;
+    margin: 20px;
+    flex-direction: column;
+}
+
+.history-button {
+    width: 100px
+}
+
+.history-Input {
+    margin-left: 10px;
+
+}

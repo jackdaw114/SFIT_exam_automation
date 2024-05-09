@@ -357,11 +357,18 @@ router.post('/save_report', async (req, res) => {
 
                     console.log(historic_report)
                     if (req.body.clear) {
+
+                        const updateObject = {
+                            term: {},
+                            practical: {},
+                            oral: {}
+                        };
+                        if (req.body.updatedSemester) {
+                            updateObject.semester = req.body.updatedSemester;
+                        }
                         const tempSaved = await StudentsSchema.updateOne({ pid: i }, {
                             $set: {
-                                term: {},
-                                practical: {},
-                                oral: {},
+                                ...updateObject
                             }
                         })
                         console.log(tempSaved + "line 3")

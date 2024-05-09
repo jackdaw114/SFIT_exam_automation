@@ -42,7 +42,7 @@ function App() {
     ['Generate Reports', "report"],
     ['Teacher List', "teachers"],
     ['Manage Subjects', "subject_management"],
-    ['History Management', 'history']
+    ['Student Batch Management', 'history']
   ];
 
   const button_list = ["Notifications"];

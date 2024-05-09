@@ -422,21 +422,21 @@ router.post('/create_student_marks', async (req, res) => {
         console.log(req.body.class)
         console.log(req.body.subject_id)
         const check_teacher = await TeacherSubjectsSchema.findOne({ teacher_id: req.body.teacher_id, subject_id: req.body.subject_id, class: req.body.class })
-        let flag = false;
+        let flag = 0;
 
         console.log(check_teacher)
-        if (!check_teacher.created[req.body.marks_type]) {
-            flag = true;
+        if (check_teacher.created[req.body.marks_type] === 0) {
+            flag = 1;
             const test = await TeacherSubjectsSchema.findOneAndUpdate({ teacher_id: req.body.teacher_id, subject_id: req.body.subject_id, class: req.body.class }, {
                 $set: {
-                    [`created.${req.body.marks_type}`]: true
+                    [`created.${req.body.marks_type}`]: flag
                 }
             }, { new: true },)
             console.log(test)
         }
 
         // console.log(students)
-        if (students !== undefined && flag === true) {
+        if (students !== undefined && flag === 1) {
 
             const marksPromises = students.map(async (student) => {
 
@@ -461,8 +461,9 @@ router.post('/create_student_marks', async (req, res) => {
             console.log(`Marks created for students with subject ${req.body.subject}`);
             res.send(marksPromises)
         }
-        else if (!flag) {
-            res.send('done')
+        else if (flag !== 1) {
+            // console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + check_teacher.created[req.body.marks_type])
+            res.send({ editable: check_teacher.created[req.body.marks_type] })
         }
         else {
             res.send('no students')
@@ -516,6 +517,27 @@ router.post('/get_exam', async (req, res) => {
         res.status(400).send(err.keyValue)
     }
 })
+
+router.post('/lock_marks_entry', async (req, res) => {
+    try {
+        const teacherSubject = await TeacherSubjectsSchema.findOneAndUpdate({ teacher_id: req.body.teacher_id, subject_id: req.body.subject_id, class: req.body.class }, {
+            $set: {
+                [`created.${req.body.marks_type}`]: 2
+            }
+        }, {
+            new: true
+        })
+
+        console.log(teacherSubject)
+        res.send(teacherSubject)
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error.keyValue)
+
+    }
+})
+
 
 router.post('/get_student', async (req, res) => {
     try {
@@ -572,18 +594,27 @@ router.post('/get_exams', async (req, res) => {
 
             // console.log(filteredItem)
             // Check if practical exam is created for this subject
-            if (populatedItem.created.practical == true) {
+            if (populatedItem.created.practical >= 1) {
                 // If practical exam is created, add it to the display list
-                DisplayList.push({ ...filteredItem, marks_type: 'practical' })
+                DisplayList.push({
+                    ...filteredItem, marks_type: 'practical',
+                    editable: populatedItem.created.practical,
+                })
             }
 
-            if (populatedItem.created.oral == true) {
+            if (populatedItem.created.oral == 1) {
                 // If practical exam is created, add it to the display list
-                DisplayList.push({ ...filteredItem, marks_type: 'oral' })
+                DisplayList.push({
+                    ...filteredItem, marks_type: 'oral',
+                    editable: populatedItem.created.oral
+                })
             }
-            if (populatedItem.created.term == true) {
+            if (populatedItem.created.term == 1) {
                 // If practical exam is created, add it to the display list
-                DisplayList.push({ ...filteredItem, marks_type: 'term' })
+                DisplayList.push({
+                    ...filteredItem, marks_type: 'term',
+                    editable: populatedItem.created.term
+                })
             }
         }
 

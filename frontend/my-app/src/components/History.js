@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './History.css'
+import { Checkbox, Input, Typography } from '@mui/material';
 
 export default function SaveReport() {
     const [start, setStart] = useState('');
@@ -7,6 +9,7 @@ export default function SaveReport() {
     const [exceptions, setExceptions] = useState([]);
     const [branch, setBranch] = useState('');
     const [semester, setSemester] = useState('');
+    const [updatedSemester, setUpdatedSemester] = useState('');
     const [clear, setClear] = useState(false)
     const handleSubmit = event => {
         event.preventDefault();
@@ -16,7 +19,9 @@ export default function SaveReport() {
             end,
             exceptions,
             branch,
-            semester
+            semester,
+            updatedSemester,
+            clear
         })
             .then(res => {
                 console.log(res);
@@ -25,33 +30,57 @@ export default function SaveReport() {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label>
+        <div className='border rounded' style={{ margin: 50, backgroundColor: 'white', padding: 10 }}>
+            <Typography variant='h6' style={{ margin: '10px', marginBottom: '20px', fontFamily: 'ubuntu' }}>
+                Usage: Updates the students in the database and records all current reports of the student as historic data
+                <br />
+                <br />
+                - input Updated Semester if Student moves from one semester to the next
+                <br />
+                - start and end are Student PID ranges
+                <br />
+                - The Clear Checkbox is used to remove the current data of the student range
+                <br />
+                - Enter the same pid in both start and end to update only a single student
+
+            </Typography>
+            <form className='history-form' onSubmit={handleSubmit}>
+                <label className='history-label'>
                     Start:
-                    <input type="number" name="start" value={start} onChange={event => setStart(event.target.value)} />
+                    <Input type="number" className='history-Input' name="start" value={start} onChange={event => setStart(event.target.value)} />
                 </label>
-                <label>
+                <label className='history-label'>
                     End:
-                    <input type="number" name="end" value={end} onChange={event => setEnd(event.target.value)} />
+                    <Input type="number" className='history-Input' name="end" value={end} onChange={event => setEnd(event.target.value)} />
                 </label>
-                <label>
+                <label className='history-label'>
                     Exceptions:
-                    <input type="text" name="exceptions" value={exceptions} onChange={event => setExceptions(event.target.value)} />
+                    <Input type="text" className='history-Input' name="exceptions" value={exceptions} onChange={event => setExceptions(event.target.value)} />
                 </label>
-                <label>
+                <label className='history-label'>
                     Branch:
-                    <input type="text" name="branch" value={branch} onChange={event => setBranch(event.target.value)} />
+                    <Input className='history-Input' type="text" name="branch" value={branch} onChange={event => setBranch(event.target.value)} />
                 </label>
-                <label>
+                <label className='history-label'>
                     Semester:
-                    <input type="text" name="semester" value={semester} onChange={event => setSemester(event.target.value)} />
+                    <Input type="text" className='history-Input' name="semester" value={semester} onChange={event => setSemester(event.target.value)} />
                 </label>
-                <label>
+
+                <label className='history-label'>
+                    Updated Semester:
+                    <Input disabled={!clear} type="text" className='history-Input' name="semester" value={updatedSemester} onChange={event => setUpdatedSemester(event.target.value)} />
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    {!clear && "\t please set clear checkbox to change semester"}
+                </label>
+                <label className='history-label'>
                     Clear:
-                    <input type="checkbox" name="clear" value={clear} onChange={event => setClear(event.target.value)} />
+                    <Checkbox className='history-Input' name="clear" value={clear} onChange={event => {
+                        setClear(!clear)
+                    }} />
                 </label>
-                <button type="submit">Save Report</button>
+                <button className='history-button' type="submit">Save Report</button>
             </form>
         </div>
     )

@@ -108,7 +108,7 @@ export default function TeacherNav() {
 
         }).then((res) => {
             console.log(res.data)
-            navigate('/home/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), class: class_name } })
+            navigate('/home/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), class: class_name, editable: res.data.editable } })
 
         })
         //console.log( jsonData)
@@ -270,7 +270,7 @@ function Home({ open_list, subjectList, handleChangeSubject, type, setType, subj
 
                     {cardData.map((val, index) => (
                         <Grid item xs={12}>
-                            <ExcelCard marks_type={val.marks_type} subject={[val.subject_id, val.subject_name]} semester={val.semester} department={val.branch} class={val.class} ></ExcelCard>
+                            <ExcelCard marks_type={val.marks_type} subject={[val.subject_id, val.subject_name]} semester={val.semester} department={val.branch} class={val.class} editable={val.editable} ></ExcelCard>
 
                         </Grid>
 

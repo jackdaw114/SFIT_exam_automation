@@ -19,31 +19,34 @@ const SheetView = () => {
     let location = useLocation();
     const [maxMarks, setMaxMarks] = useState(0);
     const handleEdit = (index, field, value) => {
-        const updatedData = [...sheetData];
-        let newValue = Number(value);
+        if (location.state.editable === 1) {
 
-        if (isNaN(newValue) || value.trim() === '') {
-            // Input is not a valid number or is empty
-            // Handle the error condition here if needed
-            console.log('weeeeee')
-            return;
-        }
+            const updatedData = [...sheetData];
+            let newValue = Number(value);
 
-        if (newValue > maxMarks) {
-            // Value exceeds maxMarks
-            // Display a notification or handle the error condition here
+            if (isNaN(newValue) || value.trim() === '') {
+                // Input is not a valid number or is empty
+                // Handle the error condition here if needed
+                console.log('weeeeee')
+                return;
+            }
 
-            updatedData[index][field] = -8;
-            setSheetData(updatedData);
-            console.log(sheetData)
-            toast("Value cannot exceed maxMarks.");
-            return;
-        }
-        else {
-            // Update the data
-            updatedData[index][field] = newValue;
+            if (newValue > maxMarks) {
+                // Value exceeds maxMarks
+                // Display a notification or handle the error condition here
 
-            setSheetData(updatedData);
+                updatedData[index][field] = -8;
+                setSheetData(updatedData);
+                console.log(sheetData)
+                toast("Value cannot exceed maxMarks.");
+                return;
+            }
+            else {
+                // Update the data
+                updatedData[index][field] = newValue;
+
+                setSheetData(updatedData);
+            }
         }
     };
 
@@ -104,7 +107,7 @@ const SheetView = () => {
         axiosInstance.post('/teacher/update_data', {
             updated_data: finalJsonData,
             subject_id: location.state.subject,
-            marks_type: location.state.marks_type
+            marks_type: location.state.marks_type,
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -131,6 +134,9 @@ const SheetView = () => {
                 break;
             case 'oral':
                 setMaxMarks(5)
+                break;
+            default:
+                break;
         }
         const data = {
             subject_id: location.state.subject,
@@ -205,9 +211,10 @@ const SheetView = () => {
                 <div>
                     <Button variant="contained" color="success" onClick={handleUpdate} className=" mx-14">Update <AutorenewIcon fontSize="small" className=" pl-1" />
                     </Button>
-                    <Button color="info" sx={{ margin: '30px 5px' }} variant="contained" endIcon={isEdit ? <CancelIcon /> : <EditIcon />} onClick={() => { setIsEdit(!isEdit) }}>
-                        {isEdit ? "Cancel" : "Edit"}
-                    </Button>
+                    {(location.state.editable === 1) &&
+                        <Button color="info" sx={{ margin: '30px 5px' }} variant="contained" endIcon={isEdit ? <CancelIcon /> : <EditIcon />} onClick={() => { setIsEdit(!isEdit) }}>
+                            {isEdit ? "Cancel" : "Edit"}
+                        </Button>}
                     <label className='border rounded text-white' style={{ backgroundColor: '#454545', margin: 10, marginTop: 12, padding: 8 }} >
                         Upload
                         <input type="file" className="fileSelect" style={{ display: 'none' }} onChange={(e) => handleInput(e)} />
