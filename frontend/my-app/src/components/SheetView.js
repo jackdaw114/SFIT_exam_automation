@@ -1,17 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import { Button } from '@mui/material';
 import { useLocation } from 'react-router';
-import CancelIcon from '@mui/icons-material/Cancel';
-import EditIcon from '@mui/icons-material/Edit';
 import { read, utils, writeFile } from 'xlsx';
-import DownloadIcon from '@mui/icons-material/Download';
-
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {
+  Container, Paper, Typography, Button, Table, TableBody, TableCell, 
+  TableContainer, TableHead, TableRow, IconButton, Tooltip, Fade
+} from '@mui/material';
+import { 
+  Refresh as RefreshIcon,
+  Edit as EditIcon,
+  Cancel as CancelIcon,
+  CloudUpload as CloudUploadIcon,
+  GetApp as DownloadIcon
+} from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axiosInstance from './axiosInstance';
 
+
+const theme = createTheme({
+    palette: {
+      primary: { main: '#1e88e5' },
+      secondary: { main: '#ff4081' },
+      background: { default: '#f5f5f5' },
+    },
+    typography: {
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    },
+    components: {
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            padding: '16px',
+          },
+        },
+      },
+    },
+  });
 
 const SheetView = () => {
     const [isEdit, setIsEdit] = useState(false)
@@ -164,67 +189,112 @@ const SheetView = () => {
         }
     }
 
-    return (
-        <>
-            <div className='flex flex-col w-full justify-center items-center  font-opensans'>
-
-
-                <table className='border-collapse border-slate-200 border-solid w-9/12 border-spacing-x-0 border-spacing-y-2 mb-2 mt-10 '>
-
-                    <caption class="caption-top opacity-60 mb-3">
-                        Table - {location.state.subject} , {location.state.marks_type} Work
-                    </caption>
-                    <thead className=' bg-primary text-white  text-center bg-clip-border text-lg'>
-                        <tr>
-                            <td>PID</td>
-                            <td>Student Name</td>
-                            <td>Marks</td>
-                        </tr>
-                    </thead>
-                    <tbody className='text-lg' >
-                        {sheetData && sheetData.map((row, index) => {
-                            let background = '#ffffffff';
-                            if (row.marks < 0)
-                                background = '#FFB86F'
-                            else if (row.marks >= 0 && row.marks <= (maxMarks * 0.35))
-                                background = '#E36588'
-                            else if (row.marks == maxMarks)
-                                background = '#ADF7B6'
-
-                            return (
-                                <tr key={index} className=" flex-none  border-b-2 border-slate-700  " style={{ backgroundColor: background, maxHeight: '1.5rem' }} >
-
-                                    <td className="text-center select-none" contentEditable="false" onBlur={(e) => handleEdit(index, 'pid', e.target.textContent)}>
-                                        {row.pid}
-                                    </td>
-                                    <td className="text-center select-none" contentEditable="false" onBlur={(e) => handleEdit(index, 'name', e.target.textContent)}>
-                                        {row.name}
-                                    </td>
-                                    <td className="text-center max-h-1" style={{ maxHeight: '1.5em' }} onInput={handleRestrict} contentEditable={isEdit} onBlur={(e) => handleEdit(index, 'marks', e.target.textContent)}>
-                                        {row.marks}
-                                    </td>
-
-                                </tr>)
-                        })}
-                    </tbody>
-                </table>
-                <div>
-                    <Button variant="contained" color="success" onClick={handleUpdate} className=" mx-14">Update <AutorenewIcon fontSize="small" className=" pl-1" />
-                    </Button>
-                    {(location.state.editable === 1) &&
-                        <Button color="info" sx={{ margin: '30px 5px' }} variant="contained" endIcon={isEdit ? <CancelIcon /> : <EditIcon />} onClick={() => { setIsEdit(!isEdit) }}>
-                            {isEdit ? "Cancel" : "Edit"}
-                        </Button>}
-                    <label className='border rounded text-white' style={{ backgroundColor: '#454545', margin: 10, marginTop: 12, padding: 8 }} >
-                        Upload
-                        <input type="file" className="fileSelect" style={{ display: 'none' }} onChange={(e) => handleInput(e)} />
-                    </label>
-                    <Button variant="contained" onClick={handleDownload} >Download File <DownloadIcon fontSize="small" className="pl-2" /> </Button>
-                </div>
-            </div>
-            <ToastContainer />
-        </>
-    );
+    
+    const getRowColor = (marks) => {
+      if (marks < 0) return 'bg-orange-50';
+      if (marks >= 0 && marks <= (maxMarks * 0.35)) return 'bg-red-50';
+      if (marks === maxMarks) return 'bg-green-50';
+      return '';
+    };
+  
+   
+  return (
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="lg" className="py-12">
+        <Paper elevation={4} className="p-8 rounded-3xl shadow-xl">
+          <Typography variant="h4" className="text-center mb-8 text-gray-800 font-bold">
+            {location.state.subject} - {location.state.marks_type} Work
+          </Typography>
+          
+          <TableContainer component={Paper} elevation={2} className="mb-8 rounded-2xl overflow-hidden">
+            <Table aria-label="student marks table">
+              <TableHead>
+                <TableRow>
+                  <TableCell className="font-bold text-lg">PID</TableCell>
+                  <TableCell className="font-bold text-lg">Student Name</TableCell>
+                  <TableCell align="right" className="font-bold text-lg">Marks</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sheetData.map((row, index) => (
+                  <TableRow 
+                    key={row.pid} 
+                    className={`${getRowColor(row.marks)} transition-colors duration-200 ease-in-out hover:bg-blue-50`}
+                  >
+                    <TableCell component="th" scope="row" className="font-semibold">{row.pid}</TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell align="right">
+                      <span
+                        contentEditable={isEdit}
+                        onBlur={(e) => handleEdit(index, 'marks', e.target.textContent)}
+                        onInput={handleRestrict}
+                        className={`p-2 rounded-sm ${isEdit ? 'bg-blue-100 outline-none' : ''}`}
+                        suppressContentEditableWarning={true}
+                      >
+                        {row.marks}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          
+          <div className="flex justify-center space-x-6">
+            <Tooltip title="Update" TransitionComponent={Fade} TransitionProps={{ timeout: 600 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleUpdate}
+                startIcon={<RefreshIcon />}
+                className="shadow-md hover:shadow-lg transition-all duration-300 px-6 py-3 text-base"
+              >
+                Update
+              </Button>
+            </Tooltip>
+            
+            {location.state.editable === 1 && (
+              <Tooltip title={isEdit ? "Cancel Edit" : "Edit"} TransitionComponent={Fade} TransitionProps={{ timeout: 600 }}>
+                <Button
+                  variant="contained"
+                  color={isEdit ? "secondary" : "primary"}
+                  onClick={() => setIsEdit(!isEdit)}
+                  startIcon={isEdit ? <CancelIcon /> : <EditIcon />}
+                  className="shadow-md hover:shadow-lg transition-all duration-300 px-6 py-3 text-base"
+                >
+                  {isEdit ? "Cancel" : "Edit"}
+                </Button>
+              </Tooltip>
+            )}
+            
+            <Tooltip title="Upload File" TransitionComponent={Fade} TransitionProps={{ timeout: 600 }}>
+              <Button
+                variant="contained"
+                component="label"
+                startIcon={<CloudUploadIcon />}
+                className="bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-300 px-6 py-3 text-base"
+              >
+                Upload
+                <input type="file" hidden onChange={handleInput} />
+              </Button>
+            </Tooltip>
+            
+            <Tooltip title="Download File" TransitionComponent={Fade} TransitionProps={{ timeout: 600 }}>
+              <Button
+                variant="contained"
+                onClick={handleDownload}
+                startIcon={<DownloadIcon />}
+                className="bg-purple-600 hover:bg-purple-700 shadow-md hover:shadow-lg transition-all duration-300 px-6 py-3 text-base"
+              >
+                Download
+              </Button>
+            </Tooltip>
+          </div>
+        </Paper>
+        <ToastContainer position="bottom-right" autoClose={3000} />
+      </Container>
+    </ThemeProvider>
+  );
 };
 
 export default SheetView;

@@ -632,14 +632,12 @@ router.post('/get_exams', async (req, res) => {
 
 router.post('/get_aggregate', async (req, res) => {
     try {
-        console.log(req.body.data_list, "this is the datalist")
-        console.log(req.body.data_list[0].subject)
-
+        console.log(req.body.data_list, "this is the datalist");
+        console.log(req.body.data_list[0].subject);
         const dataList = req.body.data_list; // Extracting the "data_list" array from the request body
-
-
         let data = [];
         let labels = [];
+
         for (const item of dataList) {
             console.log(item);
             const students = await StudentsSchema.aggregate([
@@ -650,35 +648,47 @@ router.post('/get_aggregate', async (req, res) => {
                     }
                 },
                 {
+                    $project: {
+                        marks: { $ifNull: [`$${item.marks_type}.${item.subject}`, 0] }
+                    }
+                },
+                {
+                    $match: {
+                        marks: { $gte: 0 }
+                    }
+                },
+                {
                     $group: {
                         _id: null,
-                        total: { $sum: `$${item.marks_type}.${item.subject}` },
+                        total: { $sum: "$marks" },
                         count: { $sum: 1 },
                     }
                 },
             ]);
-            if (students.length > 0) {
+
+            if (students.length > 0 && students[0].count > 0) {
                 const max_marks = {
                     'term': 50,
                     'practical': 20,
                     'oral': 5
-                }
-                const avg = (students[0].total / students[0].count) / max_marks[item.marks_type] * 100
-
-                data.push(avg)
-                labels.push(item.subject + ' ' + item.marks_type)
-                console.log(`Total for subject: ${item.subject}, class: ${item.class} is: ${students[0].total} in ${students[0].total_entries} entries`);
-                console.log(JSON.stringify(students[0], null, 2))
-                console.log(data)
+                };
+                const avg = (students[0].total / students[0].count) / max_marks[item.marks_type] * 100;
+                data.push(avg);
+                labels.push(item.subject + ' ' + item.marks_type);
+                console.log(`Total for subject: ${item.subject}, class: ${item.class} is: ${students[0].total} in ${students[0].count} entries`);
+                console.log(JSON.stringify(students[0], null, 2));
+                console.log(data);
             } else {
-                console.log(`No students found for subject: ${item.subject}, class: ${item.class}`);
+                console.log(`No valid students found for subject: ${item.subject}, class: ${item.class}`);
             }
         }
-        res.json({ data: data, labels: labels })
+
+        res.json({ data: data, labels: labels });
     } catch (err) {
-        console.error(err)
-        res.status(500).send('Internal Server Error')
+        console.error(err);
+        res.status(500).send('Internal Server Error');
     }
+
 })
 
 module.exports = router;    
