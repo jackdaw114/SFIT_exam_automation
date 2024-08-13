@@ -8,7 +8,7 @@ const StudentsSchema = require('./schemas/StudentsSchema');
 // const { Db } = require('mongodb');
 const TeacherSubjectsSchema = require('./schemas_revamp/TeacherSubjectSchema');
 const SubjectsSchema = require('./schemas_revamp/SubjectsSchema');
-const { mongo } = require('mongoose');
+const { mongo, set } = require('mongoose');
 const { default: mongoose } = require('mongoose');
 
 
@@ -143,15 +143,7 @@ router.post('/changepassword', async (req, res) => {
     }
 })
 
-// router.get('/getemail', async (req, res) => {
-//     try {
-//         let Teacher1 = await Teacher.findOne({ username: req.body.username })
-//         res.send(Teacher1.email).status(200)
-//     }
-//     catch (err) {
-//         res.status(500).send("internal server error")
-//     }
-// })
+
 
 router.post('/entermarks', async (req, res) => {
     try {
@@ -295,18 +287,20 @@ router.post('/excelbyid', async (req, res) => {
 })
 router.post('/updateteachersubject', async (req, res) => {
     try {
-        const { subject_id, teacher_id, practical, oral, term, class: class_name } = req.body;
+        const { subject_id, teacher_id, practical, oral, term, iat, ese, class: class_name } = req.body;
 
         let teacherSubject = await TeacherSubjectsSchema.findOne({ subject_id, teacher_id, class: class_name });
         let sub_obj = new mongoose.Types.ObjectId(subject_id);
         if (!teacherSubject) {
-            teacherSubject = new TeacherSubjectsSchema({ subject_id: sub_obj, teacher_id, practical, oral, term, class: class_name });
+            teacherSubject = new TeacherSubjectsSchema({ subject_id: sub_obj, teacher_id, practical, oral, term, iat, ese, class: class_name });
         } else {
             teacherSubject.subject_id = sub_obj;
             teacherSubject.teacher_id = teacher_id;
             teacherSubject.practical = practical;
             teacherSubject.oral = oral;
             teacherSubject.term = term;
+            teacherSubject.iat = iat;
+            teacherSubject.ese = ese;
             teacherSubject.class = class_name;
         }
 
@@ -329,26 +323,34 @@ router.post('/updateexcel', async (req, res) => {
         res.status(500).send(error.keyValue)
     }
 })
-router.post('/teachersubjects', async (req, res) => { //i assume this is done
+router.post('/teachersubjects', async (req, res) => {
     try {
-        console.log(req.body)
-
+        console.log(req.body);
         const teachersubjects = await TeacherSubjectsSchema.find(
             { teacher_id: req.body.teacher_id, verified: 1 }
         ).populate('subject_id');
-        console.log(teachersubjects)
-        const subject_list = teachersubjects.map(doc => {
-            const { __v, teacher_id, _id, subject_id, ...filteredVariables } = doc.toObject(); // Convert Mongoose document to plain JavaScript object
-            console.log(filteredVariables)
-            return { ...filteredVariables, ...subject_id };
+
+        console.log(teachersubjects);
+
+        let subject_list = teachersubjects.map(doc => {
+            const { __v, teacher_id, _id, subject_id, ...filteredVariables } = doc.toObject();
+            return { ...filteredVariables, ...subject_id };  // Remove .toObject() here
         });
 
-        res.json({ subject_list })
+        // Remove duplicates based on subject_id
+        subject_list = subject_list.filter((subject, index, self) =>
+            index === self.findIndex((t) => t._id.toString() === subject._id.toString())
+        );
+
+        // Return null if the list is empty
+        subject_list = subject_list.length > 0 ? subject_list : null;
+
+        res.json({ subject_list });
     } catch (err) {
-        console.log(err + "HELLLOOO")
-        res.status(400).send(err.keyValue)
+        console.log(err + " HELLLOOO");
+        res.status(400).json({ error: err.message });
     }
-})
+});
 
 router.get('/subjectlist', async (req, res) => {
     try {
@@ -425,15 +427,24 @@ router.post('/create_student_marks', async (req, res) => {
         let flag = 0;
 
         console.log(check_teacher)
-        if (check_teacher.created[req.body.marks_type] === 0) {
+        // Check if the key exists and if it's 0 or null
+        if (!check_teacher.created.hasOwnProperty(req.body.marks_type) || check_teacher.created[req.body.marks_type] === 0 || check_teacher.created[req.body.marks_type] === null) {
             flag = 1;
-            const test = await TeacherSubjectsSchema.findOneAndUpdate({ teacher_id: req.body.teacher_id, subject_id: req.body.subject_id, class: req.body.class }, {
-                $set: {
-                    [`created.${req.body.marks_type}`]: flag
-                }
-            }, { new: true },)
-            console.log(test)
+
+            // Update the document and add the new field if it doesn't exist
+            const test = await TeacherSubjectsSchema.findOneAndUpdate(
+                { teacher_id: req.body.teacher_id, subject_id: req.body.subject_id, class: req.body.class },
+                {
+                    $set: {
+                        [`created.${req.body.marks_type}`]: flag
+                    }
+                },
+                { new: true }
+            );
+
+            console.log(test);
         }
+
 
         // console.log(students)
         if (students !== undefined && flag === 1) {
@@ -477,32 +488,49 @@ router.post('/create_student_marks', async (req, res) => {
 
 router.post('/getdata', async (req, res) => {
     try {
-        console.log("This is my req body=", req.body)
-        const students = await StudentsSchema.find({
-            subject_ids: { $in: [req.body.subject_id] },
-            semester: req.body.semester,
-            class: req.body.class_name
-        }
-            ,
+        console.log("This is my req body=", req.body);
+
+        // Step 1: Ensure all documents have the `marks_type` field
+        await StudentsSchema.updateMany(
+            {
+                subject_ids: { $in: [req.body.subject_id] },
+                semester: req.body.semester,
+                class: req.body.class_name,
+                [`${req.body.marks_type}`]: { $exists: false }
+            },
+            {
+                $set: {
+                    [`${req.body.marks_type}`]: {} // Default value, adjust if needed
+                }
+            }
+        );
+
+        // Step 2: Fetch the documents with the `marks_type` field
+        const students = await StudentsSchema.find(
+            {
+                subject_ids: { $in: [req.body.subject_id] },
+                semester: req.body.semester,
+                class: req.body.class_name
+            },
             {
                 pid: true,
                 name: true,
                 [req.body.marks_type]: true
-            })
+            }
+        );
 
-        console.log(students)
-
-        const sendData = await students.map((student) => {
+        const sendData = students.map((student) => {
             const { [req.body.marks_type]: marksTypeValue, ...remainingData } = student.toObject();
-            return { ...remainingData, marks: marksTypeValue[req.body.subject_id] }
-        })
-        console.log(students)
-        res.send(sendData); //TODO: add filer before sending so that only marks type and subject gets sent alonn gwith name
+            return { ...remainingData, marks: marksTypeValue[req.body.subject_id] };
+        });
+
+        res.send(sendData);
     } catch (error) {
         res.status(500).send(error);
         console.error('Error fetching data:', error);
     }
 });
+
 
 router.post('/get_exam', async (req, res) => {
     try {
@@ -614,6 +642,20 @@ router.post('/get_exams', async (req, res) => {
                 DisplayList.push({
                     ...filteredItem, marks_type: 'term',
                     editable: populatedItem.created.term
+                })
+            }
+            if (populatedItem.created.iat == 1) {
+                // If iat exam is created, add it to the display list
+                DisplayList.push({
+                    ...filteredItem, marks_type: 'iat',
+                    editable: populatedItem.created.iat
+                })
+            }
+            if (populatedItem.created.ese == 1) {
+                // If end sem exam is created, add it to the display list
+                DisplayList.push({
+                    ...filteredItem, marks_type: 'ese',
+                    editable: populatedItem.created.ese
                 })
             }
         }

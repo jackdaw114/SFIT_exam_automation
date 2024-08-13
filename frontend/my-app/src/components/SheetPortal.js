@@ -184,9 +184,12 @@ function Home({ subjectList, handleChangeSubject, type, setType, subject, class_
                                         return (
                                             <Select onChange={handleChangeType} value={type} label="Select Examination">
 
-                                                {item.practical && <MenuItem key={index} value='practical'>Practical</MenuItem>}
-                                                {item.oral && <MenuItem key={index} value='oral'>Oral</MenuItem>}
-                                                {item.term && <MenuItem key={index} value='term'>Term</MenuItem>}
+                                                {item.practical && <MenuItem key={`practical-${index}`} value='practical'>Practical</MenuItem>}
+                                                {item.oral && <MenuItem key={`oral-${index}`} value='oral'>Oral</MenuItem>}
+                                                {item.term && <MenuItem key={`term-${index}`} value='term'>Term</MenuItem>}
+                                                {item.iat && <MenuItem key={`iat-${index}`} value='iat'>IAT</MenuItem>}
+                                                {item.ese && <MenuItem key={`ese-${index}`} value='ese'>ESE</MenuItem>}
+
 
                                             </Select>
                                         );

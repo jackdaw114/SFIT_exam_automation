@@ -1,78 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import { Page, Text, View, Document, StyleSheet, PDFViewer, Image, Font } from '@react-pdf/renderer';
-import zIndex from '@mui/material/styles/zIndex';
+import React, { useState } from 'react';
+import { Page, Text, View, Document, StyleSheet, PDFViewer, Image } from '@react-pdf/renderer';
 import img from '../imgtest/favicon.png';
-import axios from 'axios';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Input } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Input } from '@mui/material';
 import axiosInstance from './axiosInstance';
 
-// Font.register({ family: 'Roboto', src: source });
-// TODO: add more padding inbetween the subjects (make look bigger) & select student styling
 const styles = StyleSheet.create({
     page: {
         flexDirection: 'column',
         backgroundColor: '#FFFFFF',
-
+        padding: 20,
     },
     mainContent: {
         flexGrow: 1,
-        margin: 10,
-        border: '1px solid #000',
+        border: '1pt solid #000',
     },
     sectionTop: {
-        borderBottom: 1,
-        alignContent: 'center',
+        borderBottom: '1pt solid #000',
         alignItems: 'center',
-
+        padding: 20,
+        backgroundColor: '#e3f2fd', // Light blue background
+        boxShadow: '0px 4px 6px rgba(0,0,0,0.1)', // Subtle shadow
     },
-
     sectionMid: {
-        borderBottom: 1,
-        alignContent: 'center',
-
-
+        borderBottom: '1pt solid #000',
+        padding: 15,
+        backgroundColor: '#f5f5f5', // Light grey background
     },
-
     sectionBot: {
-        flexGrow: 1,
+        padding: 10,
     },
     image: {
         width: 60,
         height: 'auto',
-
+        marginBottom: 10,
     },
-    internalDiv: {
-        fontFamily: 'Times-Roman',
-        flexDirection: 'column',
-        borderRight: 1
-    },
-    sectionMarks: {
+    tableHeader: {
         flexDirection: 'row',
-        borderBottom: 1,
-
+        borderBottom: '1pt solid #000',
+        backgroundColor: '#f0f0f0',
+        padding: 5,
     },
-    titleBoxes: {
-        borderBottom: 1,
-        alignContent: 'center',
-        alignItems: 'center',
-        height: 40,
-        paddingRight: 5,
-        paddingLeft: 5
+    tableRow: {
+        flexDirection: 'row',
+        borderBottom: '0.5pt solid #000',
+        padding: 5,
     },
-    internalDivTitle: {
-        fontFamily: 'Times-Roman',
-        flexDirection: 'column',
-        borderRight: 1,
-        flexGrow: 1,
-        paddingBottom: 10
+    tableCell: {
+        flex: 1,
+        fontSize: 8,
+        padding: 2,
     },
-    tableRows: {
-        justifyContent: 'center',
-        alignContent: 'center',
-        alignItems: 'center'
-    }
-
+    tableCellWide: {
+        flex: 2,
+        fontSize: 8,
+        padding: 2,
+    },
+    bold: {
+        fontFamily: 'Helvetica-Bold',
+    },
+    centerText: {
+        textAlign: 'center',
+    },
 });
+
 
 const MyDocument = ({ data }) => {
     const subjlist = data?.student?.subject_ids;
@@ -85,263 +75,142 @@ const MyDocument = ({ data }) => {
         "THIRD YEAR ENGINEERING SEMESTER 6",
         "FOURTH YEAR ENGINEERING SEMESTER 7",
         "FOURTH YEAR ENGINEERING SEMESTER 8",
-    ]
+    ];
+
     return (
         <Document>
             <Page size="A4" style={styles.page}>
                 <View style={styles.mainContent}>
-
-                    <View style={styles.sectionTop} >
+                    <View style={styles.sectionTop}>
                         <Image src={img} style={styles.image} />
-                        <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 15, marginTop: 2 }}>ST. FRANCIS INSTITUTE OF TECHNOLOGY</Text>
-                        <Text style={{ fontFamily: 'Helvetica', fontSize: 12 }}>(ENGINEERING COLLEGE)</Text>
-                        <Text style={{ fontFamily: 'Helvetica', fontSize: 9 }}>Mount Poinsur, Borivli (West), Mumbai - 400103</Text>
-                        <Text style={{ fontFamily: 'Helvetica', fontSize: 9, marginBottom: 1 }}>(Affiliated to University of Mumbai)</Text>
+                        <Text style={[styles.bold, { fontSize: 15 }]}>ST. FRANCIS INSTITUTE OF TECHNOLOGY</Text>
+                        <Text style={{ fontSize: 12 }}>(ENGINEERING COLLEGE)</Text>
+                        <Text style={{ fontSize: 9 }}>Mount Poinsur, Borivli (West), Mumbai - 400103</Text>
+                        <Text style={{ fontSize: 9 }}>(Affiliated to University of Mumbai)</Text>
                     </View>
+
+                    {/* Margin Left no work bruh */}
                     <View style={styles.sectionMid}>
-                        <Text style={{ fontFamily: 'Times-Bold', fontSize: 15, marginTop: 7, alignSelf: 'center' }}>Grade Card</Text>
-                        <Text style={{ fontFamily: 'Times-Roman', fontSize: 12, marginLeft: 1 }}>NAME                    :  {data?.student?.name.toUpperCase()}</Text>
-                        <Text style={{ fontFamily: 'Times-Roman', fontSize: 12, marginLeft: 1 }}>EXAMINATION    :  {expand_exam[data?.student?.semester - 1]}</Text>
-                        <Text style={{ fontFamily: 'Times-Roman', fontSize: 12, marginLeft: 1 }}>HELD IN                :  2024</Text>
-                        <Text style={{ fontFamily: 'Times-Roman', fontSize: 12, marginLeft: 1 }}>BRANCH               :  {data?.student?.branch.toUpperCase()}</Text>
-                        <Text style={{ fontFamily: 'Times-Roman', fontSize: 12, marginLeft: 1, marginBottom: 10 }}>PID                         :  {data?.student?.pid}</Text>
+                        <Text style={[styles.bold, { fontSize: 15, textAlign: 'center', marginBottom: 15 }]}>Grade Card</Text>
+                        <Text style={{ fontSize: 12, marginBottom: 5 }}>NAME: <Text style={{ marginLeft: 10 }}>{data?.student?.name.toUpperCase()}</Text></Text>
+                        <Text style={{ fontSize: 12, marginBottom: 5 }}>EXAMINATION: <Text style={{ marginLeft: 10 }}>{expand_exam[data?.student?.semester - 1]}</Text></Text>
+                        <Text style={{ fontSize: 12, marginBottom: 5 }}>HELD IN: <Text style={{ marginLeft: 10 }}>2024</Text></Text>
+                        <Text style={{ fontSize: 12, marginBottom: 5 }}>BRANCH: <Text style={{ marginLeft: 10 }}>{data?.student?.branch.toUpperCase()}</Text></Text>
+                        <Text style={{ fontSize: 12, marginBottom: 5 }}>PID: <Text style={{ marginLeft: 10 }}>{data?.student?.pid}</Text></Text>
                     </View>
-                    <View style={styles.sectionMarks}>
-                        <View style={styles.internalDiv}>
-                            <View style={styles.titleBoxes}>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10 }}>COURSE</Text>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9 }}>CODE</Text>
-                            </View>
-                            <View style={styles.tableRows}>
-                                {data?.student && data.student.subject_ids.map((item) => {
-                                    return <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>
-                                        {item}
-                                    </Text>
-                                })
-
-                                }
-                            </View>
-                        </View>
-                        <View style={styles.internalDivTitle}>
-                            <View style={styles.titleBoxes}>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>COURSE TITLE</Text>
-                            </View>
-                            <View style={{ marginLeft: 10 }}>
-                                {subjlist?.map(item => {
-                                    const subject = data?.subjects?.find(subject => subject.subject_id === item);
-
-                                    return <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>
-                                        {subject.subject_name}
-                                    </Text>
-                                })
-
-                                }
-                            </View>
-                        </View>
-                        <View style={styles.internalDiv}>
-                            <View style={styles.titleBoxes}>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>COURSE</Text>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9 }}>CREDIT</Text>
-                            </View>
-                        </View>
-                        <View style={styles.internalDiv}>
-                            <View style={styles.titleBoxes}>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>TERM</Text>
-                            </View>
-                            <View style={styles.tableRows}>
-                                {subjlist?.map(item => {
 
 
-                                    const subject = data?.student?.term[item]
 
-                                    if (subject) {
-                                        return <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>
-                                            {subject}
-                                        </Text>
-                                    }
-                                    else {
-                                        return (
-                                            <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>
-                                                N/A
-                                            </Text>)
-                                    }
-                                })
-
-                                }
-                            </View>
-                        // TODO ADD HERE
-                        </View>
-                        <View style={styles.internalDiv}>
-                            <View style={styles.titleBoxes}>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>PR/OR</Text>
-                            </View>
-                            <View style={styles.tableRows}>
-                                {subjlist?.map(item => {
-
-
-                                    const practical = data?.student?.practical[item]
-                                    const oral = data?.student?.oral[item]
-                                    if (practical && oral) {
-                                        return <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>
-                                            {practical + oral}
-                                        </Text>
-                                    }
-                                    else {
-                                        return (
-                                            <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>
-                                                N/A
-                                            </Text>)
-                                    }
-                                })
-
-                                }
-                            </View>
-                        </View>
-                        <View style={styles.internalDiv}>
-                            <View style={styles.titleBoxes}>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 8, marginTop: 10, }}>OVERALL</Text>
-                            </View>
-                            <View style={styles.tableRows}>
-                                {subjlist?.map(item => {
-
-
-                                    const practical = data?.student?.practical[item]
-                                    const oral = data?.student?.oral[item]
-                                    const term = data?.student?.term[item]
-                                    if (practical && oral && term) {
-                                        return <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>
-                                            {practical + oral + term}
-                                        </Text>
-                                    }
-                                    else {
-                                        return (
-                                            <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>
-                                                N/A
-                                            </Text>)
-                                    }
-                                })
-
-                                }
-                            </View>
-                        </View>
-                        <View style={styles.internalDiv}>
-                            <View style={styles.titleBoxes}>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>CREDIT</Text>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9 }}>EARNED</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.internalDiv}>
-                            <View style={styles.titleBoxes}>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>CREDIT</Text>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9 }}>POINTS</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.internalDiv}>
-                            <View style={styles.titleBoxes}>
-                                <Text style={{ fontFamily: 'Times-Roman', fontSize: 9, marginTop: 10, }}>C X G</Text>
-                            </View>
-                        </View>
+                    <View style={styles.tableHeader}>
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>COURSE CODE</Text>
+                        <Text style={[styles.tableCellWide, styles.bold, styles.centerText]}>COURSE TITLE</Text>
+                        {/* <Text style={[styles.tableCell, styles.bold]}>COURSE CREDIT</Text> */}
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>TERM</Text>
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>TERM</Text>
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>TERM</Text>
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>PR/OR</Text>
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>OVERALL</Text>
+                        {/* <Text style={[styles.tableCell, styles.bold]}>CREDIT EARNED</Text>
+                        <Text style={[styles.tableCell, styles.bold]}>CREDIT POINTS</Text>
+                        <Text style={[styles.tableCell, styles.bold]}>C X G</Text> */}
                     </View>
+
+                    {subjlist?.map((item, index) => {
+                        const subject = data?.subjects?.find(subject => subject.subject_id === item);
+                        return (
+                            <View style={styles.tableRow} key={index}>
+                                <Text style={styles.tableCell}>{item}</Text>
+                                <Text style={styles.tableCellWide}>{subject?.subject_name}</Text>
+                                {/* <Text style={[styles.tableCell, styles.centerText]}>Course Credit</Text> */}
+                                <Text style={[styles.tableCell, styles.centerText]}>{data?.student?.term[item] || 'N/A'}</Text>
+                                <Text style={[styles.tableCell, styles.centerText]}>{data?.student?.term[item] || 'N/A'}</Text>
+                                <Text style={[styles.tableCell, styles.centerText]}>{data?.student?.term[item] || 'N/A'}</Text>
+                                <Text style={[styles.tableCell, styles.centerText]}>
+                                    {(data?.student?.practical[item] || 0) + (data?.student?.oral[item] || 0) || 'N/A'}
+                                </Text>
+                                <Text style={[styles.tableCell, styles.centerText]}>
+                                    {(data?.student?.practical[item] || 0) + (data?.student?.oral[item] || 0) + (data?.student?.term[item] || 0) || 'N/A'}
+                                </Text>
+                                {/* <Text style={[styles.tableCell, styles.centerText]}>Credit Earned</Text> */}
+                                {/* <Text style={[styles.tableCell, styles.centerText]}>Credit Points</Text> */}
+                                {/* <Text style={[styles.tableCell, styles.centerText]}>C X G</Text> */}
+                            </View>
+                        );
+                    })}
+
                     <View style={styles.sectionBot}>
-                        <View style={{ flexDirection: 'row', marginTop: 30, marginLeft: 10 }}>
-
-                            <Text style={{ fontFamily: 'Times-Bold', fontSize: 9, marginTop: 10, flexGrow: 1 }}>Remark :</Text>
-                            <Text style={{ fontFamily: 'Times-Bold', fontSize: 9, marginTop: 10, flexGrow: 1 }}>CGPI :</Text>
-                            <Text style={{ fontFamily: 'Times-Bold', fontSize: 9, marginTop: 10, flexGrow: 1 }}>SGPI :</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', marginTop: 10, marginLeft: 10 }}>
-
-                            <Text style={{ fontFamily: 'Times-Bold', fontSize: 9, marginTop: 10, flexGrow: 1 }}>Result Date :</Text>
-
-                        </View>
-                        <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
-
-                            <Text style={{ fontFamily: 'Times-Bold', fontSize: 9, margin: 10 }}>CHECKED BY</Text>
-                            <Text style={{ fontFamily: 'Times-Bold', fontSize: 9, margin: 10, marginRight: 30 }}>PRINCIPAL</Text>
-
+                        <Text style={[styles.bold, { fontSize: 9, marginTop: 10 }]}>Remark:</Text>
+                        <Text style={[styles.bold, { fontSize: 9, marginTop: 5 }]}>CGPI:</Text>
+                        <Text style={[styles.bold, { fontSize: 9, marginTop: 5 }]}>SGPI:</Text>
+                        <Text style={[styles.bold, { fontSize: 9, marginTop: 10 }]}>Result Date:</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                            <Text style={[styles.bold, { fontSize: 9 }]}>CHECKED BY</Text>
+                            <Text style={[styles.bold, { fontSize: 9 }]}>PRINCIPAL</Text>
                         </View>
                     </View>
                 </View>
             </Page>
         </Document>
-    )
+    );
 };
 
 export default function Report() {
     const [student, setStudent] = useState();
-    const [open, setOpen] = useState(true)
-    const [pid, setPid] = useState(null);
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    const [open, setOpen] = useState(true);
+    const [pid, setPid] = useState('');
 
+    const handleClickOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
     const handleSend = () => {
-        setOpen(false)
-        axiosInstance.post('/admin/get_student', { pid: pid }, {
-            headers: {
-
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            }
-        }).then(res => {
-            setStudent(res.data)
-            setPid(null)
-            console.log(res.data)
-        })
-    }
+        setOpen(false);
+        axiosInstance.post('/admin/get_student', { pid: parseInt(pid) })
+            .then(res => {
+                setStudent(res.data);
+                setPid('');
+            })
+            .catch(error => console.error('Error fetching student data:', error));
+    };
 
     const handleChange = (event) => {
-        console.log(pid)
-        if (!isNaN(Number(event.target.value)) && pid <= 99999) {
-            setPid(Number(event.target.value));
+        const value = event.target.value;
+        if (/^\d{0,6}$/.test(value)) {
+            setPid(value);
         }
     };
 
-
     return (
         <>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                sx={{ zIndex: 99999 }}
-            >
-                <DialogTitle id="alert-dialog-title">
-                    Enter Student PID
-                </DialogTitle>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Enter Student PID</DialogTitle>
                 <DialogContent>
-                    <input
-                        id="input"
+                    <Input
                         value={pid}
                         onChange={handleChange}
+                        type="text"
+                        placeholder="Enter PID (6 digits)"
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Close</Button>
-                    <Button onClick={handleSend} autoFocus>
-                        Submit
-                    </Button>
+                    <Button onClick={handleSend} disabled={!pid}>Submit</Button>
                 </DialogActions>
             </Dialog>
+
             <PDFViewer style={{
                 position: 'fixed', width: '80vw', height: '88vh', bottom: 0, right: 0, zIndex: 9999
             }}>
                 <MyDocument data={student} />
-            </ PDFViewer>
-            <Button style={{
-                position: 'fixed', bottom: 0, right: 0, zIndex: 9999
-            }}
-                color='success' variant='contained' sx={{ zIndex: 99999 }} onClick={handleClickOpen}>
+            </PDFViewer>
+
+            <Button
+                style={{ position: 'fixed', bottom: 20, right: 20, zIndex: 99999 }}
+                color='primary'
+                variant='contained'
+                onClick={handleClickOpen}
+            >
                 Select Student
             </Button>
-
         </>
-    )
+    );
 }

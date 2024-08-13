@@ -1,6 +1,5 @@
 import { Button } from '@mui/material';
-import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import { TiTick } from 'react-icons/ti';
 import { useLocation } from 'react-router';
@@ -13,50 +12,36 @@ const IndividualRequest = ({ detail }) => {
     const day = currentDate.getDate().toString().padStart(2, '0');
     const hours = currentDate.getHours().toString().padStart(2, '0');
     const minutes = currentDate.getMinutes().toString().padStart(2, '0');
-    const seconds = currentDate.getSeconds().toString().padStart(2, '0');
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const status = queryParams.get('status');
-    const [isClicked, setIsClicked] = useState(false)
-    const [result, setResult] = useState('')
+    const [isClicked, setIsClicked] = useState(false);
+    const [result, setResult] = useState('');
 
-    const handleAccept = async (id) => {
+    const handleAccept = async (id, marksType) => {
         try {
-            const response = await axiosInstance.post('/admin/accept_teacher_subject', { _id: id });
+            const response = await axiosInstance.post('/admin/accept_teacher_subject', { _id: id, marks_type: marksType });
             console.log(response.data);
-            setIsClicked(true)
-            setResult('Accepted')
-
-
+            setIsClicked(true);
+            setResult('Accepted');
         } catch (error) {
             console.error(error);
-
         }
     };
 
-    const handleDeny = async (id) => {
+    const handleDeny = async (id, marksType) => {
         try {
-            const response = await axiosInstance.post('/admin/deny_teacher_subject', { _id: id });
+            const response = await axiosInstance.post('/admin/deny_teacher_subject', { _id: id, marks_type: marksType });
             console.log(response.data);
-            setIsClicked(true)
-            setResult('Rejected')
-
-
+            setIsClicked(true);
+            setResult('Rejected');
         } catch (error) {
             console.error(error);
-
         }
     };
-
-
-
-
 
     return (
-
-
-        <div key={detail._id} className="text-base flex justify-between my-4"
-        >
+        <div key={detail._id} className="text-base flex justify-between my-4">
             <div>
                 <span className="font-bold">
                     {detail.subject_details[0]?.subject_id} - {detail.subject_details[0]?.subject_name}
@@ -65,28 +50,36 @@ const IndividualRequest = ({ detail }) => {
                 <br />
                 <span>Date of Request: {`${day}-${month}-${year} ${hours}:${minutes}`}</span>
             </div>
-            {status === "Pending" &&
-
-                <div className='flex items-center justify-center '>
-                    {isClicked ? <><span className='font-bold text-secondary'>
-                        {result}
-                    </span>
-                    </> : <>
-                        <Button onClick={() => { handleAccept(detail._id); }} variant="contained" color="primary" className='rounded-full'>
-                            <TiTick size={20} />
-                        </Button>
-                        <Button onClick={() => { handleDeny(detail._id); }} variant="contained" color="secondary" className='rounded-full'>
-                            <RxCross2 size={20} />
-                        </Button>
-                    </>}
+            {status === "Pending" && (
+                <div className='flex items-center justify-center'>
+                    {isClicked ? (
+                        <span className='font-bold text-secondary'>
+                            {result}
+                        </span>
+                    ) : (
+                        <>
+                            <Button
+                                onClick={() => { handleAccept(detail._id, detail.marks_type); }}
+                                variant="contained"
+                                color="primary"
+                                className='rounded-full'
+                            >
+                                <TiTick size={20} />
+                            </Button>
+                            <Button
+                                onClick={() => { handleDeny(detail._id, detail.marks_type); }}
+                                variant="contained"
+                                color="secondary"
+                                className='rounded-full'
+                            >
+                                <RxCross2 size={20} />
+                            </Button>
+                        </>
+                    )}
                 </div>
-            }
-
+            )}
         </div>
-
-
     );
+};
 
-}
-
-export default IndividualRequest
+export default IndividualRequest;

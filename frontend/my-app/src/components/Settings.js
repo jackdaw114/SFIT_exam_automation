@@ -84,33 +84,7 @@ const IOSSwitch = styled((props) => (
 const capitalizeFirstLetter = ([first, ...rest]) => {
     return first.toUpperCase() + rest.join('');
 }
-function SettingDrawer(props) {
 
-    return (<div className='-mt-5  '>
-        <Box className="pl-10 pt-5 h-screen w-1/4 bg-slate-300 absolute ">
-            {/* <Box sx={{ minHeight: '100%', position: 'absolute', height: '100%', maxWidth: '20vw', width: '15vw' }}> */}
-
-            <List>
-                <ListItem sx={{ fontSize: 40, padding: 1, fontWeight: 'bold', fontFamily: "Open Sans" }}>Settings</ListItem>
-                {['Details', 'Subjects', 'Update'].map((text, index) => (
-                    <ListItem key={text}  >
-                        <ListItemButton sx={{
-                            border: 1, borderRadius: 100,
-                            borderColor: 'transparent',
-
-                        }}
-                            className=' hover:bg-lime-200/80 group '
-                        >
-                            <ListItemIcon>
-                                <CircleIcon className="text-slate-700 group-hover:text-slate-500 transition-all duration-200 ease-in-out" />
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-        </Box></div >)
-}
 
 const AddSubjectButton = ({ onClick }) => {
     return (
@@ -177,7 +151,7 @@ const DynamicTextFields = () => {
     };
     const addTextField = () => {
         const newFields = [...fields, { id: fields.length + 1, value: '' }];
-        const newCheckbox = [...checkboxes, { term: false, oral: false, practical: false }]
+        const newCheckbox = [...checkboxes, { term: false, oral: false, practical: false, iat: false, practical: false }]
         const newClassCheckbox = [...classCheckboxes, { selectedValue: 'A' }]
         setClassCheckboxes(newClassCheckbox)
         setFields(newFields);
@@ -285,6 +259,22 @@ const DynamicTextFields = () => {
                                 onChange={() => handleCheckboxChange(index, 'practical')}
                             />}
                             label="Practicals"
+                            labelPlacement='top'
+                        />
+                        <FormControlLabel sx={{ marginLeft: 10 }}
+                            control={<Checkbox
+                                checked={checkboxes[index].iat}
+                                onChange={() => handleCheckboxChange(index, 'iat')}
+                            />}
+                            label="IAT"
+                            labelPlacement='top'
+                        />
+                        <FormControlLabel sx={{ marginLeft: 10 }}
+                            control={<Checkbox
+                                checked={checkboxes[index].ese}
+                                onChange={() => handleCheckboxChange(index, 'ese')}
+                            />}
+                            label="ESE"
                             labelPlacement='top'
                         />
 
@@ -407,8 +397,6 @@ export default function Settings(props) {
     return (
         <>
             <div className='font-opensans'>
-
-                {/* <SettingDrawer /> */}
                 <Box sx={{
                     paddingLeft: 3, marginTop: 2,
                     paddingTop: 2,

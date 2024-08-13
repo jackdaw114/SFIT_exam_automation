@@ -19,7 +19,6 @@ import DeleteTeacher from './components/DeleteTeacher';
 import SubscriptionRequests from './components/SubscriptionRequests';
 import { SubjectRequests } from './components/SubjectRequests';
 import { SubjectListEndpoint } from './components/SubjectListEndpoint';
-import ViewTeachers from './components/ViewTeachers';
 import TeacherList from './components/TeacherList';
 import History from './components/History';
 import ManageTeacher from './components/ManageTeacher';

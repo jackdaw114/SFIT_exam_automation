@@ -108,6 +108,8 @@ router.post('/set_subject_list', async (req, res) => {
 
 router.post('/create_gazette', async (req, res) => {
     try {
+
+
         let students = await StudentsSchema.find({ semester: req.body.semester, branch: req.body.branch },
             // {
             //     pid: true,
@@ -140,7 +142,7 @@ router.post('/create_gazette', async (req, res) => {
             { wch: 7 },
             { wch: 7 }
         ];
-        const entry_dist = 5;
+        const entry_dist = 7;
 
         let entry = 14;
         const column_lista = ['C', 'D', 'E', 'F']
@@ -166,12 +168,12 @@ router.post('/create_gazette', async (req, res) => {
                 if (index < SubList.length && student.practical && student.term && student.oral) {
                     console.log(index, "hello here")
 
-                    if (student.practical.hasOwnProperty(SubList[index])) {
-                        temp_sheet[`${item}${entry}`] = { t: 's', v: (student.practical && student.practical[SubList[index]]) ?? 'no data' }
-                    }
-                    if (student.term.hasOwnProperty(SubList[index]) && student.oral.hasOwnProperty(SubList[index])) {
+                    // if (student.practical.hasOwnProperty(SubList[index])) {
+                    //     temp_sheet[`${item}${entry}`] = { t: 's', v: (student.practical && student.practical[SubList[index]]) ?? 'no data' }
+                    // }
+                    if (student.term.hasOwnProperty(SubList[index]) && student.oral.hasOwnProperty(SubList[index]) && student.practical.hasOwnProperty(SubList[index])) {
                         temp_sheet[`${item}${entry + 1}`] = {
-                            t: 's', v: student.oral && student.term && student.oral[SubList[index]] && student.term[SubList[index]] ? `${student.term[SubList[index]]}/${student.oral[SubList[index]]}` : 'no data'
+                            t: 's', v: student.oral && student.term && student.oral[SubList[index]] && student.term[SubList[index]] && student.practical && student.practical[SubList[index]] ? `${student.term[SubList[index]]}/${student.oral[SubList[index]] >= 0 && student.practical[SubList[index]] >= 0 ? student.oral[SubList[index]] + student.practical[SubList[index]] : -8}` : 'no data'
                         }
                     }
                 }
@@ -180,14 +182,14 @@ router.post('/create_gazette', async (req, res) => {
             column_listb.forEach((item, index) => {
                 //console.log('item', item, 'iter:', index)
                 if (index + 5 < SubList.length && student.practical && student.term && student.oral) {
-                    if (student.practical.hasOwnProperty(SubList[index + 5])) {
+                    // if (student.practical.hasOwnProperty(SubList[index + 5])) {
 
-                        temp_sheet[`${item}${entry + 2} `] = { t: 's', v: student.practical && student.practical[SubList[index + 5]] ? student.practical[SubList[index + 5]] : 'no data' }
-                    }
+                    //     temp_sheet[`${item}${entry + 3} `] = { t: 's', v: student.practical && student.practical[SubList[index + 5]] ? student.practical[SubList[index + 5]] : 'no data' }
+                    // }
 
-                    if (student.term.hasOwnProperty(SubList[index + 5]) && student.oral.hasOwnProperty(SubList[index + 5])) {
+                    if (student.term.hasOwnProperty(SubList[index + 5]) && student.oral.hasOwnProperty(SubList[index + 5]) && student.practical.hasOwnProperty(SubList[index + 5])) {
                         temp_sheet[`${item}${entry + 3} `] = {
-                            t: 's', v: student.oral && student.term && student.oral[SubList[index + 5]] && student.term[SubList[index + 5]] ? `${student.term[SubList[index + 5]]}/${student.orals[SubList[index + 5]]}` : 'no data'
+                            t: 's', v: student.oral && student.term && student.practical && student.oral[SubList[index + 5]] && student.term[SubList[index + 5]] ? `${student.term[SubList[index + 5]]}/${student.oral[SubList[index + 5]] >= 0 && student.practical[SubList[index + 5]] >= 0 ? student.oral[SubList[index] + 5] + student.practical[SubList[index + 5]] : -8}` : 'no data'
                         }
                     }
                 }
