@@ -15,9 +15,8 @@ export default function ExcelCard(props) {
                 subject: props.subject[0],
                 marks_type: props.marks_type,
                 semester: parseInt(props.semester),
+                subject_name: props.subject[1],
                 class: props.class,
-                editable: props.editable
-
             }
         })
     }

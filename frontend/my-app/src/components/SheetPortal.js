@@ -270,8 +270,7 @@ function Home({ open_list, subjectList, handleChangeSubject, type, setType, subj
 
                     {cardData.map((val, index) => (
                         <Grid item xs={12}>
-                            <ExcelCard marks_type={val.marks_type} subject={[val.subject_id, val.subject_name]} semester={val.semester} department={val.branch} class={val.class} editable={val.editable} ></ExcelCard>
-
+                            <ExcelCard marks_type={val.marks_type} subject={[val.subject_id, val.subject_name]} semester={val.semester} department={val.branch} class={val.class} ></ExcelCard>
                         </Grid>
 
                     ))}
