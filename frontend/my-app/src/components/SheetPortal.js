@@ -1,179 +1,178 @@
-import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
-import Header from "./Header";
-import { toExcel } from "./Excel";
-import { Fragment, useCallback, useContext, useEffect, useState } from "react";
-
-import { read, utils, write, writeFile } from "xlsx";
-import { saveAs } from "file-saver";
-import ExcelCard from "./ExcelCard";
-import './Sheets.css'
-import { Routes, useNavigate } from "react-router";
-import * as Romanice from 'romanice';
-import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
-
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import SheetView from "./SheetView";
-import { BackgroundContext } from "./BackgroundContext";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import axiosInstance from "./axiosInstance";
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import ExcelCard from "./ExcelCard";
+import { BackgroundContext } from "./BackgroundContext";
+import LoadingScreen from "./LoadingScreen";
 
-
-
+const CACHE_DURATION = 24 * 60 * 60 * 1000; // Cache duration of 24 hours
 
 export default function TeacherNav() {
+    const navigate = useNavigate();
+    const [subject, setSubject] = useState('');
+    const [subjectId, setSubjectId] = useState('');
+    const [type, setType] = useState('');
+    const [class_name, setClassName] = useState('');
+    const [cardData, setCardData] = useState([]);
+    const [subjectList, setSubjectList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const [type, setType] = useState('')
-    const [subject, setSubject] = useState('')
-    const [subjectId, setSubjectId] = useState('')
-    const [semester, setSemester] = useState('')
-    const [department, setDepartment] = useState('')
-    const [studentDetails, setStudentDetails] = useState([])
-    const [year, setYear] = useState(0)
-    const [jsonData, setJsonData1] = useState([])
-    const [cardData, setCardData] = useState([])
-    const [index, setIndex] = useState(0);
-    const navigate = useNavigate()
-    const [class_name, setClassName] = useState([])
-    const [subjectList, setSubjectList] = useState([])
-    const { setCustomBackgroundColor } = useContext(BackgroundContext)
+    const { setCustomBackgroundColor } = useContext(BackgroundContext);
 
+    useEffect(() => {
+        setCustomBackgroundColor('#e7f1ef');
+        fetchInitialData();
+    }, []);
 
-    const open_list = []
+    const fetchInitialData = async () => {
+        const examsCache = JSON.parse(localStorage.getItem('cachedExams'));
+        const subjectsCache = JSON.parse(localStorage.getItem('cachedSubjects'));
+        const lastFetchTime = parseInt(localStorage.getItem('examsLastFetchTime'), 10);
+        const currentTime = Date.now();
 
-    const handleChangeSubject = (e) => {
-        open_list.push(0)
-        const selectedSubjectId = e.target.value;
-        setSubject(e.target.value)
-        const selectedItem = subjectList.find(item => item.subject_id === selectedSubjectId);
-
-        if (selectedItem) {
-            const selectedItemId = selectedItem._id;
-
-            console.log(subjectList.find(item => item.subject_id === subject)?.class)
-
-            setSubjectId(selectedItemId)
-            console.log(selectedItemId)
+        // Check if cache is still valid
+        if (examsCache && subjectsCache && (currentTime - lastFetchTime < CACHE_DURATION)) {
+            setCardData(examsCache);
+            setSubjectList(subjectsCache);
+            setIsLoading(false);
+        } else {
+            setIsLoading(true);
+            await Promise.all([fetchExams(), fetchSubjects()]);
+            setIsLoading(false);
         }
     };
 
+    const fetchExams = async () => {
+        try {
+            const res = await axiosInstance.post('/teacher/get_exams', { teacher_id: localStorage.getItem('username') });
+            setCardData(res.data);
+            localStorage.setItem('cachedExams', JSON.stringify(res.data));
+            const currentTime = Date.now();
+            localStorage.setItem('examsLastFetchTime', currentTime.toString());
+        } catch (error) {
+            console.error("Error fetching exams:", error);
+        }
+    };
 
+    const fetchSubjects = async () => {
+        try {
+            const res = await axiosInstance.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') });
+            setSubjectList(res.data.subject_list);
+            localStorage.setItem('cachedSubjects', JSON.stringify(res.data.subject_list));
+        } catch (error) {
+            console.error("Error fetching subjects:", error);
+        }
+    };
 
-    useEffect(() => {
-        setCustomBackgroundColor('#e7f1ef')
-        axiosInstance.post('/teacher/get_exams', { teacher_id: localStorage.getItem('username') }, {
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
+    const handleChangeSubject = (e) => {
+        const selectedSubjectId = e.target.value;
+        setSubject(selectedSubjectId);
+        const selectedItem = subjectList.find(item => item.subject_id === selectedSubjectId);
+        if (selectedItem) {
+            setSubjectId(selectedItem._id);
+        }
+        // Reset type and class when subject changes
+        setType('');
+        setClassName('');
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const res = await axiosInstance.post('/teacher/create_student_marks', {
+                semester: parseInt(subject.charAt(3)),
+                marks_type: type,
+                subject: subject,
+                class: class_name,
+                teacher_id: localStorage.getItem('username'),
+                subject_id: subjectId
+            });
+
+            if (res.data) {
+                const newCard = {
+                    marks_type: type,
+                    subject_id: subject,
+                    subject_name: subjectList.find(item => item.subject_id === subject)?.subject_name,
+                    semester: parseInt(subject.charAt(3)),
+                    branch: class_name.split('-')[0],
+                    class: class_name,
+                    editable: res.data.editable
+                };
+
+                // Update cardData state and localStorage cache
+                setCardData(prevData => {
+                    const updatedData = [...prevData, newCard];
+                    localStorage.setItem('cachedExams', JSON.stringify(updatedData));
+                    return updatedData;
+                });
+
+                // Update last fetch time
+                const currentTime = Date.now();
+                localStorage.setItem('examsLastFetchTime', currentTime.toString());
             }
-        }).then((res) => {
-            console.log(res.data)
-            setCardData(res.data)
-        })
-        axiosInstance.post('teacher/teachersubjects', { teacher_id: localStorage.getItem('username') }, {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            }
-        }).then(res => {
-            console.log(res.data.subject_list)
-            // console.log(res.data)
-            setSubjectList(res.data.subject_list)
-        })
 
+            navigate('/home/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), class: class_name, editable: res.data.editable } });
+        } catch (error) {
+            console.error("Error creating student marks:", error);
+        }
+    };
+
+    if (isLoading) {
+        return <LoadingScreen />;
     }
-        , [])
-
-
-    const handleSubmit = async (e) => {
-        //  let jsonData = []
-        const theJsonData = []
-        console.log(subject.charAt(3))
-        axiosInstance.post('/teacher/create_student_marks', {
-            semester: parseInt(subject.charAt(3)),
-            marks_type: type,
-            subject: subject,
-            class: class_name,
-            teacher_id: localStorage.getItem('username'),
-            subject_id: subjectId
-        }, {
-
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            }
-            // TODO: teacher backend here aswell
-
-        }).then((res) => {
-            console.log(res.data)
-            navigate('/home/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), class: class_name, editable: res.data.editable } })
-
-        })
-        //console.log( jsonData)
-        // console.log()
-        // TODO: update function here somewhere for all (bulk update)
-    }
-
-
-    const { romanice } = Romanice;
-    const standardConverter = romanice();
-
-
     return (
-        <>
-            <div className='container-teacher-nav w-12/12'>
-
-                <Home open_list={open_list} subjectList={subjectList} handleChangeSubject={handleChangeSubject} type={type} setType={setType} subject={subject} setSubject={setSubject} class_name={class_name} setClassName={setClassName} handleSubmit={handleSubmit} cardData={cardData} />
-
-            </div>
-        </>
-    )
+        <div className='container-teacher-nav w-12/12'>
+            <Home
+                subjectList={subjectList}
+                handleChangeSubject={handleChangeSubject}
+                type={type}
+                setType={setType}
+                subject={subject}
+                class_name={class_name}
+                setClassName={setClassName}
+                handleSubmit={handleSubmit}
+                cardData={cardData}
+            />
+        </div>
+    );
 }
 
-function Home({ open_list, subjectList, handleChangeSubject, type, setType, subject, setSubject, class_name, setClassName, handleSubmit, cardData }) {
-
+function Home({ subjectList, handleChangeSubject, type, setType, subject, class_name, setClassName, handleSubmit, cardData }) {
     const [open, setOpen] = useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const handleClickOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const handleChangeType = (e) => setType(e.target.value);
+    const handleChangeClass = (e) => setClassName(e.target.value);
+    const handleSubjectChange = (e) => {
+        handleChangeSubject(e);
+        setType('');
+        setClassName('');
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleChangeType = (e) => {
-        open_list.push(0)
-        console.log(e.target)
-        setType(e.target.value)
-    }
-
-    const handleChangeClass = (e) => {
-        open_list.push(0)
-        console.log(e.target)
-        console.log(subjectList.find(item => item.subject_id === subject)?.class)
-        setClassName(e.target.value)
-    }
+    // Filter cardData based on the selected subject, marks type, and class
+    const filteredCardData = useMemo(() => {
+        return cardData.filter(card =>
+            (!subject || card.subject_id === subject) &&
+            (!type || card.marks_type === type) &&
+            (!class_name || card.class === class_name)
+        );
+    }, [cardData, subject, type, class_name]);
 
     return (
         <>
+
             <Box className='selection-box'>
                 <Box sx={{ borderRadius: 2, margin: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
-                    <Box sx={{ display: 'flex', minWidth: '85%' }} className=" justify-evenly">
-
-
-
+                    <Box sx={{ display: 'flex', minWidth: '85%' }} className="justify-evenly">
                         <FormControl sx={{ minWidth: 200 }}>
                             <InputLabel>Subject</InputLabel>
-                            <Select onChange={(e) => handleChangeSubject(e)} value={subject} label="Subject" >
-                                {subjectList.map((item, index) => (
-
-                                    <MenuItem value={item.subject_id} data-id={item._id}>{item.subject_id} - {item.subject_name}</MenuItem>
-
+                            <Select onChange={handleSubjectChange} value={subject} label="Subject">
+                                <MenuItem value="">All Subjects</MenuItem>
+                                {subjectList.map((item) => (
+                                    <MenuItem key={item._id} value={item.subject_id}>{item.subject_id} - {item.subject_name}</MenuItem>
                                 ))}
-
                             </Select>
                         </FormControl>
                         <FormControl sx={{ minWidth: 200 }}>
@@ -263,23 +262,22 @@ function Home({ open_list, subjectList, handleChangeSubject, type, setType, subj
                 </Box>
             </Box>
 
-            <div className="pb-20 ">
-
-                <Grid container spacing={1} className=" flex justify-center px-4">
-
-
-                    {cardData.map((val, index) => (
-                        <Grid item xs={12}>
-                            <ExcelCard marks_type={val.marks_type} subject={[val.subject_id, val.subject_name]} semester={val.semester} department={val.branch} class={val.class} ></ExcelCard>
+            <Box>
+                <h1 className='font-bold text-xl m-5'>Your Exams</h1>
+                <Grid container spacing={1} style={{ padding: 12 }}>
+                    {filteredCardData.map(card => (
+                        <Grid key={`${card.subject_id}-${card.marks_type}-${card.class}`} item xs={12}>
+                            <ExcelCard
+                                marks_type={card.marks_type}
+                                subject={[card.subject_id, card.subject_name]}
+                                semester={card.semester}
+                                department={card.branch}
+                                class={card.class}
+                            />
                         </Grid>
-
                     ))}
-
-
                 </Grid>
-            </div>
-
-
+            </Box>
 
         </>
     );
