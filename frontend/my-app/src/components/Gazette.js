@@ -1,112 +1,149 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material"
-import Header from "./Header"
-import { useState } from "react"
-import { useNavigate } from "react-router"
-import axios from "axios"
-import { writeFile } from "xlsx"
-import axiosInstance from "./axiosInstance"
+import React, { useState } from 'react';
+import {
+    Box,
+    Button,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    Typography,
+    Container,
+    Paper,
+    Grid,
+} from "@mui/material";
+import { styled } from '@mui/system';
+import { PictureAsPdf as PdfIcon } from '@mui/icons-material';
+import axiosInstance from "./axiosInstance";
+import { writeFile } from "xlsx";
 
-export default function Gazette(props) {
-    const [semester, setSemester] = useState('')
-    const [department, setDepartment] = useState('')
-    const [year, setYear] = useState(0)
-    const navigate = useNavigate()
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(4),
+    borderRadius: 16,
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backdropFilter: 'blur(10px)',
+}));
 
-    const [select, setSelect] = useState(['Year', 'Department', 'Semester'])
+const StyledSelect = styled(Select)(({ theme }) => ({
+    minWidth: 200,
+    '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.primary.main,
+    },
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.primary.dark,
+    },
+}));
 
-    const handleChangeSemester = (e) => {
-        setSemester(e.target.value);
-        setSelect(select.filter(item => item !== 'Semester'));
-        // console.log(e.target.value)
+const StyledButton = styled(Button)(({ theme }) => ({
+    marginTop: theme.spacing(3),
+    borderRadius: 8,
+    padding: theme.spacing(1, 4),
+    transition: 'all 0.3s ease-in-out',
+    '&:hover': {
+        transform: 'translateY(-2px)',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    },
+}));
+
+export default function Gazette() {
+    const [semester, setSemester] = useState('');
+    const [department, setDepartment] = useState('');
+    const [year, setYear] = useState('');
+    const [select, setSelect] = useState(['Year', 'Department', 'Semester']);
+
+    const handleChange = (setter) => (e) => {
+        setter(e.target.value);
+        setSelect(select.filter(item => item !== e.target.name));
     };
 
-    const handleChangeDepartment = (e) => {
-        setDepartment(e.target.value);
-        setSelect(select.filter(item => item !== 'Department'));
-        // console.log(e.target.value)
-    };
-
-    const handleChangeYear = (e) => {
-        setYear(e.target.value);
-        setSelect(select.filter(item => item !== 'Year'));
-        // console.log(e.target.value)
-    };
-    const handlesubmit = (e) => {
-        axiosInstance.post('/admin/create_gazette',
-            { semester: semester, branch: department, year: year },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
+    const handleSubmit = async () => {
+        try {
+            const res = await axiosInstance.post('/admin/create_gazette',
+                { semester, branch: department, year },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    }
                 }
-            }).then(res => {
-                writeFile(res.data.book, `Gazette_semester_${semester}_department_${department}_year_${year}.xlsx`)
-            })
-    }
+            );
+            writeFile(res.data.book, `Gazette_semester_${semester}_department_${department}_year_${year}.xlsx`);
+        } catch (error) {
+            console.error("Error creating gazette:", error);
+        }
+    };
+
     return (
-        <>
-            <div className='w-full h-full '>
-                <Box className=' mx-4'>
-                    <Box sx={{ borderRadius: 3, marginTop: 2, marginBottom: 2, backgroundColor: "white", display: 'flex', justifyContent: 'space-around', boxSizing: "100%", padding: 5, alignItems: 'center' }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-around', minWidth: '70%' }}>
-                            <FormControl sx={{ minWidth: 200 }}>
-                                <InputLabel>Year</InputLabel>
-                                <Select onChange={handleChangeYear} value={year} label="Year" autoWidth>
-                                    <MenuItem value="2022">2022</MenuItem>
-                                    <MenuItem value="2023">2023</MenuItem>
-                                    <MenuItem value="2024">2024</MenuItem>
-                                </Select>
-                            </FormControl>
-
-                            <FormControl sx={{ minWidth: 200 }}>
-                                <InputLabel>Department</InputLabel>
-                                <Select onChange={handleChangeDepartment} value={department} label="Department" autoWidth>
-                                    <MenuItem value="CMPN">CMPN</MenuItem>
-                                    <MenuItem value="EXTC">EXTC</MenuItem>
-                                    <MenuItem value="MECH">MECH</MenuItem>
-                                    <MenuItem value="INFT">INFT</MenuItem>
-                                </Select>
-                            </FormControl>
-
-                            <FormControl sx={{ minWidth: 200 }}>
-                                <InputLabel>Semester</InputLabel>
-                                <Select onChange={handleChangeSemester} value={semester} label="Semester" autoWidth>
-                                    <MenuItem value={1}>Sem 1</MenuItem>
-                                    <MenuItem value={2}>Sem 2</MenuItem>
-                                    <MenuItem value={3}>Sem 3</MenuItem>
-                                    <MenuItem value={4}>Sem 4</MenuItem>
-                                    <MenuItem value={5}>Sem 5</MenuItem>
-                                    <MenuItem value={6}>Sem 6</MenuItem>
-                                    <MenuItem value={7}>Sem 7</MenuItem>
-                                    <MenuItem value={8}>Sem 8</MenuItem>
-                                </Select>
-                            </FormControl>
-
-
-                        </Box>
-
-                        <div>
-                            <button
-                                className={`bg-orange-600 text-white font-mont py-2 px-4 rounded hover:shadow-lg transition-all duration-300 ease-in-out text-lg ${select.length !== 0 ? 'cursor-not-allowed opacity-50' : 'disabled:bg-gray-400 disabled:text-gray-700'}`}
-                                onClick={handlesubmit}
-                                disabled={select.length !== 0}
+        <Container maxWidth="lg" className="py-8">
+            <StyledPaper elevation={3}>
+                <Typography variant="h4" gutterBottom className="text-center font-mont text-gray-800 mb-6">
+                    Generate Gazette
+                </Typography>
+                <Grid container spacing={4} justifyContent="center" alignItems="center">
+                    <Grid item xs={12} md={4}>
+                        <FormControl fullWidth>
+                            <InputLabel>Year</InputLabel>
+                            <StyledSelect
+                                name="Year"
+                                value={year}
+                                label="Year"
+                                onChange={handleChange(setYear)}
                             >
-                                Create Gazette
-                            </button>
-                        </div>
-
-
-                    </Box>
+                                {[2022, 2023, 2024].map((y) => (
+                                    <MenuItem key={y} value={y}>{y}</MenuItem>
+                                ))}
+                            </StyledSelect>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <FormControl fullWidth>
+                            <InputLabel>Department</InputLabel>
+                            <StyledSelect
+                                name="Department"
+                                value={department}
+                                label="Department"
+                                onChange={handleChange(setDepartment)}
+                            >
+                                {['CMPN', 'EXTC', 'MECH', 'INFT'].map((dept) => (
+                                    <MenuItem key={dept} value={dept}>{dept}</MenuItem>
+                                ))}
+                            </StyledSelect>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <FormControl fullWidth>
+                            <InputLabel>Semester</InputLabel>
+                            <StyledSelect
+                                name="Semester"
+                                value={semester}
+                                label="Semester"
+                                onChange={handleChange(setSemester)}
+                            >
+                                {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+                                    <MenuItem key={sem} value={sem}>Sem {sem}</MenuItem>
+                                ))}
+                            </StyledSelect>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+                <Box display="flex" justifyContent="center" mt={4}>
+                    <StyledButton
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}
+                        disabled={select.length !== 0}
+                        startIcon={<PdfIcon />}
+                        className={`${select.length !== 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                        Create Gazette
+                    </StyledButton>
                 </Box>
-                <div className=" h-96 rounded-xl bg-white mx-4 flex justify-center items-center">
-                    <div className="text-5xl flex font-mont">
-
-                        {select.length ? <p>Please Select {select.join(', ')}</p> : <p className="text-6xl">Click on "Create Gazette"</p>}
-                    </div>
-                </div>
-
-            </div>
-        </>
-    )
-
+            </StyledPaper>
+            <Box mt={4} className="h-96 rounded-xl bg-gradient-to-r from-blue-100 to-purple-100 flex justify-center items-center">
+                <Typography variant="h4" className="text-center font-mont text-gray-800">
+                    {select.length ? `Please Select ${select.join(', ')}` : 'Click on "Create Gazette"'}
+                </Typography>
+            </Box>
+        </Container>
+    );
 }

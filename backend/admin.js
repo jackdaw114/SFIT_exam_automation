@@ -49,7 +49,7 @@ router.post('/addteacher', async (req, res) => {
             res.status(200).send('Ok')
         })
     } catch (err) {
-        res.status(500).send(err);
+        res.status(201).send("Teacher already exists with same username!");
     }
 })
 
@@ -58,9 +58,10 @@ router.post('/deleteteacher', async (req, res) => {
         const teacher = await Teacher.deleteOne({
             username: req.body.username
         })
-        console.log(teacher)
-        if (teacher.deleteCount > 0)
+        // console.log("Hello: ", teacher)
+        if (teacher.deletedCount > 0) {
             res.status(200).send('OK')
+        }
         else
             res.status(201).send('Record not found')
     } catch (err) {

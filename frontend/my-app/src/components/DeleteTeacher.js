@@ -1,54 +1,94 @@
-
-import { useState } from 'react';
-import LoginForm from './LoginForm';
-import { Box, Button, Typography } from '@mui/material';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { Box, Button, Typography, Container, Paper, Snackbar } from '@mui/material';
+import { styled } from '@mui/system';
+import DeleteIcon from '@mui/icons-material/Delete';
 import axiosInstance from './axiosInstance';
+import LoginForm from './LoginForm';
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: 16,
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+    marginTop: theme.spacing(3),
+    borderRadius: 8,
+    padding: theme.spacing(1, 4),
+}));
 
 export default function DeleteTeacher() {
-    const [inputs, setInputs] = useState({
-        username: ""
-    })
+    const [input, setInput] = useState({ username: '' });
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
-    const labels = {
-        username: "username",
-    }
     const handleChange = (e) => {
-        setInputs((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
+        const { name, value } = e.target;
+        setInput((prevInput) => ({ ...prevInput, [name]: value }));
+    };
 
-        }))
-    }
+    const handleSubmit = async () => {
+        try {
+            const response = await axiosInstance.post('/admin/deleteteacher', input, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+            });
 
-    const handleSubmit = () => {
-
-        axiosInstance.post('/admin/deleteteacher', inputs, {
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
+            if (response.status === 200) {
+                setSnackbarMessage('Teacher deleted from database successfully!');
+                setInput({ username: '' });
+            } else if (response.status === 500) {
+                setSnackbarMessage('Duplicate record found. Please enter a unique username.');
+            } else {
+                setSnackbarMessage('Record not found.');
             }
-        }).then((res) => {
-            if (res.status == 500)
-                alert('Duplicate Record found. Please enter a unique userid')
-            else if (res.status == 200)
-                alert('teacher deleted from database!')
-            else
-                alert('Record not found')
-        })
-    }
-    // console.log('this is create teacher')
+        } catch (error) {
+            console.error('Error deleting teacher:', error);
+            setSnackbarMessage('An error occurred. Please try again.');
+        }
+
+        setOpenSnackbar(true);
+    };
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
+    };
+
     return (
-        <>
-            <div className=' mt-10 flex justify-center items-center  px-10 '>
-                <div className=' bg-white rounded-xl p-5'>
-                    <Box padding={2} display={'flex'} alignItems={'center'} flexDirection={'column'}>
-                        <Typography variant='h4' fontFamily='Ubuntu'>Enter Teacher Details</Typography>
-                        <LoginForm inputs={inputs} func={handleChange} font="black" labels={labels} />
-                        <Button variant='contained' onClick={handleSubmit} color='warning' >Delete</Button>
-                    </Box>
-                </div>
-            </div>
-        </>
-    )
+        <Container maxWidth="sm">
+            <Box mt={10}>
+                <StyledPaper elevation={3}>
+                    <Typography variant="h4" gutterBottom fontFamily="Ubuntu">
+                        Delete Teacher
+                    </Typography>
+                    <LoginForm
+                        inputs={input}
+                        func={handleChange}
+                        labels={{ username: 'Username' }}
+                        font="inherit"
+                    />
+                    <StyledButton
+                        variant="contained"
+                        color="error"
+                        onClick={handleSubmit}
+                        fullWidth
+                        startIcon={<DeleteIcon />}
+                    >
+                        Delete Teacher
+                    </StyledButton>
+                </StyledPaper>
+            </Box>
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message={snackbarMessage}
+            />
+        </Container>
+    );
 }
