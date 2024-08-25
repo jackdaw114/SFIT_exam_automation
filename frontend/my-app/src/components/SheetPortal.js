@@ -82,6 +82,7 @@ export default function TeacherNav() {
             const res = await axiosInstance.post('/teacher/create_student_marks', {
                 semester: parseInt(subject.charAt(3)),
                 marks_type: type,
+                subject_name: subjectList.find(item => item.subject_id === subject)?.subject_name,
                 subject: subject,
                 class: class_name,
                 teacher_id: localStorage.getItem('username'),
@@ -94,10 +95,11 @@ export default function TeacherNav() {
                     subject_id: subject,
                     subject_name: subjectList.find(item => item.subject_id === subject)?.subject_name,
                     semester: parseInt(subject.charAt(3)),
-                    branch: class_name.split('-')[0],
+                    branch: subject[0] === "C" ? "CMPN" : subject[0] === "E" ? "EXTC" : "MECH", //Change this logic
                     class: class_name,
                     editable: res.data.editable
                 };
+                console.log("New Card : " + newCard)
 
                 // Update cardData state and localStorage cache
                 setCardData(prevData => {
@@ -111,7 +113,7 @@ export default function TeacherNav() {
                 localStorage.setItem('examsLastFetchTime', currentTime.toString());
             }
 
-            navigate('/home/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), class: class_name, editable: res.data.editable } });
+            navigate('/home/viewexam', { state: { subject: subject, marks_type: type, semester: parseInt(subject.charAt(3)), class: class_name, editable: res.data.editable, subject_name: subjectList.find(item => item.subject_id === subject)?.subject_name } });
         } catch (error) {
             console.error("Error creating student marks:", error);
         }
@@ -137,7 +139,7 @@ export default function TeacherNav() {
     );
 }
 
-function Home({ subjectList, handleChangeSubject, type, setType, subject, class_name, setClassName, handleSubmit, cardData }) {
+function Home({ subjectList, handleChangeSubject, type, setType, subject, class_name, subject_name, setClassName, handleSubmit, cardData }) {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => setOpen(true);
@@ -153,11 +155,22 @@ function Home({ subjectList, handleChangeSubject, type, setType, subject, class_
 
     // Filter cardData based on the selected subject, marks type, and class
     const filteredCardData = useMemo(() => {
-        return cardData.filter(card =>
-            (!subject || card.subject_id === subject) &&
-            (!type || card.marks_type === type) &&
-            (!class_name || card.class === class_name)
-        );
+        const uniqueCards = new Map();
+
+        cardData.forEach(card => {
+            const key = `${card.subject_id}-${card.marks_type}-${card.class}`;
+            if (
+                (!subject || card.subject_id === subject) &&
+                (!type || card.marks_type === type) &&
+                (!class_name || card.class === class_name)
+            ) {
+                if (!uniqueCards.has(key)) {
+                    uniqueCards.set(key, card);
+                }
+            }
+        });
+
+        return Array.from(uniqueCards.values());
     }, [cardData, subject, type, class_name]);
 
     return (
@@ -170,7 +183,7 @@ function Home({ subjectList, handleChangeSubject, type, setType, subject, class_
                             <InputLabel>Subject</InputLabel>
                             <Select onChange={handleSubjectChange} value={subject} label="Subject">
                                 <MenuItem value="">All Subjects</MenuItem>
-                                {subjectList.map((item) => (
+                                {subjectList?.map((item) => (
                                     <MenuItem key={item._id} value={item.subject_id}>{item.subject_id} - {item.subject_name}</MenuItem>
                                 ))}
                             </Select>
@@ -205,7 +218,7 @@ function Home({ subjectList, handleChangeSubject, type, setType, subject, class_
                         <FormControl sx={{ minWidth: 200 }}>
                             <InputLabel>Enter class</InputLabel>
                             {subject ? (<>
-                                {console.log("MEOW", subjectList.find(item => item.subject_id === subject).class)}
+                                {/* {console.log("MEOW", subjectList.find(item => item.subject_id === subject).class)} */}
                                 <Select onChange={handleChangeClass} value={class_name} label="Enter Class">
                                     {[subjectList.find(item => item.subject_id === subject).class].map((item, index) => {
                                         return <MenuItem key={index} value={item} > {item} </MenuItem>
@@ -267,21 +280,38 @@ function Home({ subjectList, handleChangeSubject, type, setType, subject, class_
 
             <Box>
                 <h1 className='font-bold text-xl m-5'>Your Exams</h1>
-                <Grid container spacing={1} style={{ padding: 12 }}>
-                    {filteredCardData.map(card => (
-                        <Grid key={`${card.subject_id}-${card.marks_type}-${card.class}`} item xs={12}>
-                            <ExcelCard
-                                marks_type={card.marks_type}
-                                subject={[card.subject_id, card.subject_name]}
-                                semester={card.semester}
-                                department={card.branch}
-                                class={card.class}
-                            />
+                <Grid container spacing={1} sx={{ padding: 2 }}>
+                    {console.log(filteredCardData)}
+                    {filteredCardData.length > 0 ? (
+                        filteredCardData.map((card) => (
+                            <Grid key={`${card.subject_id}-${card.marks_type}-${card.class}`} item xs={12}>
+                                <ExcelCard
+                                    marks_type={card.marks_type}
+                                    subject={[card.subject_id, card.subject_name]}
+                                    semester={card.semester}
+                                    department={card.branch}
+                                    class={card.class}
+                                />
+                            </Grid>
+                        ))
+                    ) : (
+                        <Grid item xs={12}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: '100%',
+                                    textAlign: 'center',
+                                    fontSize: '1.5rem',
+                                }}
+                            >
+                                No Exams to display
+                            </Box>
                         </Grid>
-                    ))}
+                    )}
                 </Grid>
             </Box>
-
         </>
     );
 }

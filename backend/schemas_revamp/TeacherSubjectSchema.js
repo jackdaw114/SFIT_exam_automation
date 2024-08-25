@@ -21,6 +21,8 @@ const TeacherSubjectSchema = mongoose.Schema(
         term: Boolean,
         oral: Boolean,
         practical: Boolean,
+        iat: Boolean,
+        ese: Boolean,
         verified: {
             type: Number,
             default: 0
@@ -42,6 +44,14 @@ const TeacherSubjectSchema = mongoose.Schema(
             },
 
             practical: {
+                type: Number,
+                default: 0,
+            },
+            iat: {
+                type: Number,
+                default: 0,
+            },
+            ese: {
                 type: Number,
                 default: 0,
             }

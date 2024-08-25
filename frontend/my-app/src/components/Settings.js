@@ -16,7 +16,8 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import CircleIcon from '@mui/icons-material/Circle';
+import Snackbar from '@mui/material/Snackbar';
+
 import ChangePass from './ProfileComponents/ChangePass';
 import axiosInstance from './axiosInstance';
 
@@ -133,6 +134,21 @@ const DynamicTextFields = () => {
     const [checkboxes, setCheckboxes] = React.useState([]);
     const [classCheckboxes, setClassCheckboxes] = React.useState([]);
     const [subjectList, setSubjectList] = React.useState([])
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [snackbarMessage, setSnackbarMessage] = React.useState('');
+
+
+    const handleSnackbarOpen = (message) => {
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen(false);
+    };
 
 
     const handleClassChange = (index, fieldName) => {
@@ -194,7 +210,8 @@ const DynamicTextFields = () => {
                         "Accept": "application/json",
                     }
                 }).then(res => {
-                    alert('subject list updated successfully')
+                    handleSnackbarOpen('Request for Subject Authorization has been sent !');
+
                 })
             }
         })
@@ -315,6 +332,19 @@ const DynamicTextFields = () => {
             <AddSubjectButton onClick={addTextField} />
             <Divider sx={{ paddingTop: 1 }} />
             <ApprovalButton onClick={updateTeacherSubject} />
+            <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                message={snackbarMessage}
+                action={
+                    <Button color="inherit" size="small" onClick={handleSnackbarClose}>
+                        Close
+                    </Button>
+                }
+            />
+
         </div >
     );
 };
@@ -346,6 +376,7 @@ const SettingsHeaderTypography = (props) => <Typography {...props} variant='h4' 
 
 
 export default function Settings(props) {
+
     const [update, setUpdate] = React.useState(false);
     const [pass, setPass] = React.useState(false);
     const [subjectList, setSubjectList] = React.useState([])
@@ -371,6 +402,9 @@ export default function Settings(props) {
         }))
         console.log(inputs)
     }
+
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log('Submitted Value: ', inputs);
@@ -447,7 +481,7 @@ export default function Settings(props) {
                         {/* TODO: change padding here {this is the Subjects taught settings } */}
                         <Divider sx={{ marginBottom: 2 }} />
 
-                        {subjectList.map((item, index) => (
+                        {subjectList?.map((item, index) => (
                             // TODO: change styling here aswell {this is the Subjects taught settings }
 
                             <Typography variant='h5' sx={{ paddingLeft: 2, paddingTop: 1, fontSize: 22 }}>{item.subject_id} - {item.subject_name} </Typography>

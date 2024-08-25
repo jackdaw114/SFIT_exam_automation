@@ -61,6 +61,9 @@ const styles = StyleSheet.create({
     centerText: {
         textAlign: 'center',
     },
+    leftText: {
+        textAlign: 'left',
+    },
 });
 
 
@@ -102,14 +105,14 @@ const MyDocument = ({ data }) => {
 
 
                     <View style={styles.tableHeader}>
-                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>COURSE CODE</Text>
-                        <Text style={[styles.tableCellWide, styles.bold, styles.centerText]}>COURSE TITLE</Text>
+                        <Text style={[styles.tableCell, styles.bold, styles.leftText]}>COURSE CODE</Text>
+                        <Text style={[styles.tableCellWide, styles.bold, styles.leftText]}>COURSE TITLE</Text>
                         {/* <Text style={[styles.tableCell, styles.bold]}>COURSE CREDIT</Text> */}
-                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>TERM</Text>
-                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>TERM</Text>
-                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>TERM</Text>
-                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>PR/OR</Text>
-                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>OVERALL</Text>
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>IAT (20)</Text>
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>ESE (80)</Text>
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>TERM (50)</Text>
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>PR/OR (25)</Text>
+                        <Text style={[styles.tableCell, styles.bold, styles.centerText]}>OVERALL (175)</Text>
                         {/* <Text style={[styles.tableCell, styles.bold]}>CREDIT EARNED</Text>
                         <Text style={[styles.tableCell, styles.bold]}>CREDIT POINTS</Text>
                         <Text style={[styles.tableCell, styles.bold]}>C X G</Text> */}
@@ -122,14 +125,14 @@ const MyDocument = ({ data }) => {
                                 <Text style={styles.tableCell}>{item}</Text>
                                 <Text style={styles.tableCellWide}>{subject?.subject_name}</Text>
                                 {/* <Text style={[styles.tableCell, styles.centerText]}>Course Credit</Text> */}
-                                <Text style={[styles.tableCell, styles.centerText]}>{data?.student?.term[item] || 'N/A'}</Text>
-                                <Text style={[styles.tableCell, styles.centerText]}>{data?.student?.term[item] || 'N/A'}</Text>
+                                <Text style={[styles.tableCell, styles.centerText]}>{data?.student?.iat[item] || 'N/A'}</Text>
+                                <Text style={[styles.tableCell, styles.centerText]}>{data?.student?.ese[item] || 'N/A'}</Text>
                                 <Text style={[styles.tableCell, styles.centerText]}>{data?.student?.term[item] || 'N/A'}</Text>
                                 <Text style={[styles.tableCell, styles.centerText]}>
                                     {(data?.student?.practical[item] || 0) + (data?.student?.oral[item] || 0) || 'N/A'}
                                 </Text>
                                 <Text style={[styles.tableCell, styles.centerText]}>
-                                    {(data?.student?.practical[item] || 0) + (data?.student?.oral[item] || 0) + (data?.student?.term[item] || 0) || 'N/A'}
+                                    {(data?.student?.practical[item] || 0) + (data?.student?.oral[item] || 0) + (data?.student?.term[item] || 0) + (data?.student?.iat[item] || 0) + (data?.student?.ese[item] || 0) || "N/A"}
                                 </Text>
                                 {/* <Text style={[styles.tableCell, styles.centerText]}>Credit Earned</Text> */}
                                 {/* <Text style={[styles.tableCell, styles.centerText]}>Credit Points</Text> */}
