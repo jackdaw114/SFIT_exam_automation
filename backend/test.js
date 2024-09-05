@@ -1,5 +1,5 @@
 const express = require('express');
-const MarksSchema = require('./schemas/MarksSchema');
+
 const SyllabusSchema = require('./schemas/SyllabusSchema');
 const { writeXLSX, readFile, utils, writeFile } = require('xlsx');
 const router = express.Router();

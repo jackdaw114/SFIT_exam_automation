@@ -1,5 +1,3 @@
-//snakecase (no capitals, "_" delimiter)
-
 
 const mongoose = require('mongoose');
 

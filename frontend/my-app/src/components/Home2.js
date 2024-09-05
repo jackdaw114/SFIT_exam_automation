@@ -3,7 +3,6 @@ import React from "react";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import './Home2.css'
 import { styled } from '@mui/material/styles';
-import Topbar from "./Topbar";
 import { motion } from 'framer-motion'
 import img from '../imgtest/favicon.ico'
 import ArticleIcon from '@mui/icons-material/Article';

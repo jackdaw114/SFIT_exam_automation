@@ -3,10 +3,6 @@ const mongoose = require('mongoose')
 
 const url = 'mongodb+srv://Nigel:Nigel@cluster0.iifluj8.mongodb.net/?retryWrites=true&w=majority';
 
-// const client = new MongoClient(url);
-
-// const dbName = 'DummyDb';
-
 async function connectDB() {
     try {
 

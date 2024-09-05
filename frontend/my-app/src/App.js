@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import Auth from './components/Auth';
 import TeacherNav from './components/SheetPortal';
 import ViewExam from './components/SheetView';
-import TeacherProfile from './components/TeacherProfile';
 import Gazette from './components/Gazette';
 import Settings from './components/Settings';
 import Header from './components/Header';
@@ -15,7 +14,6 @@ import Background from './components/Background';
 import { BackgroundProvider } from './components/BackgroundContext';
 import { TeacherNavbar } from './components/TeacherNavbar';
 
-import DeleteTeacher from './components/DeleteTeacher';
 import SubscriptionRequests from './components/SubscriptionRequests';
 import { SubjectRequests } from './components/SubjectRequests';
 import { SubjectListEndpoint } from './components/SubjectListEndpoint';
@@ -65,13 +63,12 @@ function App() {
                   <Route path='analysis' element={<><Analysis /></>} />
                   <Route path='settings' element={<><Settings /></>} />
                 </Route>
-                <Route path='profile' element={<><TeacherProfile /></>} />
+
 
                 {/* admin routes */}
 
                 <Route path='adminhome' element={<><TeacherNavbar list_items={admin_list_items} type="Admin" buttons={button_list} /></>} >
                   <Route path='manage_teacher' element={<ManageTeacher />} />
-                  <Route path='delete_teacher' element={<DeleteTeacher />} />
                   <Route path='history' element={<History />} />
                   <Route path='creategazette' element={<><Gazette /></>} />
                   <Route path='report' element={<><Report /></>} />
