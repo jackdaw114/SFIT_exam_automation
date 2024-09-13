@@ -1,4 +1,4 @@
-# API Endpoints Documentation
+# API Documentation for Admin Routes (admin.js)
 
 This document outlines the available endpoints for the educational management system. All endpoints are POST requests.
 
