@@ -1,4 +1,4 @@
-# API Documentation for Frontend Developers
+# API Documentation for Teacher Routes (teacher.js)
 
 This document outlines the available API endpoints, their purposes, and the required request format for each. Use this as a reference when integrating the frontend with the backend.
 
