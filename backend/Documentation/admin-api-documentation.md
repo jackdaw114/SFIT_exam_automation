@@ -1,6 +1,6 @@
 # API Documentation for Admin Routes (admin.js)
 
-This document outlines the available endpoints for the educational management system. All endpoints are POST requests.
+This document outlines the available endpoints for the admin-side system. All endpoints are POST requests.
 
 ## Teacher Management
 
