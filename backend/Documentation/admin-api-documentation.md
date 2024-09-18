@@ -44,18 +44,6 @@ This document outlines the available endpoints for the admin-side system. All en
 
 ## Subject Management
 
-### Update Subject List
-- **Endpoint**: `/update_subject_list`
-- **Payload**: 
-  ```json
-  { 
-    "semester": "string", 
-    "branch": "string", 
-    "subject_ids": ["string"] 
-  }
-  ```
-- **Response**: `"updated"` or error details
-
 ### Set Subject List for Students
 - **Endpoint**: `/set_subject_list`
 - **Payload**: 
