@@ -17,6 +17,8 @@ router.post('/updateemail', async (req, res) => {
     let filter = { email: req.body.email }
     let update = { email: req.body.new_email }
     try {
+        // console.log(filter)
+        // console.log(update)
         console.log(req.body)
         if (filter.email === update.email) {
             res.status(201).send("Same email")
@@ -130,6 +132,10 @@ router.get('/getstudents', async (req, res) => {
         res.status(500).send(err)
     }
 })
+
+
+
+
 
 
 
